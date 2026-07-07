@@ -19,18 +19,7 @@
 <!-- ═══════════════════════════════════════ NAVIGATION ═══ -->
 <nav class="nav transparent" id="mainNav">
   <div class="nav-logo" onclick="showPage('home')">
-    <svg viewBox="0 0 44 44" fill="none" aria-label="Eldorado Logo" xmlns="http://www.w3.org/2000/svg">
-      <!-- Crest shape -->
-      <path d="M22 4L38 12V24C38 32 30 39 22 42C14 39 6 32 6 24V12L22 4Z" fill="none" stroke="#C9A84C" stroke-width="1.2"/>
-      <!-- E letterform -->
-      <path d="M14 16h10M14 22h8M14 28h10" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-      <!-- Crown accent -->
-      <path d="M17 10l5-3 5 3" stroke="#C9A84C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
-    </svg>
-    <div>
-      <span class="nav-logo-text">Eldorado</span>
-      <span class="nav-logo-sub">Hotels &amp; Resorts</span>
-    </div>
+    <img src="./assets/logo.png" alt="Heights of Eldorado" style="height:48px; width:auto; filter:brightness(0) invert(1);">
   </div>
 
   <div class="nav-links">
@@ -152,6 +141,24 @@
     </div>
   </div>
 
+  <!-- Grand Lobby Feature -->
+  <section class="section section-ivory">
+    <div class="grid-asymm fade-in" style="align-items:center;">
+      <div>
+        <img src="./assets/room-comfort.jpg" alt="The Grand Lobby at Heights of Eldorado" class="img-hero" style="border-radius:var(--radius-md);">
+      </div>
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">The Heart of the Hotel</span></div>
+        <h2 class="section-title" style="margin-bottom:1rem;">The Grand Lobby</h2>
+        <p class="section-subtitle">Your first impression of Eldorado is one you will carry for a lifetime. The Grand Lobby rises across a double-height atrium dressed in Akwa Ibom limestone, polished Iroko timber columns, and hand-cast bronze chandeliers sourced from craftsmen in Calabar. Natural light pours through arched clerestory windows, casting warm gold across the hand-woven Akwete welcome rug at the heart of the space.</p>
+        <p class="section-subtitle" style="margin-top:1rem;">Our lobby concierge desk operates twenty-four hours, seven days a week. From the moment you arrive, you are not checked in — you are received.</p>
+        <div style="margin-top:2rem;">
+          <button class="btn-navy" onclick="showPage('contact')">Plan Your Arrival</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Experiences grid -->
   <section class="section section-cream">
     <div class="section-header">
@@ -226,7 +233,7 @@
           <option>Membership</option>
           <option>Wedding &amp; Events</option>
           <option>Corporate</option>
-          <option>Ibom Air Partnership</option>
+          <option>Partnership Enquiry</option>
         </select>
       </div>
       <button class="btn-primary">Register Interest</button>
@@ -238,11 +245,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
-          <svg viewBox="0 0 44 44" fill="none" style="height:32px;" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 4L38 12V24C38 32 30 39 22 42C14 39 6 32 6 24V12L22 4Z" fill="none" stroke="#C9A84C" stroke-width="1.2"/>
-            <path d="M14 16h10M14 22h8M14 28h10" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-          <span style="font-family:var(--font-display); font-size:1.1rem; color:var(--gold); letter-spacing:0.1em;">ELDORADO</span>
+          <img src="./assets/logo.png" alt="Heights of Eldorado" style="height:44px; width:auto; filter:brightness(0) invert(1); opacity:0.9;">
         </div>
         <p>Luxury Hotels &amp; Resorts. Arriving at the Lagos-Calabar Coastal Road, Uyo, Akwa Ibom State, Nigeria.</p>
       </div>
@@ -271,8 +274,7 @@
           <li><span>Uyo, Akwa Ibom State</span></li>
           <li><a href="mailto:info@obadear.com">info@obadear.com</a></li>
           <li><span onclick="showPage('contact')">Press Enquiries</span></li>
-          <li><span onclick="showPage('contact')">Partnership</span></li>
-          <li><span onclick="showPage('contact')">Ibom Air</span></li>
+          <li><span onclick="showPage('contact')">Partnerships</span></li>
         </ul>
       </div>
     </div>
@@ -306,7 +308,7 @@
     <div class="rooms-grid">
 
       <div class="room-card">
-        <img src="./assets/room-comfort.jpg" alt="Comfort Room" class="room-card-img">
+        <img src="./assets/room-comfort-new.jpg" alt="Comfort Room" class="room-card-img">
         <div class="room-card-body">
           <div class="room-tier">Tier I — Entry</div>
           <div class="room-name">Comfort Room</div>
@@ -488,7 +490,7 @@
 <div class="page" id="page-dining">
 
   <div class="page-hero">
-    <div class="page-hero-bg" style="background-image:url('./assets/dining-room.jpg'); background-position:center 40%;"></div>
+    <div class="page-hero-bg" style="background-image:url('./assets/afang-fine-dining.jpg'); background-position:center 40%;"></div>
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
       <div class="hero-eyebrow" style="opacity:1;">Culinary Arts</div>
@@ -499,7 +501,7 @@
   <section class="section section-ivory">
     <div class="grid-asymm fade-in">
       <div>
-        <img src="./assets/dining-room.jpg" alt="Eldorado restaurant" class="img-hero">
+        <img src="./assets/afang-fine-dining.jpg" alt="Afang fine dining at Eldorado" class="img-hero">
       </div>
       <div>
         <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Grand Restaurant</span></div>
@@ -660,8 +662,8 @@
             <div style="font-family:var(--font-display);font-size:1.2rem;color:var(--ivory);">380 Matches</div>
           </div>
           <div style="border:1px solid rgba(201,168,76,0.2);padding:1rem;border-radius:var(--radius-sm);">
-            <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,76,0.7);margin-bottom:0.3rem;">Title Sponsor</div>
-            <div style="font-family:var(--font-display);font-size:1.2rem;color:var(--ivory);">MTN Nigeria</div>
+            <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,76,0.7);margin-bottom:0.3rem;">Sponsorship</div>
+            <div style="font-family:var(--font-display);font-size:1.2rem;color:var(--ivory);">Coming Soon</div>
           </div>
         </div>
         <div style="margin-top:2rem;">
@@ -814,14 +816,11 @@
     <div style="text-align:center; max-width:700px; margin:0 auto;">
       <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
       <h2 class="section-title fade-in" style="margin-bottom:1rem;">Strategic Partnerships</h2>
-      <p class="section-subtitle fade-in" style="margin:0 auto 2rem;">Eldorado partners with institutions that share our standard of excellence — Ibom Air as our preferred airline partner, Nigeria's major churches for convention hosting, and Akwa Ibom State Government for Official State Guest Hotel designation.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;" class="fade-in">
-        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">Ibom Air</div>
-        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">MTN Nigeria</div>
-        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">Guinness Nigeria</div>
-        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">Stanbic IBTC</div>
-        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">Akwa Ibom State</div>
+      <p class="section-subtitle fade-in" style="margin:0 auto 2rem;">Eldorado is actively building partnerships with institutions that share our standard of excellence — spanning aviation, hospitality, faith communities, and state government. We welcome enquiries from aligned organisations.</p>
+      <div class="fade-in" style="display:inline-block; padding:1rem 2.5rem; border:1px solid var(--gold); border-radius:var(--radius-sm); font-family:var(--font-display); font-size:1rem; color:var(--gold); letter-spacing:0.12em;">
+        Partnerships &mdash; Coming Soon
       </div>
+      <p class="fade-in" style="margin-top:1.5rem; font-size:0.85rem; color:var(--text-muted);">To express interest, please use the <span onclick="showPage('contact')" style="cursor:pointer; text-decoration:underline; color:var(--navy);">Partnership Enquiry</span> form.</p>
     </div>
   </section>
 
@@ -897,7 +896,7 @@
               <option>Membership Application</option>
               <option>Wedding &amp; Events — Ekom Iban</option>
               <option>Corporate Account</option>
-              <option>Ibom Air Partnership</option>
+              <option>Partnership Enquiry</option>
               <option>Church / Convention Hosting</option>
               <option>Government Protocol</option>
               <option>Investment Partnership</option>
