@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eldorado Luxury Hotels & Resorts — Uyo, Akwa Ibom</title>
+  <meta name="description" content="Nigeria's most distinguished luxury hotel, arriving in Uyo, Akwa Ibom. Tropical Neoclassicism, world-class dining, the Nkpa Ufan Spa, and the Ekom Iban Cultural Wedding Pavilion. Eldorado Welcomes You.">
+  <meta property="og:title" content="Eldorado Luxury Hotels & Resorts">
+  <meta property="og:description" content="Nigeria's most distinguished luxury hotel, arriving in Uyo, Akwa Ibom. Eldorado Welcomes You.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="./base.css">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230D1B2A'/><path d='M8 24V8h3l5 10 5-10h3v16h-3V14l-4 8h-2l-4-8v10H8z' fill='%23C9A84C'/></svg>">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ NAVIGATION ═══ -->
+<nav class="nav transparent" id="mainNav">
+  <div class="nav-logo" onclick="showPage('home')">
+    <svg viewBox="0 0 44 44" fill="none" aria-label="Eldorado Logo" xmlns="http://www.w3.org/2000/svg">
+      <!-- Crest shape -->
+      <path d="M22 4L38 12V24C38 32 30 39 22 42C14 39 6 32 6 24V12L22 4Z" fill="none" stroke="#C9A84C" stroke-width="1.2"/>
+      <!-- E letterform -->
+      <path d="M14 16h10M14 22h8M14 28h10" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- Crown accent -->
+      <path d="M17 10l5-3 5 3" stroke="#C9A84C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+    </svg>
+    <div>
+      <span class="nav-logo-text">Eldorado</span>
+      <span class="nav-logo-sub">Hotels &amp; Resorts</span>
+    </div>
+  </div>
+
+  <div class="nav-links">
+    <span class="nav-link" onclick="showPage('home')">Home</span>
+    <span class="nav-link" onclick="showPage('rooms')">Rooms &amp; Suites</span>
+    <span class="nav-link" onclick="showPage('dining')">Dining</span>
+    <span class="nav-link" onclick="showPage('experiences')">Experiences</span>
+    <span class="nav-link" onclick="showPage('membership')">Membership</span>
+    <span class="nav-link" onclick="showPage('contact')">Contact</span>
+    <button class="nav-cta" onclick="showPage('contact')">Reserve</button>
+  </div>
+
+  <div class="nav-mobile-btn" onclick="openMobile()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <span class="mobile-close" onclick="closeMobile()">✕</span>
+  <span class="nav-link" onclick="showPage('home'); closeMobile()">Home</span>
+  <span class="nav-link" onclick="showPage('rooms'); closeMobile()">Rooms &amp; Suites</span>
+  <span class="nav-link" onclick="showPage('dining'); closeMobile()">Dining</span>
+  <span class="nav-link" onclick="showPage('experiences'); closeMobile()">Experiences</span>
+  <span class="nav-link" onclick="showPage('membership'); closeMobile()">Membership</span>
+  <span class="nav-link" onclick="showPage('contact'); closeMobile()">Contact</span>
+  <button class="btn-primary" onclick="showPage('contact'); closeMobile()">Reserve Now</button>
+</div>
+
+
+<!-- ═══════════════════════════════════════ HOME PAGE ═══ -->
+<div class="page active" id="page-home">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg" style="background-image: url('./assets/hero-homepage.jpg');"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Uyo · Akwa Ibom · Nigeria — Opening Soon</div>
+      <h1 class="hero-title">Where West Africa<br>Meets <em>Timeless</em><br>Elegance</h1>
+      <p class="hero-subtitle">Nigeria's most distinguished luxury hotel, rising along the Lagos-Calabar coastal road. Ninety rooms, six floors, one unprecedented standard of care.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('rooms')">Explore Suites</button>
+        <button class="btn-ghost" onclick="showPage('experiences')">Discover Experiences</button>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span class="hero-scroll-label">Scroll to Explore</span>
+    </div>
+  </section>
+
+  <!-- Tagline / Brand Statement -->
+  <section class="section section-ivory">
+    <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+    <p class="pull-quote fade-in">"Eldorado Welcomes You — to a place where every detail is an act of devotion, every room a private world, every moment an irreplaceable memory."</p>
+    <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section section-navy">
+    <div class="stats-grid">
+      <div class="stat-item fade-in">
+        <div class="stat-number">90</div>
+        <div class="stat-label">Rooms &amp; Suites</div>
+      </div>
+      <div class="stat-item fade-in">
+        <div class="stat-number">6</div>
+        <div class="stat-label">Floor Levels</div>
+      </div>
+      <div class="stat-item fade-in">
+        <div class="stat-number">380</div>
+        <div class="stat-label">Premier League Matches/Season</div>
+      </div>
+      <div class="stat-item fade-in">
+        <div class="stat-number">5★</div>
+        <div class="stat-label">Standard of Service</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured — Asymmetric Section -->
+  <section class="section section-ivory">
+    <div class="grid-asymm fade-in">
+      <div>
+        <img src="./assets/hero-suite.jpg" alt="Eldorado Flagship Suite interior" class="img-hero">
+      </div>
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Accommodations</span></div>
+        <h2 class="section-title" style="margin-bottom:1rem;">Six Tiers of<br>Exceptional Rooms</h2>
+        <p class="section-subtitle">From our intimate Comfort Rooms to the Presidential Penthouse spanning the entire sixth floor — complete with a private spa, gym, family theatre, and twin grand balconies totalling 266 m² — every space is curated with Tropical Neoclassical precision.</p>
+        <div style="margin-top: 2rem; display:flex; flex-direction:column; gap:0.75rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 0; border-bottom:1px solid var(--linen);">
+            <span style="font-family:var(--font-display); font-size:1rem;">Comfort Room</span>
+            <span style="font-size:0.8rem; color:var(--gold); font-weight:500;">₦150,000 / night</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 0; border-bottom:1px solid var(--linen);">
+            <span style="font-family:var(--font-display); font-size:1rem;">Deluxe Room</span>
+            <span style="font-size:0.8rem; color:var(--gold); font-weight:500;">₦250,000 / night</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 0; border-bottom:1px solid var(--linen);">
+            <span style="font-family:var(--font-display); font-size:1rem;">Eldorado Flagship Suite</span>
+            <span style="font-size:0.8rem; color:var(--gold); font-weight:500;">from ₦900,000 / night</span>
+          </div>
+        </div>
+        <div style="margin-top:2rem;">
+          <button class="btn-navy" onclick="showPage('rooms')">View All Rooms</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full-bleed Aerial -->
+  <div class="fullbleed fade-in">
+    <img src="./assets/aerial-night.jpg" alt="Eldorado aerial night view" onerror="this.src='./assets/hero-homepage.jpg'">
+    <div class="fullbleed-overlay">
+      <div class="gold-divider" style="justify-content:center;"><div class="gold-divider-line"></div><span class="gold-divider-label">Uyo · Akwa Ibom · Nigeria</span><div class="gold-divider-line"></div></div>
+      <h2 style="font-family:var(--font-display); font-size:clamp(1.8rem,4vw,3rem); font-weight:300; color:var(--ivory); text-align:center; margin-top:0.5rem;">A New Landmark on the<br>Lagos-Calabar Coastal Road</h2>
+    </div>
+  </div>
+
+  <!-- Experiences grid -->
+  <section class="section section-cream">
+    <div class="section-header">
+      <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Experiences</span></div>
+      <h2 class="section-title">Beyond the Room</h2>
+      <p class="section-subtitle">Every signature experience at Eldorado is designed to be remembered for a lifetime.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card fade-in" style="cursor:pointer;" onclick="showPage('experiences')">
+        <img src="./assets/hero-spa.jpg" alt="Nkpa Ufan Spa" class="img-hero">
+        <div class="card-body">
+          <div class="card-tag">Wellness</div>
+          <div class="card-title">Nkpa Ufan Spa</div>
+          <p class="card-text">Complete peace — the meaning of our spa's name in Ibibio. Limestone walls, lily petal baths, master therapists, and ancient healing traditions refined for the modern world.</p>
+        </div>
+      </div>
+      <div class="card fade-in" style="cursor:pointer;" onclick="showPage('experiences')">
+        <img src="./assets/hero-wedding.jpg" alt="Ekom Iban Cultural Wedding Pavilion" class="img-hero">
+        <div class="card-body">
+          <div class="card-tag">Culture &amp; Events</div>
+          <div class="card-title">Ekom Iban Pavilion</div>
+          <p class="card-text">An authentic Akwa Ibom traditional wedding and ceremony space — thatched roof, hand-carved pillars, 150–200 capacity, with concealed modern AV and climate control.</p>
+        </div>
+      </div>
+      <div class="card fade-in" style="cursor:pointer;" onclick="showPage('experiences')">
+        <img src="./assets/hero-theater.jpg" alt="Premier League Theater" class="img-hero">
+        <div class="card-body">
+          <div class="card-tag">Entertainment</div>
+          <div class="card-title">The Gaffer's Club</div>
+          <p class="card-text">All 380 Premier League matches. Every Champions League night. AFCON. The Olympics. One cinematic theatre, navy velvet seats, draft taps, and zero compromise.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wedding Feature -->
+  <section class="section section-navy">
+    <div class="grid-asymm grid-asymm-rev fade-in">
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label" style="color:var(--gold);">Ekom Iban</span></div>
+        <h2 class="section-title section-title-ivory" style="margin-bottom:1rem;">Where Tradition<br>Meets Grandeur</h2>
+        <p class="section-subtitle section-subtitle-light">The Ekom Iban Cultural Wedding Pavilion is West Africa's most distinguished setting for traditional Akwa Ibom ceremonies. Sourced from the diaspora to the homeland — host your nuptials where your ancestors' traditions are honoured in a space worthy of your legacy.</p>
+        <div style="margin-top:2rem;">
+          <button class="btn-primary" onclick="showPage('experiences')">Plan Your Event</button>
+        </div>
+      </div>
+      <div>
+        <img src="./assets/hero-wedding.jpg" alt="Ekom Iban Pavilion" class="img-hero">
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Bar -->
+  <div class="booking-bar">
+    <div style="margin-bottom:1.5rem; text-align:center;">
+      <div class="gold-divider" style="justify-content:center;"><div class="gold-divider-line"></div><span class="gold-divider-label">Pre-Opening Registration</span><div class="gold-divider-line"></div></div>
+      <h2 style="font-family:var(--font-display); font-size:clamp(1.5rem,3vw,2.5rem); color:var(--ivory); font-weight:300; margin-top:0.5rem;">Be Among the First to Experience Eldorado</h2>
+    </div>
+    <div class="booking-inner">
+      <div class="booking-field">
+        <label>Name</label>
+        <input type="text" placeholder="Your full name">
+      </div>
+      <div class="booking-field">
+        <label>Email Address</label>
+        <input type="email" placeholder="your@email.com">
+      </div>
+      <div class="booking-field">
+        <label>Interest</label>
+        <select>
+          <option>Guest Rooms</option>
+          <option>Membership</option>
+          <option>Wedding &amp; Events</option>
+          <option>Corporate</option>
+          <option>Ibom Air Partnership</option>
+        </select>
+      </div>
+      <button class="btn-primary">Register Interest</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+          <svg viewBox="0 0 44 44" fill="none" style="height:32px;" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 4L38 12V24C38 32 30 39 22 42C14 39 6 32 6 24V12L22 4Z" fill="none" stroke="#C9A84C" stroke-width="1.2"/>
+            <path d="M14 16h10M14 22h8M14 28h10" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span style="font-family:var(--font-display); font-size:1.1rem; color:var(--gold); letter-spacing:0.1em;">ELDORADO</span>
+        </div>
+        <p>Luxury Hotels &amp; Resorts. Arriving at the Lagos-Calabar Coastal Road, Uyo, Akwa Ibom State, Nigeria.</p>
+      </div>
+      <div class="footer-col">
+        <h4>The Hotel</h4>
+        <ul>
+          <li><span onclick="showPage('rooms')">Rooms &amp; Suites</span></li>
+          <li><span onclick="showPage('dining')">Dining</span></li>
+          <li><span onclick="showPage('experiences')">Nkpa Ufan Spa</span></li>
+          <li><span onclick="showPage('experiences')">Ekom Iban Pavilion</span></li>
+          <li><span onclick="showPage('experiences')">Gaffer's Club</span></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Membership</h4>
+        <ul>
+          <li><span onclick="showPage('membership')">Member Elite</span></li>
+          <li><span onclick="showPage('membership')">Commissioner's Circle</span></li>
+          <li><span onclick="showPage('membership')">Premium Legacy</span></li>
+          <li><span onclick="showPage('membership')">The Patroné</span></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><span>Uyo, Akwa Ibom State</span></li>
+          <li><a href="mailto:info@obadear.com">info@obadear.com</a></li>
+          <li><span onclick="showPage('contact')">Press Enquiries</span></li>
+          <li><span onclick="showPage('contact')">Partnership</span></li>
+          <li><span onclick="showPage('contact')">Ibom Air</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Eldorado Luxury Hotels &amp; Resorts. All rights reserved.</span>
+      <span class="footer-tagline">Eldorado Welcomes You</span>
+    </div>
+  </footer>
+</div><!-- /page-home -->
+
+
+<!-- ═══════════════════════════════════════ ROOMS PAGE ═══ -->
+<div class="page" id="page-rooms">
+
+  <div class="page-hero">
+    <div class="page-hero-bg" style="background-image:url('./assets/hero-suite.jpg');"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="hero-eyebrow" style="opacity:1;">Accommodations</div>
+      <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:var(--ivory); line-height:1.1;">Rooms &amp; Suites</h1>
+    </div>
+  </div>
+
+  <section class="section section-ivory">
+    <div class="section-header">
+      <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Six Tiers of Distinction</span></div>
+      <h2 class="section-title">Find Your Perfect Room</h2>
+      <p class="section-subtitle">Every room at Eldorado is designed in the Tropical Neoclassicism tradition — European neoclassical bones, West African warmth. Akwa Ibom limestone floors, Iroko timber accents, Egyptian cotton with gold embroidery, and gypsum-insulated walls throughout.</p>
+    </div>
+
+    <div class="rooms-grid">
+
+      <div class="room-card">
+        <img src="./assets/hero-suite.jpg" alt="Comfort Room" class="room-card-img">
+        <div class="room-card-body">
+          <div class="room-tier">Tier I — Entry</div>
+          <div class="room-name">Comfort Room</div>
+          <p class="room-desc">Our entry suite sets a standard most hotels reserve for their finest offering. Intimate scale, extraordinary finish — key-card sensor lighting, bladeless climate fan, and premium linens.</p>
+          <div class="room-amenities">
+            <span class="amenity-tag">King Bed</span>
+            <span class="amenity-tag">LED Sensor Lighting</span>
+            <span class="amenity-tag">Smart Fan</span>
+            <span class="amenity-tag">Rain Shower</span>
+          </div>
+          <div class="room-price-row">
+            <span class="room-price">₦150,000</span>
+            <span class="room-price-per">per night</span>
+          </div>
+          <div style="margin-top:1.25rem;">
+            <button class="btn-navy" onclick="showPage('contact')" style="width:100%;">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <img src="./assets/hero-suite.jpg" alt="Deluxe Room" class="room-card-img" style="object-position:60% center;">
+        <div class="room-card-body">
+          <div class="room-tier">Tier II — Standard</div>
+          <div class="room-name">Deluxe Room</div>
+          <p class="room-desc">Generous proportions, Sapele Mahogany furniture, Akwete woven cloth accent wall, and a bathtub with a view. Designed for the discerning traveller who knows their worth.</p>
+          <div class="room-amenities">
+            <span class="amenity-tag">King or Twin</span>
+            <span class="amenity-tag">Soaking Tub</span>
+            <span class="amenity-tag">Work Desk</span>
+            <span class="amenity-tag">Minibar</span>
+          </div>
+          <div class="room-price-row">
+            <span class="room-price">₦250,000</span>
+            <span class="room-price-per">per night</span>
+          </div>
+          <div style="margin-top:1.25rem;">
+            <button class="btn-navy" onclick="showPage('contact')" style="width:100%;">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <img src="./assets/hero-suite.jpg" alt="Superior Room" class="room-card-img" style="object-position:40% center;">
+        <div class="room-card-body">
+          <div class="room-tier">Tier III — Mid</div>
+          <div class="room-name">Superior Room</div>
+          <p class="room-desc">Elevated living with a private lounge alcove, premium Daikin VRV climate control, and handpicked art from Akwa Ibom's finest contemporary artists.</p>
+          <div class="room-amenities">
+            <span class="amenity-tag">Lounge Alcove</span>
+            <span class="amenity-tag">Daikin VRV A/C</span>
+            <span class="amenity-tag">Local Art</span>
+            <span class="amenity-tag">Espresso Bar</span>
+          </div>
+          <div class="room-price-row">
+            <span class="room-price">₦350,000</span>
+            <span class="room-price-per">per night</span>
+          </div>
+          <div style="margin-top:1.25rem;">
+            <button class="btn-navy" onclick="showPage('contact')" style="width:100%;">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <img src="./assets/hero-suite.jpg" alt="Executive Suite" class="room-card-img" style="object-position:70% center;">
+        <div class="room-card-body">
+          <div class="room-tier">Tier IV — Upper Mid</div>
+          <div class="room-name">Executive Suite</div>
+          <p class="room-desc">Separate living and sleeping quarters, a dedicated workspace, complimentary in-suite breakfast, and priority access to the Governor's Lounge on the sixth floor.</p>
+          <div class="room-amenities">
+            <span class="amenity-tag">Separate Living Room</span>
+            <span class="amenity-tag">Breakfast Included</span>
+            <span class="amenity-tag">Lounge Access</span>
+            <span class="amenity-tag">Butler Service</span>
+          </div>
+          <div class="room-price-row">
+            <span class="room-price">₦450,000</span>
+            <span class="room-price-per">per night</span>
+          </div>
+          <div style="margin-top:1.25rem;">
+            <button class="btn-navy" onclick="showPage('contact')" style="width:100%;">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <img src="./assets/hero-suite.jpg" alt="Grand Suite" class="room-card-img" style="object-position:30% center;">
+        <div class="room-card-body">
+          <div class="room-tier">Tier V — Premium</div>
+          <div class="room-name">Grand Suite</div>
+          <p class="room-desc">Our most popular premium offering — a private dining nook, dual vanity bathrooms, a deep limestone soaking tub, and curated Ibibio heritage artefacts throughout.</p>
+          <div class="room-amenities">
+            <span class="amenity-tag">Private Dining</span>
+            <span class="amenity-tag">Dual Bathrooms</span>
+            <span class="amenity-tag">Heritage Décor</span>
+            <span class="amenity-tag">Personal Concierge</span>
+          </div>
+          <div class="room-price-row">
+            <span class="room-price">₦650,000</span>
+            <span class="room-price-per">per night</span>
+          </div>
+          <div style="margin-top:1.25rem;">
+            <button class="btn-navy" onclick="showPage('contact')" style="width:100%;">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card" style="border: 2px solid var(--gold);">
+        <div style="position:relative;">
+          <img src="./assets/hero-suite.jpg" alt="Eldorado Flagship Suite" class="room-card-img" style="object-position:50% 30%;">
+          <div style="position:absolute;top:1rem;right:1rem;background:var(--gold);color:var(--navy);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.4rem 0.8rem;border-radius:100px;font-weight:500;">Penthouse</div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-tier">Tier VI — Flagship</div>
+          <div class="room-name">Eldorado Flagship Suite</div>
+          <p class="room-desc">The entire sixth floor. Master bedroom of 60.7 m², private spa, private gym, family cinema theatre, and two grand balconies totalling 266 m² commanding views of the Atlantic and the Akwa Ibom landscape.</p>
+          <div class="room-amenities">
+            <span class="amenity-tag">Full Floor — 6th</span>
+            <span class="amenity-tag">Private Spa</span>
+            <span class="amenity-tag">Private Gym</span>
+            <span class="amenity-tag">Family Theatre</span>
+            <span class="amenity-tag">266m² Balconies</span>
+            <span class="amenity-tag">Dedicated Chef</span>
+          </div>
+          <div class="room-price-row">
+            <span class="room-price">₦900,000</span>
+            <span class="room-price-per">– ₦1,500,000 per night</span>
+          </div>
+          <div style="margin-top:1.25rem;">
+            <button class="btn-primary" onclick="showPage('contact')" style="width:100%;">Request Private Consultation</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /rooms-grid -->
+  </section>
+
+  <!-- Amenities Bar -->
+  <section class="section section-navy">
+    <div class="section-header" style="text-align:center;">
+      <div class="gold-divider" style="justify-content:center;"><div class="gold-divider-line"></div><span class="gold-divider-label">In Every Room</span><div class="gold-divider-line"></div></div>
+      <h2 class="section-title section-title-ivory">Standard Across All Tiers</h2>
+    </div>
+    <div class="grid-4">
+      <div class="stat-item fade-in" style="background:transparent; text-align:left; padding:1.5rem;">
+        <div style="color:var(--gold);font-size:1.5rem;margin-bottom:0.75rem;">◈</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--ivory);margin-bottom:0.4rem;">Key-Card Sensor</div>
+        <div style="font-size:0.8rem;color:rgba(250,248,242,0.5);font-weight:300;">All lighting and power automatically sensor-controlled via key-card entry</div>
+      </div>
+      <div class="stat-item fade-in" style="background:transparent; text-align:left; padding:1.5rem;">
+        <div style="color:var(--gold);font-size:1.5rem;margin-bottom:0.75rem;">◈</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--ivory);margin-bottom:0.4rem;">LED Throughout</div>
+        <div style="font-size:0.8rem;color:rgba(250,248,242,0.5);font-weight:300;">Obsessive LED lighting programme — warm ambient tones for every mood</div>
+      </div>
+      <div class="stat-item fade-in" style="background:transparent; text-align:left; padding:1.5rem;">
+        <div style="color:var(--gold);font-size:1.5rem;margin-bottom:0.75rem;">◈</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--ivory);margin-bottom:0.4rem;">Bladeless Tower Fan</div>
+        <div style="font-size:0.8rem;color:rgba(250,248,242,0.5);font-weight:300;">Silent, powerful Tuya Smart bladeless fan — tropical comfort, no compromise</div>
+      </div>
+      <div class="stat-item fade-in" style="background:transparent; text-align:left; padding:1.5rem;">
+        <div style="color:var(--gold);font-size:1.5rem;margin-bottom:0.75rem;">◈</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--ivory);margin-bottom:0.4rem;">Gas Hot Water</div>
+        <div style="font-size:0.8rem;color:rgba(250,248,242,0.5);font-weight:300;">Instant gas-powered hot water — never a cold shower at Eldorado</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Eldorado Luxury Hotels &amp; Resorts</span>
+      <span class="footer-tagline">Eldorado Welcomes You</span>
+    </div>
+  </footer>
+</div><!-- /page-rooms -->
+
+
+<!-- ═══════════════════════════════════════ DINING PAGE ═══ -->
+<div class="page" id="page-dining">
+
+  <div class="page-hero">
+    <div class="page-hero-bg" style="background-image:url('./assets/hero-homepage.jpg'); background-position:center 70%;"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="hero-eyebrow" style="opacity:1;">Culinary Arts</div>
+      <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:var(--ivory); line-height:1.1;">Dining at Eldorado</h1>
+    </div>
+  </div>
+
+  <section class="section section-ivory">
+    <div class="grid-asymm fade-in">
+      <div>
+        <img src="./assets/hero-homepage.jpg" alt="Eldorado restaurant" class="img-hero">
+      </div>
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Grand Restaurant</span></div>
+        <h2 class="section-title" style="margin-bottom:1rem;">The Table — Grand Restaurant</h2>
+        <p class="section-subtitle">245 m² of pure culinary theatre on the ground floor. Nigerian ingredients elevated with classical French technique. Our Executive Chef composes menus that change with the season, sourced from Akwa Ibom's finest producers and the world's great pantries.</p>
+        <div style="margin-top:2rem;">
+          <button class="btn-navy" onclick="showPage('contact')">Make a Reservation</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="section-header">
+      <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">All Venues</span></div>
+      <h2 class="section-title">Four Dining Destinations</h2>
+    </div>
+    <div class="grid-2 fade-in">
+      <div class="card">
+        <div class="card-body" style="padding:2rem;">
+          <div style="font-size:2rem;color:var(--gold);margin-bottom:1rem;">🍽</div>
+          <div class="card-tag">Ground Floor</div>
+          <div class="card-title">The Table — Grand Restaurant</div>
+          <p class="card-text">International and Nigerian cuisine. Capacity 100 covers. Private dining room for 20. Gas kitchen, European-trained brigade. Open all day.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body" style="padding:2rem;">
+          <div style="font-size:2rem;color:var(--gold);margin-bottom:1rem;">🥂</div>
+          <div class="card-tag">First Floor</div>
+          <div class="card-title">The Banquet Hall</div>
+          <p class="card-text">399 m² of grand-event dining. Corporate dinners, state receptions, gala evenings. Full AV, natural light, and service for 300+.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body" style="padding:2rem;">
+          <div style="font-size:2rem;color:var(--gold);margin-bottom:1rem;">🍺</div>
+          <div class="card-tag">Basement</div>
+          <div class="card-title">The Gaffer's Club Bar</div>
+          <p class="card-text">Draft taps, premium spirits, elevated sports-bar bites. The home of all 380 Premier League matches and every major sporting event. Guinness Nigeria on tap.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body" style="padding:2rem;">
+          <div style="font-size:2rem;color:var(--gold);margin-bottom:1rem;">☕</div>
+          <div class="card-tag">Lobby</div>
+          <div class="card-title">Eldorado Lounge</div>
+          <p class="card-text">Artisan coffee, fresh pastries, afternoon tea. The lobby lounge that sets the tone. Calabar brass accents, live soft piano on weekends.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-navy">
+    <div style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="gold-divider" style="justify-content:center;"><div class="gold-divider-line"></div><span class="gold-divider-label">Annual Tradition</span><div class="gold-divider-line"></div></div>
+      <h2 class="section-title section-title-ivory" style="margin-bottom:1rem;">Eldorado Annual Culinary Championships</h2>
+      <p class="section-subtitle section-subtitle-light">Each year, Eldorado hosts West Africa's most prestigious chef competition — celebrating Nigerian cuisine at its finest, drawing masters from across the continent and the diaspora.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Eldorado Luxury Hotels &amp; Resorts</span>
+      <span class="footer-tagline">Eldorado Welcomes You</span>
+    </div>
+  </footer>
+</div><!-- /page-dining -->
+
+
+<!-- ═══════════════════════════════════════ EXPERIENCES PAGE ═══ -->
+<div class="page" id="page-experiences">
+
+  <div class="page-hero">
+    <div class="page-hero-bg" style="background-image:url('./assets/hero-wedding.jpg');"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="hero-eyebrow" style="opacity:1;">Signature Experiences</div>
+      <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:var(--ivory); line-height:1.1;">Beyond Extraordinary</h1>
+    </div>
+  </div>
+
+  <!-- Spa -->
+  <section class="section section-ivory">
+    <div class="grid-asymm fade-in">
+      <div>
+        <img src="./assets/hero-spa.jpg" alt="Nkpa Ufan Spa" class="img-hero">
+      </div>
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Wellness</span></div>
+        <h2 class="section-title" style="margin-bottom:0.5rem;">Nkpa Ufan Spa</h2>
+        <p style="font-family:var(--font-display);font-style:italic;color:var(--text-muted);font-size:1rem;margin-bottom:1rem;">"Complete Peace" — Ibibio</p>
+        <p class="section-subtitle">A 91 m² sanctuary in the hotel's basement. Lily petal baths, limestone treatment rooms, curated aromatherapy oils drawn from Akwa Ibom's botanical wealth, and master therapists trained in both ancient and modern modalities. The only spa in Nigeria where peace is the only agenda.</p>
+        <div style="margin-top:2rem; display:flex; flex-direction:column; gap:0.6rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;color:var(--text-mid);">
+            <span style="color:var(--gold);">◈</span> Lily petal soaking ritual
+          </div>
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;color:var(--text-mid);">
+            <span style="color:var(--gold);">◈</span> Full-body Ibibio heritage massage
+          </div>
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;color:var(--text-mid);">
+            <span style="color:var(--gold);">◈</span> Couples treatment suites
+          </div>
+          <div style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;color:var(--text-mid);">
+            <span style="color:var(--gold);">◈</span> Steam rooms &amp; salt caves
+          </div>
+        </div>
+        <div style="margin-top:2rem;">
+          <button class="btn-navy" onclick="showPage('contact')">Book a Treatment</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wedding Pavilion -->
+  <section class="section section-cream">
+    <div class="grid-asymm grid-asymm-rev fade-in">
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Culture &amp; Heritage</span></div>
+        <h2 class="section-title" style="margin-bottom:1rem;">Ekom Iban Cultural<br>Wedding Pavilion</h2>
+        <p class="section-subtitle">The most authentic traditional wedding space in West Africa — a thatched-roof pavilion with hand-carved Iroko pillars, capacity for 150–200 guests, and fully concealed power, AV, and climate control to honour tradition without compromise.</p>
+        <div style="margin-top:1.5rem;">
+          <div style="font-family:var(--font-display);font-size:1rem;color:var(--navy);margin-bottom:0.75rem;">Typical Event Revenue</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div style="background:var(--navy);color:var(--ivory);padding:1rem;border-radius:var(--radius-sm);">
+              <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,76,0.7);margin-bottom:0.3rem;">Venue Hire</div>
+              <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--gold);">₦2M – ₦5M</div>
+            </div>
+            <div style="background:var(--navy);color:var(--ivory);padding:1rem;border-radius:var(--radius-sm);">
+              <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,76,0.7);margin-bottom:0.3rem;">Total Event</div>
+              <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--gold);">₦15M – ₦30M</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:2rem;">
+          <button class="btn-primary" onclick="showPage('contact')">Plan Your Ceremony</button>
+        </div>
+      </div>
+      <div>
+        <img src="./assets/hero-wedding.jpg" alt="Ekom Iban Pavilion" class="img-hero">
+      </div>
+    </div>
+  </section>
+
+  <!-- Theater -->
+  <section class="section section-navy">
+    <div class="grid-asymm fade-in">
+      <div>
+        <img src="./assets/hero-theater.jpg" alt="Gaffer's Club Theater" class="img-hero">
+      </div>
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label" style="color:var(--gold);">Entertainment</span></div>
+        <h2 class="section-title section-title-ivory" style="margin-bottom:1rem;">The Gaffer's Club</h2>
+        <p class="section-subtitle section-subtitle-light">A 113 m² cinema-grade sports theatre in the basement. Navy velvet recliners, a curved screen of cinematic proportion, Guinness Nigeria draft taps, and a premium cocktail bar. Home to every Premier League match of the season — all 380 — plus AFCON, FIFA World Cup, Champions League Final, Super Eagles, F1, Boxing, and NBA.</p>
+        <div style="margin-top:1.5rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+          <div style="border:1px solid rgba(201,168,76,0.2);padding:1rem;border-radius:var(--radius-sm);">
+            <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,76,0.7);margin-bottom:0.3rem;">Season</div>
+            <div style="font-family:var(--font-display);font-size:1.2rem;color:var(--ivory);">380 Matches</div>
+          </div>
+          <div style="border:1px solid rgba(201,168,76,0.2);padding:1rem;border-radius:var(--radius-sm);">
+            <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,76,0.7);margin-bottom:0.3rem;">Title Sponsor</div>
+            <div style="font-family:var(--font-display);font-size:1.2rem;color:var(--ivory);">MTN Nigeria</div>
+          </div>
+        </div>
+        <div style="margin-top:2rem;">
+          <button class="btn-primary" onclick="showPage('membership')">Join The Gaffer's Club</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Calendar -->
+  <section class="section section-ivory">
+    <div class="section-header">
+      <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Seasons Street Events</span></div>
+      <h2 class="section-title">Annual Signature Events</h2>
+      <p class="section-subtitle">Eldorado's Seasons Street programme brings world-class festival energy to Uyo's coastal road — each event an unmissable highlight of Nigeria's cultural calendar.</p>
+    </div>
+    <div class="events-list fade-in">
+      <div class="event-row">
+        <div class="event-date">December</div>
+        <div>
+          <div class="event-meta">Flagship Annual Event</div>
+          <div class="event-name">Eldorado Christmas Street Festival</div>
+        </div>
+        <span class="event-arrow">→</span>
+      </div>
+      <div class="event-row">
+        <div class="event-date">March / April</div>
+        <div>
+          <div class="event-meta">Family & Culture</div>
+          <div class="event-name">Easter Family Festival</div>
+        </div>
+        <span class="event-arrow">→</span>
+      </div>
+      <div class="event-row">
+        <div class="event-date">November</div>
+        <div>
+          <div class="event-meta">Heritage</div>
+          <div class="event-name">Akwa Ibom Day Celebration</div>
+        </div>
+        <span class="event-arrow">→</span>
+      </div>
+      <div class="event-row">
+        <div class="event-date">October 1</div>
+        <div>
+          <div class="event-meta">Black Tie</div>
+          <div class="event-name">Nigerian Independence Day Gala</div>
+        </div>
+        <span class="event-arrow">→</span>
+      </div>
+      <div class="event-row">
+        <div class="event-date">Annual</div>
+        <div>
+          <div class="event-meta">Culinary</div>
+          <div class="event-name">Eldorado Annual Culinary Championships</div>
+        </div>
+        <span class="event-arrow">→</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Eldorado Luxury Hotels &amp; Resorts</span>
+      <span class="footer-tagline">Eldorado Welcomes You</span>
+    </div>
+  </footer>
+</div><!-- /page-experiences -->
+
+
+<!-- ═══════════════════════════════════════ MEMBERSHIP PAGE ═══ -->
+<div class="page" id="page-membership">
+
+  <div class="page-hero">
+    <div class="page-hero-bg" style="background-image:url('./assets/hero-homepage.jpg'); background-position:center 40%;"></div>
+    <div class="page-hero-overlay" style="background:linear-gradient(to top,rgba(13,27,42,0.92) 0%,rgba(13,27,42,0.55) 100%);"></div>
+    <div class="page-hero-content">
+      <div class="hero-eyebrow" style="opacity:1;">Exclusive Membership</div>
+      <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:var(--ivory); line-height:1.1;">The Eldorado Circle</h1>
+    </div>
+  </div>
+
+  <section class="section section-navy">
+    <div class="section-header" style="text-align:center; max-width:600px; margin:0 auto clamp(2.5rem,5vw,4rem);">
+      <div class="gold-divider" style="justify-content:center;"><div class="gold-divider-line"></div><span class="gold-divider-label">Four Tiers</span><div class="gold-divider-line"></div></div>
+      <h2 class="section-title section-title-ivory">Membership That Fits Your Life</h2>
+      <p class="section-subtitle section-subtitle-light">Annual membership to Eldorado is not a loyalty programme — it is a statement of belonging to the finest hospitality institution Nigeria has ever known.</p>
+    </div>
+
+    <div class="membership-grid">
+
+      <div class="tier-card fade-in">
+        <div class="tier-name">Member Elite</div>
+        <div class="tier-price">₦250,000 <span class="tier-price-label">per year</span></div>
+        <div class="tier-benefits">
+          <div class="tier-benefit">10% discount on all dining</div>
+          <div class="tier-benefit">1 complimentary night per year</div>
+          <div class="tier-benefit">Standard concierge service</div>
+          <div class="tier-benefit">Priority booking — all events</div>
+        </div>
+        <button class="btn-ghost" onclick="showPage('contact')" style="width:100%;">Apply Now</button>
+      </div>
+
+      <div class="tier-card featured fade-in">
+        <div class="tier-badge">Most Popular</div>
+        <div class="tier-name">Commissioner's Circle</div>
+        <div class="tier-price">₦500,000 <span class="tier-price-label">per year</span></div>
+        <div class="tier-benefits">
+          <div class="tier-benefit">15% discount on all dining</div>
+          <div class="tier-benefit">2 complimentary nights per year</div>
+          <div class="tier-benefit">Private concierge — dedicated</div>
+          <div class="tier-benefit">Quarterly spa access</div>
+          <div class="tier-benefit">Gaffer's Club season membership</div>
+        </div>
+        <button class="btn-primary" onclick="showPage('contact')" style="width:100%;">Apply Now</button>
+      </div>
+
+      <div class="tier-card fade-in">
+        <div class="tier-name">Premium Legacy</div>
+        <div class="tier-price">₦750,000 <span class="tier-price-label">per year</span></div>
+        <div class="tier-benefits">
+          <div class="tier-benefit">20% discount on all dining</div>
+          <div class="tier-benefit">3 complimentary nights per year</div>
+          <div class="tier-benefit">Private concierge — 24/7</div>
+          <div class="tier-benefit">Quarterly spa — all treatments</div>
+          <div class="tier-benefit">Early access to all events</div>
+          <div class="tier-benefit">Name plaque in lobby</div>
+        </div>
+        <button class="btn-ghost" onclick="showPage('contact')" style="width:100%;">Apply Now</button>
+      </div>
+
+      <div class="tier-card fade-in" style="background: linear-gradient(135deg,rgba(201,168,76,0.08),rgba(13,27,42,0.9)); border-color:var(--gold);">
+        <div class="tier-name" style="color:var(--gold-pale);">The Patroné</div>
+        <div class="tier-price" style="font-size:1.4rem;">Price on Request</div>
+        <div class="tier-benefits">
+          <div class="tier-benefit">Bespoke — everything custom</div>
+          <div class="tier-benefit">Unlimited complimentary stays</div>
+          <div class="tier-benefit">Personal stylist &amp; butler</div>
+          <div class="tier-benefit">Private jet coordination</div>
+          <div class="tier-benefit">Exclusive Patroné events</div>
+          <div class="tier-benefit">Legacy room naming rights</div>
+        </div>
+        <button class="btn-primary" onclick="showPage('contact')" style="width:100%; background:var(--gold);">Request Private Meeting</button>
+      </div>
+
+    </div><!-- /membership-grid -->
+  </section>
+
+  <!-- Partnership Banner -->
+  <section class="section section-ivory">
+    <div style="text-align:center; max-width:700px; margin:0 auto;">
+      <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+      <h2 class="section-title fade-in" style="margin-bottom:1rem;">Strategic Partnerships</h2>
+      <p class="section-subtitle fade-in" style="margin:0 auto 2rem;">Eldorado partners with institutions that share our standard of excellence — Ibom Air as our preferred airline partner, Nigeria's major churches for convention hosting, and Akwa Ibom State Government for Official State Guest Hotel designation.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;" class="fade-in">
+        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">Ibom Air</div>
+        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">MTN Nigeria</div>
+        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">Guinness Nigeria</div>
+        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">Stanbic IBTC</div>
+        <div style="padding:0.75rem 1.5rem;border:1px solid var(--linen);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-muted);">Akwa Ibom State</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Eldorado Luxury Hotels &amp; Resorts</span>
+      <span class="footer-tagline">Eldorado Welcomes You</span>
+    </div>
+  </footer>
+</div><!-- /page-membership -->
+
+
+<!-- ═══════════════════════════════════════ CONTACT PAGE ═══ -->
+<div class="page" id="page-contact">
+
+  <div class="page-hero" style="height:45vh;">
+    <div class="page-hero-bg" style="background-image:url('./assets/hero-homepage.jpg'); background-position:center 80%;"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="hero-eyebrow" style="opacity:1;">Get in Touch</div>
+      <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:var(--ivory); line-height:1.1;">Contact &amp; Reservations</h1>
+    </div>
+  </div>
+
+  <section class="section section-ivory">
+    <div class="contact-grid fade-in">
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Information</span></div>
+        <h2 style="font-family:var(--font-display);font-size:2rem;font-weight:300;color:var(--navy);margin-bottom:2rem;">We'd love<br>to hear from you.</h2>
+
+        <div style="display:flex;flex-direction:column;gap:2rem;">
+          <div>
+            <div style="font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;">Location</div>
+            <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--navy);line-height:1.5;">Lagos-Calabar Coastal Road<br>Uyo, Akwa Ibom State<br>Nigeria</div>
+          </div>
+          <div>
+            <div style="font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;">Email</div>
+            <a href="mailto:info@obadear.com" style="font-family:var(--font-display);font-size:1.1rem;color:var(--navy);">info@obadear.com</a>
+          </div>
+          <div>
+            <div style="font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;">Partnership Enquiries</div>
+            <div style="font-size:0.875rem;color:var(--text-muted);font-weight:300;line-height:1.7;">Ibom Air co-branded packages, church convention hosting, government protocol, and corporate accounts welcome. Please indicate your interest in the form.</div>
+          </div>
+          <div>
+            <div style="font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;">Pre-Opening Status</div>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);animation: pulse 2s ease-in-out infinite;"></div>
+              <span style="font-size:0.85rem;color:var(--text-muted);font-weight:300;">Registering founding members &amp; partners</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="gold-divider"><div class="gold-divider-line"></div><span class="gold-divider-label">Contact Form</span></div>
+        <form onsubmit="handleForm(event)">
+          <div class="form-field">
+            <label>Full Name</label>
+            <input type="text" placeholder="Your full name" required>
+          </div>
+          <div class="form-field">
+            <label>Email Address</label>
+            <input type="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-field">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+234 000 000 0000">
+          </div>
+          <div class="form-field">
+            <label>Enquiry Type</label>
+            <select>
+              <option>Room Reservation (Pre-Opening)</option>
+              <option>Membership Application</option>
+              <option>Wedding &amp; Events — Ekom Iban</option>
+              <option>Corporate Account</option>
+              <option>Ibom Air Partnership</option>
+              <option>Church / Convention Hosting</option>
+              <option>Government Protocol</option>
+              <option>Investment Partnership</option>
+              <option>General Enquiry</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Message</label>
+            <textarea placeholder="Tell us about your enquiry..."></textarea>
+          </div>
+          <div style="margin-top:1.5rem;">
+            <button type="submit" class="btn-primary" id="submitBtn">Send Enquiry</button>
+          </div>
+          <div id="formSuccess" style="display:none;margin-top:1.25rem;padding:1rem;background:rgba(67,122,34,0.08);border:1px solid rgba(67,122,34,0.25);border-radius:var(--radius-sm);">
+            <span style="font-size:0.875rem;color:#437A22;">Thank you — your enquiry has been received. A member of our team will be in contact within 24 hours. Eldorado Welcomes You.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
+          <svg viewBox="0 0 44 44" fill="none" style="height:32px;">
+            <path d="M22 4L38 12V24C38 32 30 39 22 42C14 39 6 32 6 24V12L22 4Z" fill="none" stroke="#C9A84C" stroke-width="1.2"/>
+            <path d="M14 16h10M14 22h8M14 28h10" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--gold);letter-spacing:0.1em;">ELDORADO</span>
+        </div>
+        <p>Luxury Hotels &amp; Resorts. Uyo, Akwa Ibom State, Nigeria.</p>
+      </div>
+      <div class="footer-col">
+        <h4>The Hotel</h4>
+        <ul>
+          <li><span onclick="showPage('rooms')">Rooms &amp; Suites</span></li>
+          <li><span onclick="showPage('dining')">Dining</span></li>
+          <li><span onclick="showPage('experiences')">Spa</span></li>
+          <li><span onclick="showPage('experiences')">Events</span></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Membership</h4>
+        <ul>
+          <li><span onclick="showPage('membership')">All Tiers</span></li>
+          <li><span onclick="showPage('membership')">The Patroné</span></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><span>Privacy Policy</span></li>
+          <li><span>Terms of Service</span></li>
+          <li><span>Cookie Policy</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Eldorado Luxury Hotels &amp; Resorts. All rights reserved.</span>
+      <span class="footer-tagline">Eldorado Welcomes You</span>
+    </div>
+  </footer>
+</div><!-- /page-contact -->
+
+
+<!-- ══════════════════════════ JAVASCRIPT ══ -->
+<script>
+  /* Page routing */
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    const link = [...document.querySelectorAll('.nav-link')].find(l => l.textContent.toLowerCase().includes(id === 'home' ? 'home' : id.replace('contact','contact').replace('rooms','room').replace('dining','dining').replace('experiences','experience').replace('membership','member')));
+    if (link) link.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateNav();
+  }
+
+  /* Sticky nav */
+  function updateNav() {
+    const nav = document.getElementById('mainNav');
+    const activePage = document.querySelector('.page.active');
+    const isHome = activePage && activePage.id === 'page-home';
+    if (isHome && window.scrollY < 60) {
+      nav.classList.add('transparent');
+      nav.classList.remove('scrolled');
+    } else {
+      nav.classList.remove('transparent');
+      nav.classList.add('scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', updateNav);
+  window.addEventListener('load', updateNav);
+
+  /* Mobile menu */
+  function openMobile() { document.getElementById('mobileMenu').classList.add('open'); }
+  function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+  /* Form */
+  function handleForm(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('formSuccess').style.display = 'block';
+      btn.textContent = 'Send Enquiry';
+      btn.disabled = false;
+      e.target.reset();
+    }, 1200);
+  }
+
+  /* Pulse animation for status dot */
+  const style = document.createElement('style');
+  style.textContent = `@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }`;
+  document.head.appendChild(style);
+</script>
+
+</body>
+</html>
