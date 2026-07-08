@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
@@ -10,12 +10,27 @@ import Experiences from './pages/Experiences';
 import Membership from './pages/Membership';
 import Contact from './pages/Contact';
 import Journey from './pages/Journey';
+import SubscribePopup from './components/SubscribePopup';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL);
 
 function EldoradoApp() {
   const [page, setPage] = useState('home');
   const [toast, setToast] = useState<string|null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  // Show popup once per session after 8 seconds
+  useEffect(() => {
+    const seen = sessionStorage.getItem('eldorado_subscribed');
+    if (seen) return;
+    const t = setTimeout(() => setShowPopup(true), 8000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const closePopup = () => {
+    setShowPopup(false);
+    sessionStorage.setItem('eldorado_subscribed', '1');
+  };
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -43,6 +58,7 @@ function EldoradoApp() {
 
       <Footer setPage={setPage_} />
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
+      {showPopup && <SubscribePopup onClose={closePopup} />}
     </div>
   );
 }

@@ -57,6 +57,16 @@ export default defineSchema({
     createdAt: v.number(),
   }).index("by_status", ["status"]),
 
+  // Newsletter & waiting list subscribers
+  subscribers: defineTable({
+    name: v.string(),
+    email: v.string(),
+    listType: v.string(),   // "waitlist" | "newsletter" | "both"
+    createdAt: v.number(),
+  })
+    .index("by_email", ["email"])
+    .index("by_list", ["listType"]),
+
   // Membership applications
   memberships: defineTable({
     name: v.string(),
