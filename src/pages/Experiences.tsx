@@ -32,6 +32,22 @@ const items: ExperienceItem[] = [
     img: 'hero-theater.jpg',
     flip: false,
   },
+  {
+    tag: 'Events & Banqueting',
+    title: 'The Grand Ballroom',
+    sub: 'Timeless architecture. Understated luxury.',
+    desc: 'A space for life\'s most unforgettable moments. The Grand Ballroom seats 450 guests banquet style across 700–850 sqm of marble floor, beneath 8.5–10m ceilings fitted with crystal chandeliers. Divisible into two or three independent sections. Full backstage, VIP lounge, bridal suite access, and a separate service entrance.',
+    img: 'eldorado-ballroom.jpg',
+    flip: true,
+  },
+  {
+    tag: 'Fitness & Wellness',
+    title: 'The Eldorado Fitness Centre',
+    sub: 'Stronger today. Better every day.',
+    desc: 'A full-service gym designed for the serious guest. Strength training, cardio, functional training zone, and an indoor sprint track — all with floor-to-ceiling windows overlooking tropical gardens. Complemented by a sauna, steam room, yoga studio, locker rooms, and a refreshment bar. Personal trainers available on request. Open 24 hours.',
+    img: 'eldorado-gym.jpg',
+    flip: false,
+  },
 ];
 
 export default function Experiences() {

@@ -13,7 +13,7 @@ const ROOMS: Room[] = [
   { tier:3, name:'Superior Room',      pricePerNight:350000, description:'Where space becomes a statement. Commanding a full coastal panorama through floor-to-ceiling glass, furnished in hand-selected West African hardwood.', amenities:'["King Bed","Deep Soaking Tub","Walk-in Shower","Private Balcony","Floor-to-Ceiling Windows","Butler Service","Coastal Panorama","Premium Bar"]', imageSlug:'room-superior' },
   { tier:4, name:'Executive Suite',    pricePerNight:450000, description:'A complete residence above the city. Separate living room, dedicated workspace, and master bedroom — all with 24-hour butler service.', amenities:'["Separate Living Room","Dedicated Workspace","Master Bedroom","24hr Butler","Dining for 4","Premium Sound","Panoramic View","Airport Transfer"]', imageSlug:'room-governor' },
   { tier:5, name:'Grand Suite',        pricePerNight:650000, description:'Designed for those who define luxury on their own terms. A corner position with wraparound coastal views and plunge pool access.', amenities:'["Corner Position","Wraparound Views","Plunge Pool Access","Personal Sommelier","Two Bedrooms","Full Kitchen","Private Dining","VIP Arrival"]', imageSlug:'room-governor' },
-  { tier:6, name:'Eldorado Flagship Suite', pricePerNight:900000, description:'The singular standard of Eldorado — an entire private floor. Five rooms, a private rooftop terrace, dedicated concierge team, and chef on request.', amenities:'["Private Floor","Rooftop Terrace","Dedicated Concierge","Private Chef","Five Rooms","Helicopter Pad Access","Full Spa Access","State Protocol"]', imageSlug:'hero-suite' },
+  { tier:6, name:'Eldorado Flagship Suite', pricePerNight:900000, description:'The singular standard of Eldorado — an entire private floor. Five rooms, a private rooftop terrace, dedicated concierge team, and chef on request.', amenities:'["Private Floor","Rooftop Terrace","Dedicated Concierge","Private Chef","Five Rooms","Helicopter Pad Access","Full Spa Access","State Protocol"]', imageSlug:'eldorado-flagship-suite' },
 ];
 
 function fmt(n: number) { return '₦' + n.toLocaleString(); }
@@ -119,7 +119,7 @@ export default function Rooms({ onToast }: RoomsProps) {
     <div>
       {/* Hero */}
       <div style={{ position:'relative', height:'60vh', minHeight:400, display:'flex', alignItems:'flex-end', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, backgroundImage:"url('/assets/entrance-hero.jpg')", backgroundSize:'cover', backgroundPosition:'center 30%' }} />
+        <div style={{ position:'absolute', inset:0, backgroundImage:"url('/assets/eldorado-flagship-suite.jpg')", backgroundSize:'cover', backgroundPosition:'center 40%' }} />
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(13,27,42,0.92) 0%,rgba(13,27,42,0.3) 100%)' }} />
         <div style={{ position:'relative', zIndex:2, padding:'4rem clamp(1.5rem,5vw,5rem)' }}>
           <div style={{ fontSize:'0.65rem', letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'0.75rem' }}>Accommodations</div>
