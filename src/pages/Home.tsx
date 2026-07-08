@@ -40,58 +40,65 @@ export default function Home({ setPage }: HomeProps) {
         {/* Overlay */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(13,27,42,0.45) 0%, rgba(13,27,42,0.25) 50%, rgba(13,27,42,0.65) 100%)',
+          background: 'linear-gradient(to top, rgba(13,27,42,0.82) 0%, rgba(13,27,42,0.4) 45%, rgba(13,27,42,0.15) 100%)',
         }} />
 
-        {/* Content */}
+        {/* Content — bottom-left anchored, St. Régis style */}
         <div style={{
-          position: 'relative', zIndex: 2,
-          display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center',
-          textAlign: 'center',
-          padding: '0 2rem',
-          width: '100%',
-          maxWidth: 800,
+          position: 'absolute',
+          bottom: '7rem',
+          left: 0,
+          right: 0,
+          zIndex: 2,
+          padding: '0 5vw',
+          maxWidth: 760,
         }}>
-          {/* Large centered logo */}
-          <img
-            src="/assets/logo-white.png"
-            alt="Heights of Eldorado"
-            style={{
-              height: 180,
-              width: 'auto',
-              marginBottom: '2rem',
-              filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.5))',
-            }}
-          />
+          {/* Location eyebrow */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            marginBottom: '1.25rem',
+          }}>
+            <div style={{ width: 32, height: 1, background: 'var(--gold)', opacity: 0.7 }} />
+            <span style={{
+              fontFamily: "'Jost', sans-serif",
+              fontSize: '0.6rem',
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
+              color: 'rgba(201,168,76,0.9)',
+              fontWeight: 400,
+            }}>Uyo · Akwa Ibom · Nigeria</span>
+          </div>
 
           {/* Headline */}
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(2.2rem, 5vw, 4rem)',
+            fontSize: 'clamp(2.8rem, 5.5vw, 5rem)',
             fontWeight: 300,
             color: 'var(--ivory)',
-            lineHeight: 1.15,
-            marginBottom: '1.25rem',
+            lineHeight: 1.1,
+            marginBottom: '1.5rem',
+            letterSpacing: '-0.01em',
           }}>
-            Where West Africa Meets <em>Timeless</em> Elegance
+            Where West Africa<br />Meets <em>Timeless</em> Elegance
           </h1>
 
           {/* Subtitle */}
           <p style={{
             fontFamily: "'Jost', sans-serif",
-            fontSize: 'clamp(0.85rem, 1.4vw, 1rem)',
+            fontSize: 'clamp(0.82rem, 1.3vw, 0.95rem)',
             fontWeight: 300,
-            color: 'rgba(250,248,242,0.82)',
-            maxWidth: 520,
-            margin: '0 auto 2.5rem',
-            lineHeight: 1.85,
+            color: 'rgba(250,248,242,0.75)',
+            maxWidth: 460,
+            marginBottom: '2.25rem',
+            lineHeight: 1.9,
           }}>
             Nigeria's most distinguished luxury hotel, rising along the Lagos-Calabar coastal road. Ninety rooms, six floors, one unprecedented standard of care.
           </p>
 
           {/* CTAs */}
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <button className="btn-primary" onClick={() => nav('rooms')}>Explore Suites</button>
             <button className="btn-ghost" onClick={() => nav('experiences')}>Discover Experiences</button>
           </div>
