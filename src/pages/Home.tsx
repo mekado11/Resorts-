@@ -134,7 +134,7 @@ export default function Home({ setPage }: HomeProps) {
             transform: heroReady ? 'translateY(0)' : 'translateY(20px)',
             transition: `opacity 1s ${ease} 450ms, transform 1s ${ease} 450ms`,
           }}>
-            Nigeria's most distinguished luxury hotel, rising along the Lagos-Calabar coastal road. Ninety rooms, six floors, one unprecedented standard of care.
+            Nigeria's most distinguished luxury hotel, rising along the Lagos–Calabar Coastal Road. A new landmark of elegance, heritage, and an unprecedented standard of care.
           </p>
 
           {/* CTAs */}

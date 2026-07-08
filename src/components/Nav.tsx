@@ -5,6 +5,9 @@ interface NavProps {
   setPage: (page: string) => void;
 }
 
+// Pages with a dark hero image behind the nav — transparent nav looks good here
+const HERO_PAGES = ['home'];
+
 export default function Nav({ currentPage, setPage }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -24,6 +27,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
     { id: 'experiences', label: 'Experiences' },
     { id: 'membership', label: 'Membership' },
     { id: 'journey', label: 'Our Journey' },
+    { id: 'capital', label: 'Private Capital' },
     { id: 'contact', label: 'Contact' },
   ];
 
@@ -45,7 +49,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
         justifyContent:'space-between',
         padding:'0 clamp(1.5rem,5vw,4rem)',
         transition:'background 400ms ease, box-shadow 400ms ease',
-        ...(scrolled ? {
+        ...(!HERO_PAGES.includes(currentPage) || scrolled ? {
           background:'rgba(13,27,42,0.96)',
           backdropFilter:'blur(16px)',
           boxShadow:'0 1px 0 rgba(201,168,76,0.2)'

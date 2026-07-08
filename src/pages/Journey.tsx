@@ -1,3 +1,21 @@
+import { useEffect, useRef, useState } from 'react';
+
+function useFadeUp() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.12 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return { ref, visible };
+}
+
 interface Milestone {
   num: string;
   title: string;
@@ -122,6 +140,117 @@ const STATUS_COLORS: Record<string, { dot: string; badge: string; label: string 
   upcoming: { dot: 'rgba(250,248,242,0.2)', badge: 'transparent', label: 'rgba(250,248,242,0.35)' },
 };
 
+function MilestoneCard({ m, isLast }: { m: Milestone; isLast: boolean }) {
+  const { ref, visible } = useFadeUp();
+  const colors = STATUS_COLORS[m.status];
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        display: 'flex',
+        gap: 'clamp(1.5rem,3vw,2.5rem)',
+        alignItems: 'flex-start',
+        marginBottom: isLast ? 0 : 'clamp(2.5rem,5vw,3.5rem)',
+        position: 'relative',
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(28px)',
+        transition: 'opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)',
+      }}
+    >
+      {/* Dot + number */}
+      <div style={{
+        flexShrink: 0,
+        width: 'clamp(56px,6vw,72px)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        paddingTop: 4, position: 'relative', zIndex: 1,
+      }}>
+        <div style={{
+          width: 14, height: 14, borderRadius: '50%',
+          background: m.status === 'complete' ? 'var(--gold)' : 'transparent',
+          border: `2px solid ${colors.dot}`,
+          boxShadow: m.status === 'complete' ? '0 0 16px rgba(201,168,76,0.55)' : m.status === 'active' ? '0 0 10px rgba(250,248,242,0.25)' : 'none',
+          marginBottom: '0.5rem',
+          transition: 'box-shadow 0.6s ease',
+        }} />
+        <span style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: '0.9rem',
+          color: m.status === 'complete' ? 'var(--gold)' : 'rgba(250,248,242,0.2)',
+          fontWeight: 500,
+        }}>{m.num}</span>
+      </div>
+
+      {/* Card */}
+      <div style={{
+        flex: 1,
+        padding: '1.5rem',
+        background: m.status === 'upcoming'
+          ? 'rgba(250,248,242,0.02)'
+          : m.status === 'active'
+          ? 'rgba(250,248,242,0.05)'
+          : 'rgba(201,168,76,0.07)',
+        border: `1px solid ${
+          m.status === 'complete' ? 'rgba(201,168,76,0.25)'
+          : m.status === 'active' ? 'rgba(250,248,242,0.15)'
+          : 'rgba(250,248,242,0.06)'
+        }`,
+        borderRadius: 4,
+        opacity: m.status === 'upcoming' ? 0.6 : 1,
+        boxShadow: m.status === 'complete'
+          ? '0 4px 32px rgba(201,168,76,0.08), inset 0 1px 0 rgba(201,168,76,0.12)'
+          : m.status === 'active'
+          ? '0 4px 20px rgba(250,248,242,0.04)'
+          : 'none',
+        transition: 'box-shadow 0.4s ease, border-color 0.4s ease',
+      }}>
+        {/* Status badge */}
+        <span style={{
+          display: 'inline-block',
+          fontSize: '0.55rem', letterSpacing: '0.22em', textTransform: 'uppercase',
+          padding: '0.25rem 0.65rem',
+          background: colors.badge,
+          border: `1px solid ${colors.dot}`,
+          borderRadius: 2,
+          color: colors.label,
+          marginBottom: '0.75rem',
+        }}>{m.statusLabel}</span>
+
+        <h3 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 'clamp(1.3rem,2.5vw,1.7rem)',
+          fontWeight: 400,
+          color: m.status === 'upcoming' ? 'rgba(250,248,242,0.5)' : 'var(--ivory)',
+          marginBottom: '0.6rem', lineHeight: 1.2,
+        }}>{m.title}</h3>
+
+        <p style={{
+          fontSize: '0.88rem', lineHeight: 1.9,
+          color: m.status === 'upcoming' ? 'rgba(250,248,242,0.3)' : 'rgba(250,248,242,0.62)',
+          marginBottom: m.journal ? '1rem' : 0,
+        }}>{m.desc}</p>
+
+        {m.journal && (
+          <div style={{
+            borderTop: '1px solid rgba(201,168,76,0.15)',
+            paddingTop: '0.85rem', marginTop: '0.25rem',
+          }}>
+            <span style={{
+              fontSize: '0.55rem', letterSpacing: '0.22em', textTransform: 'uppercase',
+              color: 'rgba(201,168,76,0.5)', display: 'block', marginBottom: '0.4rem',
+            }}>Field Note</span>
+            <p style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontStyle: 'italic', fontSize: '1rem',
+              color: 'rgba(201,168,76,0.8)', lineHeight: 1.75,
+            }}>"{m.journal}"</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Journey() {
   return (
     <div style={{ background: 'var(--navy)', minHeight: '100vh' }}>
@@ -184,105 +313,9 @@ export default function Journey() {
             background: 'linear-gradient(to bottom, var(--gold) 0%, rgba(201,168,76,0.25) 40%, rgba(250,248,242,0.08) 100%)',
           }} />
 
-          {MILESTONES.map((m, i) => {
-            const colors = STATUS_COLORS[m.status];
-            const isLast = i === MILESTONES.length - 1;
-            return (
-              <div key={m.num} style={{
-                display: 'flex',
-                gap: 'clamp(1.5rem,3vw,2.5rem)',
-                alignItems: 'flex-start',
-                marginBottom: isLast ? 0 : 'clamp(2.5rem,5vw,3.5rem)',
-                position: 'relative',
-              }}>
-                {/* Dot */}
-                <div style={{
-                  flexShrink: 0,
-                  width: 'clamp(56px,6vw,72px)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  paddingTop: 4,
-                  position: 'relative',
-                  zIndex: 1,
-                }}>
-                  <div style={{
-                    width: 14, height: 14,
-                    borderRadius: '50%',
-                    background: m.status === 'complete' ? 'var(--gold)' : 'transparent',
-                    border: `2px solid ${colors.dot}`,
-                    boxShadow: m.status === 'complete' ? '0 0 12px rgba(201,168,76,0.4)' : 'none',
-                    marginBottom: '0.5rem',
-                  }} />
-                  <span style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: '0.9rem',
-                    color: m.status === 'complete' ? 'var(--gold)' : 'rgba(250,248,242,0.2)',
-                    fontWeight: 500,
-                  }}>{m.num}</span>
-                </div>
-
-                {/* Content */}
-                <div style={{
-                  flex: 1,
-                  padding: '1.25rem 1.5rem',
-                  background: m.status === 'upcoming' ? 'rgba(250,248,242,0.02)' : 'rgba(201,168,76,0.04)',
-                  border: `1px solid ${m.status === 'upcoming' ? 'rgba(250,248,242,0.06)' : 'rgba(201,168,76,0.15)'}`,
-                  borderRadius: 4,
-                  opacity: m.status === 'upcoming' ? 0.65 : 1,
-                }}>
-                  {/* Status badge */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.6rem' }}>
-                    <span style={{
-                      fontSize: '0.55rem', letterSpacing: '0.22em', textTransform: 'uppercase',
-                      padding: '0.25rem 0.65rem',
-                      background: colors.badge,
-                      border: `1px solid ${colors.dot}`,
-                      borderRadius: 2,
-                      color: colors.label,
-                    }}>{m.statusLabel}</span>
-                  </div>
-
-                  <h3 style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 'clamp(1.3rem,2.5vw,1.7rem)',
-                    fontWeight: 400,
-                    color: m.status === 'complete' ? 'var(--ivory)' : m.status === 'active' ? 'var(--ivory)' : 'rgba(250,248,242,0.55)',
-                    marginBottom: '0.6rem',
-                    lineHeight: 1.2,
-                  }}>{m.title}</h3>
-
-                  <p style={{
-                    fontSize: '0.88rem',
-                    lineHeight: 1.85,
-                    color: m.status === 'upcoming' ? 'rgba(250,248,242,0.35)' : 'rgba(250,248,242,0.65)',
-                    marginBottom: m.journal ? '1rem' : 0,
-                  }}>{m.desc}</p>
-
-                  {/* Journal entry — shown for completed milestones */}
-                  {m.journal && (
-                    <div style={{
-                      borderTop: '1px solid rgba(201,168,76,0.15)',
-                      paddingTop: '0.85rem',
-                      marginTop: '0.25rem',
-                    }}>
-                      <span style={{
-                        fontSize: '0.55rem', letterSpacing: '0.22em', textTransform: 'uppercase',
-                        color: 'rgba(201,168,76,0.5)', display: 'block', marginBottom: '0.4rem',
-                      }}>Field Note</span>
-                      <p style={{
-                        fontFamily: "'Cormorant Garamond', serif",
-                        fontStyle: 'italic',
-                        fontSize: '1rem',
-                        color: 'rgba(201,168,76,0.75)',
-                        lineHeight: 1.75,
-                      }}>"{m.journal}"</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+          {MILESTONES.map((m, i) => (
+            <MilestoneCard key={m.num} m={m} isLast={i === MILESTONES.length - 1} />
+          ))}
         </div>
 
         {/* Footer note */}

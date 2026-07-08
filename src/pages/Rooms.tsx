@@ -3,20 +3,18 @@ import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 
 interface Room {
-  tier: number; name: string; pricePerNight: number;
+  tier: number; name: string;
   description: string; amenities: string; imageSlug: string;
 }
 
 const ROOMS: Room[] = [
-  { tier:1, name:'Comfort Room',       pricePerNight:150000, description:'Our entry suite sets a standard most hotels reserve for their finest offering. Key-card sensor lighting, bladeless climate fan, and premium Egyptian cotton linens.', amenities:'["King Bed","En-suite Bathroom","LED Smart TV","Mini Bar","Key-card Sensor Lighting","Bladeless Fan","Gas Water Heater","City View"]', imageSlug:'room-comfort-new' },
-  { tier:2, name:'Deluxe Room',        pricePerNight:250000, description:'Elevated above the standard in every dimension. Richer finishes, a larger footprint, and a workspace for the discerning traveller.', amenities:'["King Bed","Rainfall Shower","Work Desk","Nespresso Machine","Smart Lighting","Bladeless Fan","Coastal View","Premium Minibar"]', imageSlug:'room-deluxe' },
-  { tier:3, name:'Superior Room',      pricePerNight:350000, description:'Where space becomes a statement. Commanding a full coastal panorama through floor-to-ceiling glass, furnished in hand-selected West African hardwood.', amenities:'["King Bed","Deep Soaking Tub","Walk-in Shower","Private Balcony","Floor-to-Ceiling Windows","Butler Service","Coastal Panorama","Premium Bar"]', imageSlug:'room-superior' },
-  { tier:4, name:'Executive Suite',    pricePerNight:450000, description:'A complete residence above the city. Separate living room, dedicated workspace, and master bedroom — all with 24-hour butler service.', amenities:'["Separate Living Room","Dedicated Workspace","Master Bedroom","24hr Butler","Dining for 4","Premium Sound","Panoramic View","Airport Transfer"]', imageSlug:'room-governor' },
-  { tier:5, name:'Grand Suite',        pricePerNight:650000, description:'Designed for those who define luxury on their own terms. A corner position with wraparound coastal views and plunge pool access.', amenities:'["Corner Position","Wraparound Views","Plunge Pool Access","Personal Sommelier","Two Bedrooms","Full Kitchen","Private Dining","VIP Arrival"]', imageSlug:'room-governor' },
-  { tier:6, name:'Eldorado Flagship Suite', pricePerNight:900000, description:'The singular standard of Eldorado — an entire private floor. Five rooms, a private rooftop terrace, dedicated concierge team, and chef on request.', amenities:'["Private Floor","Rooftop Terrace","Dedicated Concierge","Private Chef","Five Rooms","Helicopter Pad Access","Full Spa Access","State Protocol"]', imageSlug:'eldorado-flagship-suite' },
+  { tier:1, name:'Comfort Room',       description:'Our entry suite sets a standard most hotels reserve for their finest offering. Key-card sensor lighting, bladeless climate fan, and premium Egyptian cotton linens.', amenities:'["King Bed","En-suite Bathroom","LED Smart TV","Mini Bar","Key-card Sensor Lighting","Bladeless Fan","Gas Water Heater","City View"]', imageSlug:'room-comfort-new' },
+  { tier:2, name:'Deluxe Room',        description:'Elevated above the standard in every dimension. Richer finishes, a larger footprint, and a workspace for the discerning traveller.', amenities:'["King Bed","Rainfall Shower","Work Desk","Nespresso Machine","Smart Lighting","Bladeless Fan","Coastal View","Premium Minibar"]', imageSlug:'room-deluxe' },
+  { tier:3, name:'Superior Room',      description:'Where space becomes a statement. Commanding a full coastal panorama through floor-to-ceiling glass, furnished in hand-selected West African hardwood.', amenities:'["King Bed","Deep Soaking Tub","Walk-in Shower","Private Balcony","Floor-to-Ceiling Windows","Butler Service","Coastal Panorama","Premium Bar"]', imageSlug:'room-superior' },
+  { tier:4, name:'Executive Suite',    description:'A complete residence above the city. Separate living room, dedicated workspace, and master bedroom — all with 24-hour butler service.', amenities:'["Separate Living Room","Dedicated Workspace","Master Bedroom","24hr Butler","Dining for 4","Premium Sound","Panoramic View","Airport Transfer"]', imageSlug:'room-governor' },
+  { tier:5, name:'Grand Suite',        description:'Designed for those who define luxury on their own terms. A corner position with wraparound coastal views and plunge pool access.', amenities:'["Corner Position","Wraparound Views","Plunge Pool Access","Personal Sommelier","Two Bedrooms","Full Kitchen","Private Dining","VIP Arrival"]', imageSlug:'room-governor' },
+  { tier:6, name:'Eldorado Flagship Suite', description:'The singular standard of Eldorado — an entire private floor. Five rooms, a private rooftop terrace, dedicated concierge team, and chef on request.', amenities:'["Private Floor","Rooftop Terrace","Dedicated Concierge","Private Chef","Five Rooms","Helicopter Pad Access","Full Spa Access","State Protocol"]', imageSlug:'eldorado-flagship-suite' },
 ];
-
-function fmt(n: number) { return '₦' + n.toLocaleString(); }
 
 interface BookingModalProps { room: Room; onClose: () => void; onSuccess: () => void; }
 
@@ -28,7 +26,6 @@ function BookingModal({ room, onClose, onSuccess }: BookingModalProps) {
   const nights = form.checkIn && form.checkOut
     ? Math.max(0, Math.round((new Date(form.checkOut).getTime() - new Date(form.checkIn).getTime()) / 86400000))
     : 0;
-  const total = nights * room.pricePerNight;
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -41,7 +38,7 @@ function BookingModal({ room, onClose, onSuccess }: BookingModalProps) {
         guestName: form.name, guestEmail: form.email, guestPhone: form.phone,
         roomTier: room.tier, roomName: room.name,
         checkIn: form.checkIn, checkOut: form.checkOut,
-        nights, totalNGN: total,
+        nights, totalNGN: 0,
         notes: form.notes || undefined,
       });
       onSuccess();
@@ -89,9 +86,8 @@ function BookingModal({ room, onClose, onSuccess }: BookingModalProps) {
             </div>
           </div>
           {nights > 0 && (
-            <div style={{ background:'var(--navy)', color:'var(--ivory)', padding:'1rem', borderRadius:3, marginBottom:'1rem', display:'flex', justifyContent:'space-between' }}>
+            <div style={{ background:'var(--navy)', color:'var(--ivory)', padding:'1rem', borderRadius:3, marginBottom:'1rem' }}>
               <span style={{ fontSize:'0.82rem' }}>{nights} night{nights>1?'s':''} · {room.name}</span>
-              <span style={{ color:'var(--gold)', fontFamily:"'Cormorant Garamond',serif", fontSize:'1.1rem' }}>{fmt(total)}</span>
             </div>
           )}
           <div style={{ marginBottom:'1.5rem' }}>
@@ -144,12 +140,9 @@ export default function Rooms({ onToast }: RoomsProps) {
                   <div style={{ position:'absolute', top:'1rem', left:'1rem', background:'var(--navy)', color:'var(--gold)', fontSize:'0.6rem', letterSpacing:'0.18em', textTransform:'uppercase', padding:'0.35rem 0.75rem', borderRadius:2 }}>Tier {room.tier}</div>
                 </div>
                 <div style={{ padding:'1.5rem' }}>
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'0.75rem' }}>
+                  <div style={{ marginBottom:'0.75rem' }}>
                     <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'1.4rem', fontWeight:500 }}>{room.name}</div>
-                    <div style={{ textAlign:'right' }}>
-                      <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'1.1rem', color:'var(--gold)' }}>{fmt(room.pricePerNight)}</div>
-                      <div style={{ fontSize:'0.62rem', color:'rgba(13,27,42,0.5)', letterSpacing:'0.1em' }}>per night</div>
-                    </div>
+                    <div style={{ fontSize:'0.62rem', color:'var(--gold)', letterSpacing:'0.15em', textTransform:'uppercase', marginTop:'0.25rem' }}>Enquire for Rates</div>
                   </div>
                   <p style={{ fontSize:'0.85rem', lineHeight:1.75, color:'rgba(13,27,42,0.7)', marginBottom:'1rem' }}>{room.description}</p>
                   <div style={{ display:'flex', flexWrap:'wrap', gap:'0.4rem', marginBottom:'1.25rem' }}>
