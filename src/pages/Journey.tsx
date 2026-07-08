@@ -264,7 +264,7 @@ function JourneyCircle({
         const ny       = CY + RING_R * Math.sin(rad);
         const st       = STATUS[m.status];
         const isSel    = selected === i;
-        const nr       = isSel ? NODE_R * 1.35 : NODE_R;
+        const nr       = NODE_R;   // always same size — selection shown via stroke/fill only
         const isActive = m.status === 'active';
 
         return (
@@ -272,33 +272,43 @@ function JourneyCircle({
             onClick={() => onSelect(i)}
             style={{ cursor: 'pointer' }}
           >
-            {/* Pulse for active */}
+            {/* Pulse for active — CSS transform-scale animation, no r change */}
             {isActive && (
-              <circle cx={nx} cy={ny} r={NODE_R + 8}
+              <circle cx={nx} cy={ny} r={NODE_R}
+                className="jpulse-node"
                 fill="none"
-                stroke="rgba(250,248,242,0.15)"
+                stroke="rgba(250,248,242,0.22)"
                 strokeWidth={1}
                 key={`pulse-${pulseTick}-${i}`}
                 style={{ animation: 'jpulse 1.8s ease-out forwards' }}
               />
             )}
 
-            {/* Glow halo */}
+            {/* Glow halo — fixed offset from NODE_R, never uses nr */}
             {m.status !== 'upcoming' && (
-              <circle cx={nx} cy={ny} r={nr + 4}
+              <circle cx={nx} cy={ny} r={NODE_R + 4}
                 fill="none"
-                stroke={m.status === 'complete' ? 'rgba(201,168,76,0.35)' : 'rgba(250,248,242,0.2)'}
+                stroke={m.status === 'complete' ? 'rgba(201,168,76,0.28)' : 'rgba(250,248,242,0.15)'}
                 strokeWidth={1}
                 filter={m.status === 'complete' ? 'url(#jGlow)' : 'url(#jGlowW)'}
               />
             )}
 
-            {/* Node fill */}
-            <circle cx={nx} cy={ny} r={nr}
-              fill={isSel ? (m.status === 'complete' ? C.gold : 'rgba(250,248,242,0.2)') : st.nodeFill}
+            {/* Selected ring highlight — drawn behind node fill */}
+            {isSel && (
+              <circle cx={nx} cy={ny} r={NODE_R + 5}
+                fill="none"
+                stroke={m.status === 'complete' ? 'rgba(201,168,76,0.6)' : 'rgba(250,248,242,0.35)'}
+                strokeWidth={1.5}
+              />
+            )}
+
+            {/* Node fill — always NODE_R, never changes size */}
+            <circle cx={nx} cy={ny} r={NODE_R}
+              fill={isSel ? (m.status === 'complete' ? C.gold : 'rgba(250,248,242,0.18)') : st.nodeFill}
               stroke={isSel ? C.gold : st.nodeStroke}
               strokeWidth={isSel ? 2 : 1.5}
-              style={{ transition: 'r 0.25s ease, fill 0.2s ease' }}
+              style={{ transition: 'fill 0.2s ease, stroke 0.2s ease' }}
             />
 
             {/* Number */}
@@ -308,7 +318,7 @@ function JourneyCircle({
               fontFamily="'Cormorant Garamond', serif"
               fontSize={size * 0.032}
               fontWeight={m.status === 'complete' ? '700' : '400'}
-              fill={isSel && m.status === 'complete' ? C.navy : st.numColor}
+              fill={isSel && m.status === 'complete' ? C.navy : (isSel ? C.ivory : st.numColor)}
               style={{ pointerEvents: 'none', userSelect: 'none' }}
             >{m.num}</text>
           </g>
@@ -321,7 +331,7 @@ function JourneyCircle({
         { color: 'rgba(250,248,242,0.7)',      fill: false, label: 'In Progress' },
         { color: 'rgba(250,248,242,0.2)',      fill: false, label: 'Upcoming' },
       ].map((leg, li) => (
-        <g key={leg.label} transform={`translate(${CX - 72 + li * 52}, ${size - 4})`}>
+        <g key={leg.label} transform={`translate(${CX - 96 + li * 72}, ${size - 4})`}>
           <circle r={4}
             fill={leg.fill ? leg.color : 'none'}
             stroke={leg.color}
@@ -542,10 +552,11 @@ export default function Journey() {
       {/* Pulse keyframe */}
       <style>{`
         @keyframes jpulse {
-          0%   { r: 14px; opacity: 0.6; }
-          80%  { r: 26px; opacity: 0; }
-          100% { r: 26px; opacity: 0; }
+          0%   { transform: scale(1);   opacity: 0.55; }
+          70%  { transform: scale(2.4); opacity: 0; }
+          100% { transform: scale(2.4); opacity: 0; }
         }
+        .jpulse-node { transform-box: fill-box; transform-origin: center; }
       `}</style>
 
       {/* ── Hero ── */}
