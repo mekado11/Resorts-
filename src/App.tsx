@@ -43,7 +43,7 @@ function EldoradoApp() {
       <Nav currentPage={page} setPage={setPage_} />
       
       {/* Spacer for fixed nav + ribbon */}
-      <div style={{ height: page === 'home' ? 0 : 116 }} />
+      <div style={{ height: page === 'home' ? 0 : 140 }} />
 
       <main style={{ flex: 1 }}>
         {page === 'home'        && <Home setPage={setPage_} />}

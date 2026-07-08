@@ -48,7 +48,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
     <>
       {/* Opening Soon ribbon */}
       <div style={{
-        position: 'fixed', top: 88, left: 0, right: 0, zIndex: 90,
+        position: 'fixed', top: 104, left: 0, right: 0, zIndex: 90,
         background: 'rgba(13,27,42,0.82)', backdropFilter: 'blur(6px)',
         textAlign: 'center', padding: '0.55rem 1rem',
         fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.25em',
@@ -60,7 +60,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
 
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        height: 88, display: 'flex', alignItems: 'center',
+        height: 104, display: 'flex', alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 clamp(1rem, 4vw, 4rem)',
         transition: 'background 400ms ease, box-shadow 400ms ease',
@@ -73,7 +73,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
         {/* Logo */}
         <div onClick={() => nav('home')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           <img src="/assets/logo-white.png" alt="Heights of Eldorado"
-            style={{ height: isMobile ? 48 : 64, width: 'auto' }} />
+            style={{ height: isMobile ? 56 : 88, width: 'auto' }} />
         </div>
 
         {/* Desktop links — hidden on mobile via JS */}
@@ -81,8 +81,8 @@ export default function Nav({ currentPage, setPage }: NavProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1rem, 1.8vw, 2rem)' }}>
             {links.map(l => (
               <span key={l.id} onClick={() => nav(l.id)} style={{
-                fontFamily: "'Jost',sans-serif", fontSize: '0.67rem',
-                letterSpacing: '0.16em', textTransform: 'uppercase',
+                fontFamily: "'Jost',sans-serif", fontSize: '0.78rem',
+                letterSpacing: '0.14em', textTransform: 'uppercase',
                 color: currentPage === l.id ? 'var(--gold)' : 'rgba(250,248,242,0.85)',
                 cursor: 'pointer', transition: 'color 0.2s', whiteSpace: 'nowrap',
               }}
@@ -92,7 +92,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
               </span>
             ))}
             <button className="btn-primary" onClick={() => nav('rooms')}
-              style={{ padding: '0.65rem 1.4rem', fontSize: '0.65rem', whiteSpace: 'nowrap' }}>
+              style={{ padding: '0.75rem 1.6rem', fontSize: '0.72rem', whiteSpace: 'nowrap' }}>
               Reserve
             </button>
           </div>
