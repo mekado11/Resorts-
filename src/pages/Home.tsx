@@ -53,24 +53,6 @@ export default function Home({ setPage }: HomeProps) {
           padding: '0 5vw',
           maxWidth: 760,
         }}>
-          {/* Location eyebrow */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            marginBottom: '1.25rem',
-          }}>
-            <div style={{ width: 32, height: 1, background: 'var(--gold)', opacity: 0.7 }} />
-            <span style={{
-              fontFamily: "'Jost', sans-serif",
-              fontSize: '0.6rem',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase',
-              color: 'rgba(201,168,76,0.9)',
-              fontWeight: 400,
-            }}>Uyo · Akwa Ibom · Nigeria</span>
-          </div>
-
           {/* Headline */}
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
