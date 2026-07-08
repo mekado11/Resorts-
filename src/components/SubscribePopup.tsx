@@ -14,11 +14,19 @@ export default function SubscribePopup({ onClose }: Props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [listType, setListType] = useState<ListType>('waitlist');
-  const [step, setStep] = useState<'form' | 'success'>('form');
+  const [step, setStep] = useState<'form' | 'confirm-close' | 'success'>('form');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const ease = 'cubic-bezier(0.16,1,0.3,1)';
+
+  const handleDismiss = () => {
+    if (step === 'form') {
+      setStep('confirm-close');
+    } else {
+      onClose();
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +46,7 @@ export default function SubscribePopup({ onClose }: Props) {
   return (
     /* Backdrop */
     <div
-      onClick={onClose}
+      onClick={handleDismiss}
       style={{
         position: 'fixed', inset: 0, zIndex: 9000,
         background: 'rgba(13,27,42,0.82)',
@@ -65,7 +73,7 @@ export default function SubscribePopup({ onClose }: Props) {
       >
         {/* Dismiss */}
         <button
-          onClick={onClose}
+          onClick={handleDismiss}
           style={{
             position: 'absolute', top: '1.25rem', right: '1.25rem',
             background: 'none', border: 'none', cursor: 'pointer',
@@ -79,7 +87,54 @@ export default function SubscribePopup({ onClose }: Props) {
           ×
         </button>
 
-        {step === 'form' ? (
+        {step === 'confirm-close' ? (
+          /* Confirm close screen */
+          <div style={{ textAlign: 'center', padding: '1.5rem 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem', justifyContent: 'center' }}>
+              <div style={{ flex: 1, height: 1, background: 'rgba(201,168,76,0.3)', maxWidth: 60 }} />
+              <div style={{ width: 6, height: 6, background: 'var(--gold)', transform: 'rotate(45deg)' }} />
+              <div style={{ flex: 1, height: 1, background: 'rgba(201,168,76,0.3)', maxWidth: 60 }} />
+            </div>
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 'clamp(1.6rem,3.5vw,2.2rem)',
+              fontWeight: 300, color: '#FAF8F2',
+              lineHeight: 1.2, marginBottom: '1.1rem',
+            }}>
+              Are you sure you want to leave?
+            </h2>
+            <p style={{
+              fontSize: '0.98rem', fontWeight: 300,
+              color: 'rgba(250,248,242,0.55)', lineHeight: 1.85,
+              marginBottom: '2.25rem', maxWidth: 360, margin: '0 auto 2.25rem',
+            }}>
+              You may miss your chance to be among the first to experience Eldorado. Priority access goes fast — and once the list closes, it closes.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', alignItems: 'center' }}>
+              <button
+                className="btn-primary"
+                onClick={() => setStep('form')}
+                style={{ width: '100%', maxWidth: 320, justifyContent: 'center' }}
+              >
+                Take Me Back — I'm In
+              </button>
+              <button
+                onClick={onClose}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  fontSize: '0.75rem', letterSpacing: '0.15em',
+                  color: 'rgba(250,248,242,0.25)',
+                  textTransform: 'uppercase', padding: '0.5rem',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(250,248,242,0.5)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(250,248,242,0.25)')}
+              >
+                No thanks, I'll take my chances
+              </button>
+            </div>
+          </div>
+        ) : step === 'form' ? (
           <>
             {/* Gold ornament line */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.75rem' }}>
