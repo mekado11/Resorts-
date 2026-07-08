@@ -53,7 +53,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
         {/* Logo */}
         <div onClick={() => nav('home')} style={{ cursor:'pointer', display:'flex', alignItems:'center' }}>
           <img src="/assets/logo-white.png" alt="Heights of Eldorado"
-            style={{ height:64, width:'auto' }} />
+            style={{ height:48, width:'auto' }} />
         </div>
 
         {/* Desktop links */}
