@@ -3,9 +3,9 @@ import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 
 const TIERS = [
-  { id:'elite',         name:'Member Elite',         price:'₦250,000 / year', perks:['Priority booking access','15% dining discount','Early access to events','Member concierge line'] },
-  { id:'commissioner',  name:"Commissioner's Circle", price:'₦500,000 / year', perks:['All Elite benefits','Guaranteed room availability','25% F&B discount','Monthly suite upgrade','Guest privileges for 2'] },
-  { id:'legacy',        name:'Premium Legacy',        price:'₦750,000 / year', perks:['All Commissioner benefits','Dedicated relationship manager','35% all-service discount','Annual gala invitation','Airport protocol service'] },
+  { id:'elite',         name:'Member Elite',         price:'Coming soon', perks:['Priority booking access','15% dining discount','Early access to events','Member concierge line'] },
+  { id:'commissioner',  name:"Commissioner's Circle", price:'Coming soon', perks:['All Elite benefits','Guaranteed room availability','25% F&B discount','Monthly suite upgrade','Guest privileges for 2'] },
+  { id:'legacy',        name:'Premium Legacy',        price:'Coming soon', perks:['All Commissioner benefits','Dedicated relationship manager','35% all-service discount','Annual gala invitation','Airport protocol service'] },
   { id:'patrone',       name:'The Patroné',           price:'Price on Request', perks:['All Legacy benefits','Private floor access','Unlimited complimentary nights','Board of Patrons invitation','Legacy naming opportunity'] },
 ];
 
