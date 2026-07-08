@@ -1,21 +1,44 @@
 /* eslint-disable */
 /**
  * Generated `api` utility.
+ *
+ * THIS CODE IS AUTOMATICALLY GENERATED.
+ *
+ * To regenerate, run `npx convex dev`.
+ * @module
  */
-import type { ApiFromModules, FilterApi, FunctionReference } from "convex/server";
+
+import type {
+  ApiFromModules,
+  FilterApi,
+  FunctionReference,
+} from "convex/server";
 import type * as bookings from "../bookings.js";
 import type * as enquiries from "../enquiries.js";
 import type * as memberships from "../memberships.js";
 import type * as rooms from "../rooms.js";
+import type * as subscribers from "../subscribers.js";
 
-type Mounts = {
+/**
+ * A utility for referencing Convex functions in your app's API.
+ *
+ * Usage:
+ * ```js
+ * const myFunctionReference = api.myModule.myFunction;
+ * ```
+ */
+declare const fullApi: ApiFromModules<{
   bookings: typeof bookings;
   enquiries: typeof enquiries;
   memberships: typeof memberships;
   rooms: typeof rooms;
-};
-
-export type API = ApiFromModules<Mounts>;
-export declare const api: FilterApi<typeof anyApi, FunctionReference<any, "public">>;
-export declare const internal: FilterApi<typeof anyApi, FunctionReference<any, "internal">>;
-declare const anyApi: API;
+  subscribers: typeof subscribers;
+}>;
+export declare const api: FilterApi<
+  typeof fullApi,
+  FunctionReference<any, "public">
+>;
+export declare const internal: FilterApi<
+  typeof fullApi,
+  FunctionReference<any, "internal">
+>;
