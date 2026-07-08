@@ -8,12 +8,42 @@ interface Room {
 }
 
 const ROOMS: Room[] = [
-  { tier:1, name:'Comfort Room',       description:'Our entry suite sets a standard most hotels reserve for their finest offering. Key-card sensor lighting, bladeless climate fan, and premium Egyptian cotton linens.', amenities:'["King Bed","En-suite Bathroom","LED Smart TV","Mini Bar","Key-card Sensor Lighting","Bladeless Fan","Gas Water Heater","City View"]', imageSlug:'room-comfort-new' },
-  { tier:2, name:'Deluxe Room',        description:'Elevated above the standard in every dimension. Richer finishes, a larger footprint, and a workspace for the discerning traveller.', amenities:'["King Bed","Rainfall Shower","Work Desk","Nespresso Machine","Smart Lighting","Bladeless Fan","Coastal View","Premium Minibar"]', imageSlug:'room-deluxe' },
-  { tier:3, name:'Superior Room',      description:'Where space becomes a statement. Commanding a full coastal panorama through floor-to-ceiling glass, furnished in hand-selected West African hardwood.', amenities:'["King Bed","Deep Soaking Tub","Walk-in Shower","Private Balcony","Floor-to-Ceiling Windows","Butler Service","Coastal Panorama","Premium Bar"]', imageSlug:'room-superior' },
-  { tier:4, name:'Executive Suite',    description:'A complete residence above the city. Separate living room, dedicated workspace, and master bedroom — all with 24-hour butler service.', amenities:'["Separate Living Room","Dedicated Workspace","Master Bedroom","24hr Butler","Dining for 4","Premium Sound","Panoramic View","Airport Transfer"]', imageSlug:'room-governor' },
-  { tier:5, name:'Grand Suite',        description:'Designed for those who define luxury on their own terms. A corner position with wraparound coastal views and plunge pool access.', amenities:'["Corner Position","Wraparound Views","Plunge Pool Access","Personal Sommelier","Two Bedrooms","Full Kitchen","Private Dining","VIP Arrival"]', imageSlug:'room-governor' },
-  { tier:6, name:'Eldorado Flagship Suite', description:'The singular standard of Eldorado — an entire private floor. Five rooms, a private rooftop terrace, dedicated concierge team, and chef on request.', amenities:'["Private Floor","Rooftop Terrace","Dedicated Concierge","Private Chef","Five Rooms","Helicopter Pad Access","Full Spa Access","State Protocol"]', imageSlug:'eldorado-flagship-suite' },
+  {
+    tier: 1, name: 'The Manor',
+    description: 'Our entry accommodation sets a standard most hotels reserve for their finest. Key-card sensor lighting, bladeless climate fan, and premium Egyptian cotton linens — where every detail is considered from the first moment of arrival.',
+    amenities: '["King Bed","En-suite Bathroom","LED Smart TV","Mini Bar","Key-card Sensor Lighting","Bladeless Fan","Gas Water Heater","City View"]',
+    imageSlug: 'room-comfort-new',
+  },
+  {
+    tier: 2, name: 'The Gallery',
+    description: 'Elevated in every dimension — richer finishes, a broader footprint, and a curated aesthetic that feels more like a private art residence than a hotel room. A workspace for the discerning traveller who does not distinguish between work and living well.',
+    amenities: '["King Bed","Rainfall Shower","Work Desk","Nespresso Machine","Smart Lighting","Bladeless Fan","Coastal View","Premium Minibar"]',
+    imageSlug: 'room-deluxe',
+  },
+  {
+    tier: 3, name: 'The Residence',
+    description: 'Conceived for families and those who travel with people they love. Two king beds, generous living space, and a configuration that feels like a private home — not simply a room. Floor-to-ceiling glass frames a coastal panorama that belongs to you alone.',
+    amenities: '["Two King Beds","Deep Soaking Tub","Walk-in Shower","Private Balcony","Floor-to-Ceiling Windows","Butler Service","Coastal Panorama","Family Dining Setup"]',
+    imageSlug: 'room-superior',
+  },
+  {
+    tier: 4, name: 'The Regent',
+    description: 'A complete private residence above the coast. A dedicated living room, formal workspace, master bedroom, and 24-hour butler service — the kind of quiet, absolute attention that once required a personal staff to assemble.',
+    amenities: '["Separate Living Room","Dedicated Workspace","Master Bedroom","24hr Butler","Dining for 4","Premium Sound System","Panoramic View","Airport Transfer"]',
+    imageSlug: 'room-governor',
+  },
+  {
+    tier: 5, name: "Governor's Lounge",
+    description: 'A corner position commanding wraparound coastal views. Two bedrooms, a full private kitchen, personal sommelier, and plunge pool access. Designed for those who do not require more — they simply deserve exactly this.',
+    amenities: '["Corner Position","Wraparound Coastal View","Plunge Pool Access","Personal Sommelier","Two Bedrooms","Full Private Kitchen","Private Dining","VIP Arrival"]',
+    imageSlug: 'room-governor',
+  },
+  {
+    tier: 6, name: 'Eldorado Flagship Suite',
+    description: 'The singular standard of Eldorado — an entire private floor. Five rooms, a private rooftop terrace, dedicated concierge team, private chef on request, and state protocol arrangements. There is nothing above this.',
+    amenities: '["Private Floor","Rooftop Terrace","Dedicated Concierge Team","Private Chef","Five Rooms","Helicopter Pad Access","Full Spa Access","State Protocol"]',
+    imageSlug: 'eldorado-flagship-suite',
+  },
 ];
 
 interface BookingModalProps { room: Room; onClose: () => void; onSuccess: () => void; }
@@ -127,7 +157,7 @@ export default function Rooms({ onToast }: RoomsProps) {
       <section className="section section-ivory">
         <div style={{ textAlign:'center', marginBottom:'3rem' }}>
           <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
-          <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'1.15rem', fontStyle:'italic', color:'rgba(13,27,42,0.65)', maxWidth:600, margin:'0 auto' }}>Six tiers of accommodation, each representing a distinct level of privilege. Every room begins where other hotels' finest end.</p>
+          <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'1.15rem', fontStyle:'italic', color:'rgba(13,27,42,0.65)', maxWidth:640, margin:'0 auto' }}>From The Manor to the Eldorado Flagship Suite — six distinct accommodations, each representing a different philosophy of living well. Every tier begins where other hotels end.</p>
         </div>
 
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(320px,1fr))', gap:'1.5rem', maxWidth:1200, margin:'0 auto' }}>
