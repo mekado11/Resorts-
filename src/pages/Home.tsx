@@ -89,11 +89,11 @@ export default function Home({ setPage }: HomeProps) {
         {/* Hero text — staggered entrance */}
         <div style={{
           position: 'absolute',
-          bottom: '7rem',
+          bottom: 'clamp(4rem, 8vh, 7rem)',
           left: 0,
           right: 0,
           zIndex: 2,
-          padding: '0 5vw',
+          padding: '0 clamp(1.25rem, 5vw, 5rem)',
           maxWidth: 860,
         }}>
           {/* Thin gold rule — slides in first */}
@@ -108,7 +108,7 @@ export default function Home({ setPage }: HomeProps) {
           {/* Headline — fades up */}
           <h1 style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(3.5rem, 6.8vw, 6.2rem)',
+            fontSize: 'clamp(1.9rem, 6.8vw, 6.2rem)',
             fontWeight: 300,
             color: 'var(--ivory)',
             lineHeight: 1.08,
@@ -139,13 +139,13 @@ export default function Home({ setPage }: HomeProps) {
 
           {/* CTAs */}
           <div style={{
-            display: 'flex', gap: '1rem', flexWrap: 'wrap',
+            display: 'flex', gap: '0.75rem', flexWrap: 'wrap',
             opacity: heroReady ? 1 : 0,
             transform: heroReady ? 'translateY(0)' : 'translateY(16px)',
             transition: `opacity 1s ${ease} 680ms, transform 1s ${ease} 680ms`,
           }}>
-            <button className="btn-primary" onClick={() => nav('rooms')}>Explore Suites</button>
-            <button className="btn-ghost" onClick={() => nav('experiences')}>Discover Experiences</button>
+            <button className="btn-primary" onClick={() => nav('rooms')} style={{ fontSize: 'clamp(0.6rem, 2vw, 0.7rem)', padding: 'clamp(0.65rem, 2vw, 0.9rem) clamp(1.2rem, 3vw, 2rem)' }}>Explore Suites</button>
+            <button className="btn-ghost" onClick={() => nav('experiences')} style={{ fontSize: 'clamp(0.6rem, 2vw, 0.7rem)', padding: 'clamp(0.65rem, 2vw, 0.9rem) clamp(1.2rem, 3vw, 2rem)' }}>Discover Experiences</button>
           </div>
         </div>
 
@@ -187,12 +187,12 @@ export default function Home({ setPage }: HomeProps) {
       {/* ── Journey teaser ── */}
       <section style={{
         background: 'var(--navy)',
-        padding: 'clamp(2rem,4vw,3rem) clamp(1.5rem,5vw,5rem)',
+        padding: 'clamp(1.75rem,4vw,3rem) clamp(1.25rem,5vw,5rem)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        gap: '1.5rem',
+        gap: '1.25rem',
         borderTop: '1px solid rgba(201,168,76,0.15)',
         borderBottom: '1px solid rgba(201,168,76,0.15)',
       }}>
@@ -218,9 +218,9 @@ export default function Home({ setPage }: HomeProps) {
 
       {/* ── Grand Lobby ── */}
       <section className="section section-ivory">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: '4rem', alignItems: 'center', maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 'clamp(1.5rem, 4vw, 4rem)', alignItems: 'center', maxWidth: 1200, margin: '0 auto' }}>
           <Reveal>
-            <img src="/assets/room-comfort.jpg" alt="The Grand Lobby" style={{ width: '100%', borderRadius: 4, objectFit: 'cover', height: 480 }} />
+            <img src="/assets/room-comfort.jpg" alt="The Grand Lobby" style={{ width: '100%', borderRadius: 4, objectFit: 'cover', height: 'clamp(280px, 40vw, 480px)' }} />
           </Reveal>
           <Reveal delay={150}>
             <div className="gold-divider"><div className="gold-divider-line" /><span className="gold-divider-label">The Heart of the Hotel</span></div>
@@ -248,7 +248,7 @@ export default function Home({ setPage }: HomeProps) {
                 <div style={{ padding: '1.5rem' }}>
                   <div style={{ fontSize: '0.74rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.5rem' }}>{e.tag}</div>
                   <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.74rem', fontWeight: 500, marginBottom: '0.75rem' }}>{e.title}</div>
-                  <p style={{ fontSize: '1.09rem', lineHeight: 1.75, color: 'rgba(13,27,42,0.7)' }}>{e.desc}</p>
+                  <p style={{ fontSize: 'clamp(0.88rem, 2vw, 1.09rem)', lineHeight: 1.75, color: 'rgba(13,27,42,0.7)' }}>{e.desc}</p>
                 </div>
               </div>
             </Reveal>

@@ -20,17 +20,15 @@ function EldoradoApp() {
   const [toast, setToast] = useState<string|null>(null);
   const [showPopup, setShowPopup] = useState(false);
 
-  // Show popup once per session after 8 seconds
+  // Show popup on every home page load after 8 seconds
   useEffect(() => {
-    const seen = sessionStorage.getItem('eldorado_subscribed');
-    if (seen) return;
+    if (page !== 'home') return;
     const t = setTimeout(() => setShowPopup(true), 8000);
     return () => clearTimeout(t);
-  }, []);
+  }, [page]);
 
   const closePopup = () => {
     setShowPopup(false);
-    sessionStorage.setItem('eldorado_subscribed', '1');
   };
 
   const showToast = (msg: string) => {

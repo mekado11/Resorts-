@@ -151,6 +151,27 @@ body {
   text-transform: uppercase; color: var(--navy); opacity: 0.6;
 }
 
+/* ── Mobile responsive overrides ── */
+@media (max-width: 767px) {
+  /* Section spacing — tighter on mobile */
+  .section { padding: 2rem 1.25rem; }
+
+  /* Pull quote — smaller on mobile */
+  .pull-quote { font-size: clamp(1.15rem, 4.5vw, 1.6rem); }
+
+  /* Room card images — shorter on mobile */
+  .room-card-img { height: 180px; }
+
+  /* Ornament margin — tighter */
+  .ornament { margin: 1rem 0; }
+
+  /* Buttons — full width on very small screens */
+  .btn-primary, .btn-ghost, .btn-navy {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.65rem;
+  }
+}
+
 /* ── Toast ── */
 .toast {
   position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;

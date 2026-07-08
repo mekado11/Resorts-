@@ -151,7 +151,7 @@ function MilestoneCard({ m, isLast }: { m: Milestone; isLast: boolean }) {
         display: 'flex',
         gap: 'clamp(1.5rem,3vw,2.5rem)',
         alignItems: 'flex-start',
-        marginBottom: isLast ? 0 : 'clamp(2.5rem,5vw,3.5rem)',
+        marginBottom: isLast ? 0 : 'clamp(1.5rem,4vw,3.5rem)',
         position: 'relative',
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(28px)',
@@ -257,7 +257,7 @@ export default function Journey() {
       {/* Hero */}
       <div style={{
         position: 'relative',
-        padding: 'clamp(6rem,12vw,10rem) clamp(1.5rem,5vw,5rem) clamp(3rem,6vw,5rem)',
+        padding: 'clamp(4rem,10vw,10rem) clamp(1.25rem,5vw,5rem) clamp(2rem,5vw,5rem)',
         borderBottom: '1px solid rgba(201,168,76,0.15)',
       }}>
         <div style={{ maxWidth: 760 }}>
@@ -301,7 +301,7 @@ export default function Journey() {
       </div>
 
       {/* Timeline */}
-      <div style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,5rem)', maxWidth: 900, margin: '0 auto' }}>
+      <div style={{ padding: 'clamp(2rem,5vw,5rem) clamp(1.25rem,4vw,5rem)', maxWidth: 900, margin: '0 auto' }}>
         <div style={{ position: 'relative' }}>
           {/* Vertical line */}
           <div style={{
