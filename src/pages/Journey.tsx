@@ -8,6 +8,7 @@ interface Milestone {
 }
 
 const MILESTONES: Milestone[] = [
+  // ── COMPLETE ──────────────────────────────────────────────
   {
     num: '01',
     title: 'Land Acquired',
@@ -18,18 +19,19 @@ const MILESTONES: Milestone[] = [
   },
   {
     num: '02',
-    title: 'Survey',
-    status: 'active',
-    statusLabel: 'In Progress',
-    desc: 'Boundary surveys underway. The physical limits of the estate are being precisely established, measured and documented.',
-  },
-  {
-    num: '03',
     title: 'Architecture & Design',
     status: 'complete',
     statusLabel: 'Complete',
     desc: 'The architecture, guest experience, interiors and all signature spaces — The Grand Ballroom, The Still Room, Ekom Iban Pavilion and the Flagship Suite — are fully designed.',
     journal: 'Every room, every corridor, every view has been considered. The vision is drawn.',
+  },
+  // ── IN PROGRESS ───────────────────────────────────────────
+  {
+    num: '03',
+    title: 'Survey',
+    status: 'active',
+    statusLabel: 'In Progress',
+    desc: 'Boundary surveys underway. The physical limits of the estate are being precisely established, measured and documented.',
   },
   {
     num: '04',
@@ -38,6 +40,7 @@ const MILESTONES: Milestone[] = [
     statusLabel: 'In Progress',
     desc: 'Development permits, engineering sign-offs and all required regulatory approvals are being processed with the Akwa Ibom State authorities.',
   },
+  // ── UPCOMING ──────────────────────────────────────────────
   {
     num: '05',
     title: 'Fencing',

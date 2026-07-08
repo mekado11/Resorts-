@@ -112,7 +112,7 @@ body {
 /* ── Pull quote ── */
 .pull-quote {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.25rem, 3vw, 1.9rem);
+  font-size: clamp(1.55rem, 3.7vw, 2.36rem);
   font-style: italic; font-weight: 300;
   color: var(--navy); line-height: 1.7;
   text-align: center; max-width: 800px; margin: 0 auto;
