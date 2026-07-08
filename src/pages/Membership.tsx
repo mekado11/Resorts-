@@ -3,10 +3,71 @@ import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 
 const TIERS = [
-  { id:'elite',         name:'Member Elite',         price:'Coming soon', perks:['Priority booking access','15% dining discount','Early access to events','Member concierge line'] },
-  { id:'commissioner',  name:"Commissioner's Circle", price:'Coming soon', perks:['All Elite benefits','Guaranteed room availability','25% F&B discount','Monthly suite upgrade','Guest privileges for 2'] },
-  { id:'legacy',        name:'Premium Legacy',        price:'Coming soon', perks:['All Commissioner benefits','Dedicated relationship manager','35% all-service discount','Annual gala invitation','Airport protocol service'] },
-  { id:'patrone',       name:'The Patroné',           price:'Price on Request', perks:['All Legacy benefits','Private floor access','Unlimited complimentary nights','Board of Patrons invitation','Legacy naming opportunity'] },
+  {
+    id: 'member',
+    name: 'Member',
+    tag: 'Annual Membership',
+    accent: 'rgba(201,168,76,0.7)',
+    perks: [
+      '1 complimentary night per year (Classic Room)',
+      '10% discount on room bookings, including guaranteed discounts on all events that require ticketing',
+      'Priority restaurant reservations',
+      'Invitations to Eldorado Circle social events',
+      'Early access to cultural events and shows',
+      'Access to Eldorado Cares volunteer projects',
+    ],
+  },
+  {
+    id: 'reserve',
+    name: 'Reserve',
+    tag: 'Annual Membership',
+    accent: '#C9A84C',
+    featured: true,
+    perks: [
+      'Benefits: Member +',
+      '2 complimentary nights per year',
+      'Room upgrade when available',
+      '15% room discount after free nights',
+      '10% dining discount',
+      'Priority booking for major events and holidays',
+      'Invitations to Reserve-level member dinners',
+      '2 guest passes per year for Eldorado Circle events',
+    ],
+  },
+  {
+    id: 'estate',
+    name: 'Estate',
+    tag: 'Annual Membership',
+    accent: '#20808D',
+    perks: [
+      'Benefits: Reserve +',
+      '4 complimentary nights per year',
+      'Guaranteed upgrade to Executive Room (when available)',
+      '20% room discount after complimentary nights',
+      'Complimentary airport transfers (2 per year)',
+      'Priority reservations during peak periods',
+      'Dedicated Eldorado Correspondent',
+      'Invitations to Estate-level experiences and private dinners',
+    ],
+  },
+  {
+    id: 'pinnacle',
+    name: 'Pinnacle',
+    tag: 'By Invitation Only',
+    accent: '#8B2035',
+    perks: [
+      'Benefits: Exclusive',
+      '8 complimentary nights over membership term',
+      'Guaranteed suite priority',
+      'Personal Eldorado Correspondent',
+      'Private experiences curated by the resort',
+      'VIP invitations to signature Eldorado events',
+      'Priority reservations year-round',
+      'Annual audience with the CEO',
+      'Ability to nominate community projects through Eldorado Cares',
+      'Recognition within the Eldorado Circle',
+    ],
+  },
 ];
 
 interface MembershipProps { onToast: (msg: string) => void; }
@@ -47,26 +108,75 @@ export default function Membership({ onToast }: MembershipProps) {
           <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'1.15rem', fontStyle:'italic', color:'rgba(13,27,42,0.65)', maxWidth:600, margin:'0 auto' }}>Eldorado membership is more than preferential access — it is permanent belonging. A select community of Nigeria's most discerning individuals, united by an uncompromising standard of living.</p>
         </div>
 
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:'1.5rem', maxWidth:1100, margin:'0 auto 4rem' }}>
-          {TIERS.map(t => (
-            <div key={t.id} onClick={() => setSelected(t.id)} style={{
-              border: selected===t.id ? '2px solid var(--gold)' : '1px solid var(--linen)',
-              borderRadius:4, padding:'1.75rem', cursor:'pointer',
-              background: selected===t.id ? 'rgba(201,168,76,0.05)' : '#fff',
-              transition:'all 0.2s',
-            }}>
-              <div style={{ fontSize:'0.62rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'0.5rem' }}>{t.id === 'patrone' ? 'Ultra-Premium' : 'Annual'}</div>
-              <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'1.35rem', marginBottom:'0.35rem' }}>{t.name}</div>
-              <div style={{ fontSize:'0.82rem', color:'var(--gold)', marginBottom:'1.25rem', fontWeight:500 }}>{t.price}</div>
-              <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:'0.5rem' }}>
-                {t.perks.map(p => (
-                  <li key={p} style={{ fontSize:'0.8rem', color:'rgba(13,27,42,0.7)', paddingLeft:'1rem', position:'relative' }}>
-                    <span style={{ position:'absolute', left:0, color:'var(--gold)' }}>·</span>{p}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(230px,1fr))', gap:'1.5rem', maxWidth:1160, margin:'0 auto 4rem', alignItems:'start' }}>
+          {TIERS.map(t => {
+            const isSel = selected === t.id;
+            return (
+              <div key={t.id} onClick={() => setSelected(t.id)} style={{
+                border: isSel ? `2px solid ${t.accent}` : '1px solid var(--linen)',
+                borderRadius: 5,
+                cursor: 'pointer',
+                background: isSel ? `rgba(201,168,76,0.04)` : '#fff',
+                transition: 'all 0.25s',
+                overflow: 'hidden',
+                boxShadow: isSel ? `0 8px 32px rgba(0,0,0,0.08)` : 'none',
+              }}>
+                {/* Tier header band */}
+                <div style={{
+                  background: t.accent,
+                  padding: '0.85rem 1.5rem',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                }}>
+                  <span style={{
+                    fontFamily: "'Cormorant Garamond',serif",
+                    fontSize: '1.25rem', fontWeight: 600, letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    color: t.id === 'member' ? 'rgba(13,27,42,0.9)' : '#fff',
+                  }}>{t.name}</span>
+                  <span style={{
+                    fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+                    color: t.id === 'member' ? 'rgba(13,27,42,0.6)' : 'rgba(255,255,255,0.65)',
+                    whiteSpace: 'nowrap',
+                  }}>{t.tag}</span>
+                </div>
+
+                {/* Benefits list */}
+                <div style={{ padding: '1.5rem' }}>
+                  <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:'0.55rem' }}>
+                    {t.perks.map((p, pi) => (
+                      <li key={pi} style={{
+                        fontSize: '0.8rem',
+                        color: pi === 0 && p.startsWith('Benefits:') ? t.accent : 'rgba(13,27,42,0.7)',
+                        fontWeight: pi === 0 && p.startsWith('Benefits:') ? 600 : 400,
+                        paddingLeft: pi === 0 && p.startsWith('Benefits:') ? 0 : '1rem',
+                        position: 'relative',
+                        lineHeight: 1.6,
+                      }}>
+                        {!(pi === 0 && p.startsWith('Benefits:')) && (
+                          <span style={{ position:'absolute', left:0, color: t.accent, fontWeight:700 }}>·</span>
+                        )}
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={e => { e.stopPropagation(); setSelected(t.id); }}
+                    style={{
+                      marginTop: '1.25rem', width: '100%',
+                      padding: '0.7rem', border: `1px solid ${t.accent}`,
+                      borderRadius: 3, background: isSel ? t.accent : 'transparent',
+                      color: isSel ? (t.id === 'member' ? '#0D1B2A' : '#fff') : 'rgba(13,27,42,0.75)',
+                      fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+                      cursor: 'pointer', transition: 'all 0.2s', fontFamily: "'Jost',sans-serif",
+                    }}
+                  >
+                    {t.id === 'pinnacle' ? 'Request Consideration' : 'Apply for Membership'}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {selected && (

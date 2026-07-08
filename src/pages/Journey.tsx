@@ -102,8 +102,10 @@ const TOTAL          = MILESTONES.length;
 const COMPLETE_COUNT = MILESTONES.filter(m => m.status === 'complete').length;
 const ACTIVE_COUNT   = MILESTONES.filter(m => m.status === 'active').length;
 const PROGRESS       = Math.round((COMPLETE_COUNT / TOTAL) * 100);
-// Arc fill = completed + half of active
-const ARC_PCT        = (COMPLETE_COUNT + ACTIVE_COUNT * 0.5) / TOTAL;
+// Arc fill = stops exactly at the last active node on the ring
+// Last active index = COMPLETE_COUNT + ACTIVE_COUNT - 1, arc fraction = (that index + 1) / TOTAL
+const LAST_ACTIVE_IDX = COMPLETE_COUNT + ACTIVE_COUNT - 1; // 0-based index of last active node
+const ARC_PCT        = (LAST_ACTIVE_IDX + 1) / TOTAL;     // arc covers up to and including that node
 
 // ── Colour tokens ──────────────────────────────────────────────────────────────
 const C = {
@@ -220,7 +222,7 @@ function JourneyCircle({
       <circle cx={CX} cy={CY} r={RING_R}
         fill="none" stroke="rgba(201,168,76,0.1)" strokeWidth={1.5} />
 
-      {/* Progress arc — drawn BEHIND nodes */}
+      {/* Progress arc — drawn BEHIND nodes, ends at last active node not beyond */}
       <circle
         cx={CX} cy={CY} r={RING_R}
         fill="none"
@@ -228,7 +230,7 @@ function JourneyCircle({
         strokeWidth={2.5}
         strokeDasharray={circumference}
         strokeDashoffset={dashOffset}
-        strokeLinecap="round"
+        strokeLinecap="butt"
         transform={`rotate(-90 ${CX} ${CY})`}
         style={{ transition: 'stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1)' }}
       />
@@ -302,6 +304,12 @@ function JourneyCircle({
                 strokeWidth={1.5}
               />
             )}
+
+            {/* Navy backing disc — hides arc line behind the node, size = NODE_R + half strokeWidth */}
+            <circle cx={nx} cy={ny} r={NODE_R + 3}
+              fill="rgb(10,20,34)"
+              stroke="none"
+            />
 
             {/* Node fill — always NODE_R, never changes size */}
             <circle cx={nx} cy={ny} r={NODE_R}
