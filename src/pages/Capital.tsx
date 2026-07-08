@@ -70,6 +70,7 @@ export default function Capital() {
         name: form.name,
         email: form.email,
         phone: form.phone,
+        type: 'investment',
         subject: `Private Capital Enquiry — ${form.range} — ${form.investorType}`,
         message: `Company: ${form.company || 'N/A'}\nInvestor type: ${form.investorType}\nIndicative range: ${form.range}\nExperience: ${form.experience}\n\n${form.message}`,
       });
