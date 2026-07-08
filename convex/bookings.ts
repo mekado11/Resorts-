@@ -12,6 +12,20 @@ export const create = mutation({
     checkOut:   v.string(),
     nights:     v.number(),
     totalNGN:   v.number(),
+
+    // Guest Arrival Profile
+    occasion:             v.optional(v.string()),
+    roomMood:             v.optional(v.string()),
+    arrivalWelcome:       v.optional(v.string()),
+    welcomeStyle:         v.optional(v.string()),
+    firstNightPriority:   v.optional(v.string()),
+    oneMoreThing:         v.optional(v.string()),
+
+    // Operational
+    dietaryRequirements:  v.optional(v.string()),
+    accessibilityNeeds:   v.optional(v.string()),
+    prayerRoom:           v.optional(v.string()),
+
     notes:      v.optional(v.string()),
   },
   handler: async (ctx, args) => {
