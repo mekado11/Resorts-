@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy:  #0D1B2A;
+  --gold:  #C9A84C;
+  --ivory: #FAF8F2;
+  --linen: #EDE9DF;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--ivory);
+  color: var(--navy);
+  overflow-x: hidden;
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes heroZoom {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1); }
+}
+
+.fade-up    { animation: fadeUp 0.8s var(--ease-out) both; }
+.fade-in    { animation: fadeIn 0.8s var(--ease-out) both; }
+.hero-zoom  { animation: heroZoom 12s ease-out forwards; }
+
+/* ── Nav ── */
+.nav-transparent { background: transparent; }
+.nav-scrolled {
+  background: rgba(13, 27, 42, 0.96);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 0 rgba(201,168,76,0.2);
+}
+
+/* ── Gold ornament ── */
+.ornament {
+  display: flex; align-items: center; gap: 1rem;
+  justify-content: center; margin: 1.5rem 0;
+}
+.ornament-line   { flex: 1; max-width: 80px; height: 1px; background: var(--gold); opacity: 0.4; }
+.ornament-diamond {
+  width: 7px; height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  background: var(--gold); color: var(--navy);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  border: none; cursor: pointer; border-radius: 2px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: #b8922e; transform: translateY(-1px); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  background: transparent; color: var(--ivory);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  border: 1px solid rgba(250,248,242,0.45); cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+.btn-navy {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  background: var(--navy); color: var(--ivory);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  border: none; cursor: pointer; border-radius: 2px;
+  transition: background 0.2s;
+}
+.btn-navy:hover { background: #1a2e42; }
+
+/* ── Divider ── */
+.gold-divider {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.gold-divider-line  { flex: 0 0 40px; height: 1px; background: var(--gold); opacity: 0.5; }
+.gold-divider-label {
+  font-size: 0.62rem; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--gold); white-space: nowrap;
+}
+
+/* ── Pull quote ── */
+.pull-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.25rem, 3vw, 1.9rem);
+  font-style: italic; font-weight: 300;
+  color: var(--navy); line-height: 1.7;
+  text-align: center; max-width: 800px; margin: 0 auto;
+}
+
+/* ── Room card ── */
+.room-card {
+  background: #fff; border-radius: 4px;
+  overflow: hidden; border: 1px solid var(--linen);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+}
+.room-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(13,27,42,0.12); }
+.room-card-img { width: 100%; height: 240px; object-fit: cover; display: block; }
+
+/* ── Section spacing ── */
+.section { padding: clamp(3rem, 6vw, 6rem) clamp(1.5rem, 5vw, 5rem); }
+.section-ivory { background: var(--ivory); }
+.section-linen { background: var(--linen); }
+.section-navy  { background: var(--navy); }
+.section-cream { background: #f5f2eb; }
+
+/* ── Input styles ── */
+.form-input {
+  width: 100%; padding: 0.85rem 1rem;
+  border: 1px solid var(--linen);
+  background: #fff; color: var(--navy);
+  font-family: 'Jost', sans-serif; font-size: 0.9rem;
+  border-radius: 2px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.form-input:focus { border-color: var(--gold); }
+.form-label {
+  display: block; margin-bottom: 0.4rem;
+  font-size: 0.65rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--navy); opacity: 0.6;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+  background: var(--navy); color: var(--ivory);
+  padding: 1rem 1.5rem; border-radius: 4px;
+  border-left: 3px solid var(--gold);
+  font-size: 0.9rem; max-width: 360px;
+  animation: fadeUp 0.4s var(--ease-out);
+}
