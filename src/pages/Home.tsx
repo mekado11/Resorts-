@@ -52,10 +52,10 @@ export default function Home({ setPage }: HomeProps) {
   ];
 
   const experiences = [
-    { tag: 'Culinary Arts',   title: 'The Table',          desc: 'Nigerian haute cuisine reimagined — afang, jollof, banga and Cross River seafood plated at Michelin standard.', img: 'afang-fine-dining.jpg', page: 'dining' },
-    { tag: 'Spa & Wellness',  title: 'The Still Room',     desc: 'Where stillness is the luxury. Limestone walls, lily petal baths, and ancient West African healing traditions.', img: 'hero-spa.jpg', page: 'experiences' },
-    { tag: 'Celebrations',    title: 'Ekom Iban Pavilion', desc: "Nigeria's premier cultural wedding pavilion — Ibibio tradition elevated to black-tie grandeur.", img: 'hero-wedding.jpg', page: 'experiences' },
-    { tag: 'Sport & Society', title: "Gaffer's Club",      desc: 'Every Premier League fixture, every Champions League night — broadcast in cinematic clarity with premium service.', img: 'hero-theater.jpg', page: 'experiences' },
+    { tag: 'Weddings',         title: 'Where Ceremonies Become Legacy', desc: 'The day you have imagined, held in a space built to hold it.', img: 'hero-wedding.jpg', page: 'experiences' },
+    { tag: 'Wellness',         title: 'The Still Room',                 desc: 'Return to yourself. Limestone walls, ancient healing, and the particular silence that only arrives when every detail is attended to.', img: 'hero-spa.jpg', page: 'experiences' },
+    { tag: 'Dining',           title: 'Some Tables Are Remembered',     desc: 'Nigerian cuisine reimagined. Every plate a conversation between heritage and precision.', img: 'afang-fine-dining.jpg', page: 'dining' },
+    { tag: 'After Dark',       title: 'The Night, Properly Considered', desc: 'What the evening becomes when it is curated rather than left to chance.', img: 'hero-theater.jpg', page: 'experiences' },
   ];
 
   const ease = 'cubic-bezier(0.16,1,0.3,1)';
@@ -164,10 +164,10 @@ export default function Home({ setPage }: HomeProps) {
       </section>
 
       {/* ── Brand statement ── */}
-      <section className="section section-ivory" style={{ textAlign: 'center' }}>
+      <section className="section section-ivory" style={{ textAlign: 'center', padding: 'clamp(2rem,4vw,3.5rem) clamp(1.5rem,5vw,5rem)' }}>
         <Reveal>
           <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
-          <p className="pull-quote">"Eldorado Welcomes You — to a place where every detail is an act of devotion, every room a private world, every moment an irreplaceable memory."</p>
+          <p className="pull-quote" style={{ maxWidth: 680, margin: '0 auto', fontSize: 'clamp(1.1rem,2.5vw,1.55rem)' }}>"Eldorado Welcomes You — to a place where every detail is an act of devotion, every room a private world, every moment an irreplaceable memory."</p>
           <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
         </Reveal>
       </section>
@@ -182,38 +182,6 @@ export default function Home({ setPage }: HomeProps) {
             </Reveal>
           ))}
         </div>
-      </section>
-
-      {/* ── Journey teaser ── */}
-      <section style={{
-        background: 'var(--navy)',
-        padding: 'clamp(1.75rem,4vw,3rem) clamp(1.25rem,5vw,5rem)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1.25rem',
-        borderTop: '1px solid rgba(201,168,76,0.15)',
-        borderBottom: '1px solid rgba(201,168,76,0.15)',
-      }}>
-        <Reveal style={{ flex: 1, minWidth: 260 }}>
-          <div style={{ fontSize: '0.72rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '0.6rem' }}>
-            The Journey to Opening
-          </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '0.75rem' }}>
-            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.5rem,5vw,3.7rem)', color: 'var(--gold)', fontWeight: 300, lineHeight: 1 }}>25%</span>
-            <span style={{ fontSize: '0.87rem', color: 'rgba(250,248,242,0.4)', letterSpacing: '0.1em' }}>Complete</span>
-          </div>
-          <div style={{ height: 1.5, background: 'rgba(201,168,76,0.15)', borderRadius: 2, maxWidth: 320, marginBottom: '0.85rem', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: '25%', background: 'var(--gold)', borderRadius: 2 }} />
-          </div>
-          <p style={{ fontSize: '1.02rem', color: 'rgba(250,248,242,0.45)', lineHeight: 1.75, maxWidth: 400, fontStyle: 'italic' }}>
-            Land acquired. Architecture complete. Survey and permitting underway.
-          </p>
-        </Reveal>
-        <button className="btn-ghost" onClick={() => nav('journey')} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
-          Follow the Journey →
-        </button>
       </section>
 
       {/* ── Grand Lobby ── */}
