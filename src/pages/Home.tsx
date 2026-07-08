@@ -134,15 +134,15 @@ export default function Home({ setPage }: HomeProps) {
             The Journey to Opening
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '0.75rem' }}>
-            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem,4vw,3rem)', color: 'var(--gold)', fontWeight: 300, lineHeight: 1 }}>18%</span>
+            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem,4vw,3rem)', color: 'var(--gold)', fontWeight: 300, lineHeight: 1 }}>25%</span>
             <span style={{ fontSize: '0.7rem', color: 'rgba(250,248,242,0.4)', letterSpacing: '0.1em' }}>Complete</span>
           </div>
           {/* Mini progress bar */}
           <div style={{ height: 1.5, background: 'rgba(201,168,76,0.15)', borderRadius: 2, maxWidth: 320, marginBottom: '0.85rem', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: '18%', background: 'var(--gold)', borderRadius: 2 }} />
+            <div style={{ height: '100%', width: '25%', background: 'var(--gold)', borderRadius: 2 }} />
           </div>
           <p style={{ fontSize: '0.82rem', color: 'rgba(250,248,242,0.45)', lineHeight: 1.75, maxWidth: 400, fontStyle: 'italic' }}>
-            Land acquired. Survey complete. Property registration and architecture underway.
+            Land acquired. Architecture complete. Survey and permitting underway.
           </p>
         </div>
         <button
