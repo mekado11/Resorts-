@@ -117,6 +117,43 @@ export default function Home({ setPage }: HomeProps) {
         </div>
       </section>
 
+      {/* ── Journey teaser ── */}
+      <section style={{
+        background: 'var(--navy)',
+        padding: 'clamp(2rem,4vw,3rem) clamp(1.5rem,5vw,5rem)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '1.5rem',
+        borderTop: '1px solid rgba(201,168,76,0.15)',
+        borderBottom: '1px solid rgba(201,168,76,0.15)',
+      }}>
+        <div style={{ flex: 1, minWidth: 260 }}>
+          <div style={{ fontSize: '0.58rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '0.6rem' }}>
+            The Journey to Opening
+          </div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '0.75rem' }}>
+            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem,4vw,3rem)', color: 'var(--gold)', fontWeight: 300, lineHeight: 1 }}>18%</span>
+            <span style={{ fontSize: '0.7rem', color: 'rgba(250,248,242,0.4)', letterSpacing: '0.1em' }}>Complete</span>
+          </div>
+          {/* Mini progress bar */}
+          <div style={{ height: 1.5, background: 'rgba(201,168,76,0.15)', borderRadius: 2, maxWidth: 320, marginBottom: '0.85rem', overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: '18%', background: 'var(--gold)', borderRadius: 2 }} />
+          </div>
+          <p style={{ fontSize: '0.82rem', color: 'rgba(250,248,242,0.45)', lineHeight: 1.75, maxWidth: 400, fontStyle: 'italic' }}>
+            Land acquired. Survey complete. Property registration and architecture underway.
+          </p>
+        </div>
+        <button
+          className="btn-ghost"
+          onClick={() => { nav('journey'); }}
+          style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+        >
+          Follow the Journey →
+        </button>
+      </section>
+
       {/* ── Grand Lobby ── */}
       <section className="section section-ivory">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: '4rem', alignItems: 'center', maxWidth: 1200, margin: '0 auto' }}>

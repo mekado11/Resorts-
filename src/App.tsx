@@ -9,6 +9,7 @@ import Dining from './pages/Dining';
 import Experiences from './pages/Experiences';
 import Membership from './pages/Membership';
 import Contact from './pages/Contact';
+import Journey from './pages/Journey';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL);
 
@@ -37,6 +38,7 @@ function EldoradoApp() {
         {page === 'experiences' && <Experiences />}
         {page === 'membership'  && <Membership onToast={showToast} />}
         {page === 'contact'     && <Contact onToast={showToast} />}
+        {page === 'journey'     && <Journey />}
       </main>
 
       <Footer setPage={setPage_} />

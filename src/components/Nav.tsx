@@ -23,6 +23,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
     { id: 'dining', label: 'Dining' },
     { id: 'experiences', label: 'Experiences' },
     { id: 'membership', label: 'Membership' },
+    { id: 'journey', label: 'Our Journey' },
     { id: 'contact', label: 'Contact' },
   ];
 
