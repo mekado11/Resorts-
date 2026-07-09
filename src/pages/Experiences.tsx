@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useMutation, useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { useAuth } from '../context/AuthContext';
 
 // ── Data ───────────────────────────────────────────────────────────────────────
 interface World {
@@ -102,15 +105,76 @@ const WORLDS: World[] = [
   },
 ];
 
+// ── Heart Icon SVG ─────────────────────────────────────────────────────────────
+function HeartIcon({ filled, size = 18 }: { filled: boolean; size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={filled ? '#C9A84C' : 'none'}
+      stroke={filled ? '#C9A84C' : 'rgba(250,248,242,0.8)'}
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ display: 'block', flexShrink: 0 }}
+    >
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  );
+}
+
+// ── Toast nudge ────────────────────────────────────────────────────────────────
+function SignInNudge({ visible }: { visible: boolean }) {
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: '2rem',
+      left: '50%',
+      transform: `translateX(-50%) translateY(${visible ? 0 : 12}px)`,
+      opacity: visible ? 1 : 0,
+      transition: 'opacity 0.3s ease, transform 0.3s ease',
+      pointerEvents: 'none',
+      zIndex: 9999,
+      background: 'rgba(13,27,42,0.96)',
+      border: '1px solid rgba(201,168,76,0.25)',
+      borderRadius: 4,
+      padding: '0.65rem 1.25rem',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.6rem',
+      whiteSpace: 'nowrap',
+    }}>
+      <HeartIcon filled={false} size={14} />
+      <span style={{
+        fontFamily: "'Jost', sans-serif",
+        fontSize: '0.72rem',
+        letterSpacing: '0.06em',
+        color: 'rgba(250,248,242,0.75)',
+      }}>Sign in to save experiences to My Eldorado</span>
+    </div>
+  );
+}
+
 // ── World card (compact) ───────────────────────────────────────────────────────
-function WorldCard({ w, onClick }: { w: World; onClick: () => void }) {
+interface WorldCardProps {
+  w: World;
+  onClick: () => void;
+  isSaved: boolean;
+  onHeartClick: (e: React.MouseEvent) => void;
+  saving: boolean;
+}
+
+function WorldCard({ w, onClick, isSaved, onHeartClick, saving }: WorldCardProps) {
   const [hovered, setHovered] = useState(false);
+  const [heartHovered, setHeartHovered] = useState(false);
 
   return (
     <div
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      data-testid={`card-experience-${w.id}`}
       style={{
         position: 'relative',
         overflow: 'hidden',
@@ -141,6 +205,38 @@ function WorldCard({ w, onClick }: { w: World; onClick: () => void }) {
           : 'linear-gradient(to top, rgba(13,27,42,0.88) 0%, rgba(13,27,42,0.35) 100%)',
         transition: 'background 0.35s ease',
       }} />
+
+      {/* Heart button — top right */}
+      <button
+        data-testid={`button-save-experience-${w.id}`}
+        onClick={onHeartClick}
+        onMouseEnter={() => setHeartHovered(true)}
+        onMouseLeave={() => setHeartHovered(false)}
+        title={isSaved ? 'Remove from saved' : 'Save to My Eldorado'}
+        style={{
+          position: 'absolute',
+          top: '0.75rem',
+          right: '0.75rem',
+          zIndex: 10,
+          background: 'rgba(13,27,42,0.55)',
+          border: `1px solid ${isSaved ? 'rgba(201,168,76,0.4)' : 'rgba(250,248,242,0.18)'}`,
+          borderRadius: '50%',
+          width: 34,
+          height: 34,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          opacity: hovered || isSaved ? 1 : 0,
+          transform: `scale(${heartHovered ? 1.12 : 1}) ${saving ? 'scale(0.92)' : ''}`,
+          transition: 'opacity 0.25s ease, transform 0.2s ease, border-color 0.2s ease, background 0.2s ease',
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+        }}
+        aria-label={isSaved ? `Remove ${w.name} from saved` : `Save ${w.name}`}
+      >
+        <HeartIcon filled={isSaved} size={15} />
+      </button>
 
       {/* Text */}
       <div style={{
@@ -307,10 +403,58 @@ function WorldPanel({ w, onClose }: { w: World; onClose: () => void }) {
 // ── Page ───────────────────────────────────────────────────────────────────────
 export default function Experiences({ setPage }: { setPage?: (p: string) => void }) {
   const [open, setOpen] = useState<string | null>(null);
+  const [nudgeVisible, setNudgeVisible] = useState(false);
+  const [savingId, setSavingId] = useState<string | null>(null);
+
+  const { user, token } = useAuth();
+
+  // Saved experiences from Convex (only when signed in)
+  const savedList = useQuery(
+    api.account.getSavedExperiences,
+    token ? { token } : 'skip'
+  );
+
+  const saveExperienceMutation = useMutation(api.account.saveExperience);
+  const removeSavedMutation = useMutation(api.account.removeSavedExperience);
+
+  // Build a Set of saved world IDs for O(1) lookup
+  const savedIds = new Set(
+    (savedList ?? []).map(s => {
+      // experienceName is the world name — map back to id
+      const match = WORLDS.find(w => w.name === s.experienceName);
+      return match?.id ?? '';
+    }).filter(Boolean)
+  );
+
+  const handleHeartClick = useCallback(async (e: React.MouseEvent, world: World) => {
+    e.stopPropagation(); // Don't open the panel
+
+    if (!user || !token) {
+      // Show sign-in nudge
+      setNudgeVisible(true);
+      setTimeout(() => setNudgeVisible(false), 2800);
+      return;
+    }
+
+    setSavingId(world.id);
+    try {
+      if (savedIds.has(world.id)) {
+        await removeSavedMutation({ token, experienceName: world.name });
+      } else {
+        await saveExperienceMutation({
+          token,
+          experienceName: world.name,
+          experienceCategory: 'experience',
+          experienceDesc: world.tagline,
+        });
+      }
+    } finally {
+      setSavingId(null);
+    }
+  }, [user, token, savedIds, saveExperienceMutation, removeSavedMutation]);
 
   const handleSelect = (id: string) => {
     setOpen(prev => prev === id ? null : id);
-    // Scroll to panel after brief delay to let it render
     if (open !== id) {
       setTimeout(() => {
         document.getElementById(`world-panel-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -370,7 +514,13 @@ export default function Experiences({ setPage }: { setPage?: (p: string) => void
         }}>
           {WORLDS.map(w => (
             <div key={w.id}>
-              <WorldCard w={w} onClick={() => handleSelect(w.id)} />
+              <WorldCard
+                w={w}
+                onClick={() => handleSelect(w.id)}
+                isSaved={savedIds.has(w.id)}
+                onHeartClick={(e) => handleHeartClick(e, w)}
+                saving={savingId === w.id}
+              />
 
               {/* Inline expanded panel */}
               {open === w.id && (
@@ -399,6 +549,9 @@ export default function Experiences({ setPage }: { setPage?: (p: string) => void
           </p>
         </div>
       </section>
+
+      {/* Sign-in nudge toast */}
+      <SignInNudge visible={nudgeVisible} />
     </div>
   );
 }
