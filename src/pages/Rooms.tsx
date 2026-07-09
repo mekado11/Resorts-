@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 
@@ -107,6 +107,67 @@ const dividerStyle: React.CSSProperties = {
   borderTop: '1px solid rgba(13,27,42,0.1)',
   margin: '1.5rem 0 0.25rem',
 };
+
+// ─── Room Detail Modal ────────────────────────────────────────────────────────
+// Clicking a tier card opens this first: the full description and every
+// amenity, with a CTA that hands off into the booking enquiry form.
+
+interface RoomDetailModalProps { room: Room; onClose: () => void; onReserve: () => void; }
+
+function RoomDetailModal({ room, onClose, onReserve }: RoomDetailModalProps) {
+  const amenities: string[] = JSON.parse(room.amenities);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={e => e.target === e.currentTarget && onClose()}
+      style={{ position: 'fixed', inset: 0, zIndex: 480, background: 'rgba(13,27,42,0.88)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
+    >
+      <div style={{ background: 'var(--ivory)', maxWidth: 680, width: '100%', borderRadius: 4, overflow: 'hidden', maxHeight: '92vh', overflowY: 'auto' }}>
+
+        {/* Image header */}
+        <div style={{ position: 'relative', height: 'clamp(220px, 32vw, 340px)' }}>
+          <img src={`/assets/${room.imageSlug}.jpg`} alt={room.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.85) 0%, rgba(13,27,42,0.05) 55%)' }} />
+          <button onClick={onClose} style={{
+            position: 'absolute', top: '1rem', right: '1rem',
+            background: 'rgba(13,27,42,0.55)', border: '1px solid rgba(250,248,242,0.25)',
+            color: '#FAF8F2', cursor: 'pointer', borderRadius: '50%',
+            width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1.1rem', lineHeight: 1,
+          }}>✕</button>
+          <div style={{ position: 'absolute', bottom: '1.25rem', left: '1.5rem', right: '1.5rem' }}>
+            <div style={{ fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.4rem' }}>Tier {room.tier}</div>
+            <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(1.6rem,3.5vw,2.2rem)', fontWeight: 400, color: '#FAF8F2', lineHeight: 1.1 }}>{room.name}</div>
+          </div>
+        </div>
+
+        <div style={{ padding: '2rem' }}>
+          <p style={{ fontSize: '0.92rem', lineHeight: 1.85, color: 'rgba(13,27,42,0.72)', marginBottom: '1.75rem' }}>{room.description}</p>
+
+          <div style={{ fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>All Amenities</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.6rem', marginBottom: '2rem' }}>
+            {amenities.map(a => (
+              <div key={a} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'rgba(13,27,42,0.75)' }}>
+                <span style={{ color: 'var(--gold)', fontSize: '0.7rem', flexShrink: 0 }}>✦</span>
+                {a}
+              </div>
+            ))}
+          </div>
+
+          <button className="btn-primary" style={{ width: '100%', justifyContent: 'center' }} onClick={onReserve}>
+            Reserve This Room
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ─── Booking Modal ────────────────────────────────────────────────────────────
 
@@ -442,6 +503,7 @@ interface RoomsProps { onToast: (msg: string) => void; }
 
 export default function Rooms({ onToast }: RoomsProps) {
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [detailRoom, setDetailRoom] = useState<Room | null>(null);
 
   return (
     <div>
@@ -468,7 +530,7 @@ export default function Rooms({ onToast }: RoomsProps) {
           {ROOMS.map(room => {
             const amenities: string[] = JSON.parse(room.amenities);
             return (
-              <div key={room.tier} className="room-card">
+              <div key={room.tier} className="room-card" onClick={() => setDetailRoom(room)}>
                 <div style={{ position: 'relative' }}>
                   <img src={`/assets/${room.imageSlug}.jpg`} alt={room.name} className="room-card-img" />
                   <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'var(--navy)', color: 'var(--gold)', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', padding: '0.35rem 0.75rem', borderRadius: 2 }}>Tier {room.tier}</div>
@@ -485,7 +547,7 @@ export default function Rooms({ onToast }: RoomsProps) {
                     ))}
                     {amenities.length > 4 && <span style={{ fontSize: '0.62rem', color: 'var(--gold)', padding: '0.3rem 0.3rem' }}>+{amenities.length - 4} more</span>}
                   </div>
-                  <button className="btn-primary" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setSelectedRoom(room)}>
+                  <button className="btn-primary" style={{ width: '100%', justifyContent: 'center' }} onClick={(e) => { e.stopPropagation(); setSelectedRoom(room); }}>
                     Reserve This Room
                   </button>
                 </div>
@@ -494,6 +556,14 @@ export default function Rooms({ onToast }: RoomsProps) {
           })}
         </div>
       </section>
+
+      {detailRoom && (
+        <RoomDetailModal
+          room={detailRoom}
+          onClose={() => setDetailRoom(null)}
+          onReserve={() => { setSelectedRoom(detailRoom); setDetailRoom(null); }}
+        />
+      )}
 
       {selectedRoom && (
         <BookingModal

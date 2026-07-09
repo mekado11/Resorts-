@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuth } from '../context/AuthContext';
@@ -281,20 +281,62 @@ function WorldCard({ w, onClick, isSaved, onHeartClick, saving }: WorldCardProps
   );
 }
 
-// ── Expanded world panel ───────────────────────────────────────────────────────
-function WorldPanel({ w, onClose }: { w: World; onClose: () => void }) {
+// ── World drawer — slides in horizontally from the right ──────────────────────
+function WorldDrawer({ w, onClose }: { w: World | null; onClose: () => void }) {
+  const [mounted, setMounted] = useState(false);
+
+  // Mount on first open, then flip to visible on the next frame so the
+  // transform transition actually animates instead of snapping into place.
+  useEffect(() => {
+    if (w) {
+      const raf = requestAnimationFrame(() => setMounted(true));
+      return () => cancelAnimationFrame(raf);
+    }
+    setMounted(false);
+  }, [w]);
+
+  // Lock body scroll while the drawer is open; close on Escape.
+  useEffect(() => {
+    if (!w) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [w, onClose]);
+
+  if (!w) return null;
+
   return (
-    <div style={{
-      background: 'var(--ivory)',
-      border: '1px solid rgba(201,168,76,0.2)',
-      borderRadius: 5,
-      overflow: 'hidden',
-      marginTop: '0.75rem',
-    }}>
+    <div
+      aria-hidden={!mounted}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 400,
+        background: `rgba(13,27,42,${mounted ? 0.72 : 0})`,
+        transition: 'background 0.35s ease',
+      }}
+      onClick={e => e.target === e.currentTarget && onClose()}
+    >
+      {/* Drawer — slides in horizontally from the right edge */}
+      <div
+        data-testid={`drawer-experience-${w.id}`}
+        style={{
+          position: 'absolute', top: 0, right: 0, bottom: 0,
+          width: 'min(94vw, 640px)',
+          background: 'var(--ivory)',
+          boxShadow: '-24px 0 60px rgba(13,27,42,0.35)',
+          overflowY: 'auto',
+          transform: `translateX(${mounted ? '0%' : '100%'})`,
+          transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1)',
+        }}
+      >
       {/* Panel header with image */}
       <div style={{
         position: 'relative',
-        height: 'clamp(160px, 20vw, 220px)',
+        height: 'clamp(200px, 26vw, 260px)',
         overflow: 'hidden',
       }}>
         <div style={{
@@ -336,10 +378,10 @@ function WorldPanel({ w, onClose }: { w: World; onClose: () => void }) {
         </div>
       </div>
 
-      {/* Teaser cards grid */}
+      {/* Teaser cards — single column, stacked down the drawer */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+        display: 'flex',
+        flexDirection: 'column',
         gap: '1px',
         background: 'rgba(201,168,76,0.1)',
       }}>
@@ -395,6 +437,7 @@ function WorldPanel({ w, onClose }: { w: World; onClose: () => void }) {
             paddingBottom: '2px',
           }}>Enquire →</div>
         </div>
+      </div>
       </div>
     </div>
   );
@@ -453,14 +496,8 @@ export default function Experiences({ setPage }: { setPage?: (p: string) => void
     }
   }, [user, token, savedIds, saveExperienceMutation, removeSavedMutation]);
 
-  const handleSelect = (id: string) => {
-    setOpen(prev => prev === id ? null : id);
-    if (open !== id) {
-      setTimeout(() => {
-        document.getElementById(`world-panel-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 80);
-    }
-  };
+  const handleSelect = (id: string) => setOpen(id);
+  const activeWorld = WORLDS.find(w => w.id === open) ?? null;
 
   return (
     <div>
@@ -513,22 +550,14 @@ export default function Experiences({ setPage }: { setPage?: (p: string) => void
           maxWidth: 1200, margin: '0 auto',
         }}>
           {WORLDS.map(w => (
-            <div key={w.id}>
-              <WorldCard
-                w={w}
-                onClick={() => handleSelect(w.id)}
-                isSaved={savedIds.has(w.id)}
-                onHeartClick={(e) => handleHeartClick(e, w)}
-                saving={savingId === w.id}
-              />
-
-              {/* Inline expanded panel */}
-              {open === w.id && (
-                <div id={`world-panel-${w.id}`}>
-                  <WorldPanel w={w} onClose={() => setOpen(null)} />
-                </div>
-              )}
-            </div>
+            <WorldCard
+              key={w.id}
+              w={w}
+              onClick={() => handleSelect(w.id)}
+              isSaved={savedIds.has(w.id)}
+              onHeartClick={(e) => handleHeartClick(e, w)}
+              saving={savingId === w.id}
+            />
           ))}
         </div>
 
@@ -549,6 +578,9 @@ export default function Experiences({ setPage }: { setPage?: (p: string) => void
           </p>
         </div>
       </section>
+
+      {/* World detail — slides in horizontally from the right */}
+      <WorldDrawer w={activeWorld} onClose={() => setOpen(null)} />
 
       {/* Sign-in nudge toast */}
       <SignInNudge visible={nudgeVisible} />

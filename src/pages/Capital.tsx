@@ -157,7 +157,7 @@ export default function Capital() {
         </div>
 
         {/* ───── Chapter 1: The Sun ───── */}
-        <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)' }}>
+        <div id="sustainability" style={{ borderTop: '1px solid rgba(201,168,76,0.08)', scrollMarginTop: 140 }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
 
             {/* Text column */}
@@ -201,10 +201,9 @@ export default function Capital() {
                   We intend to store the Akwa Ibom sun and keep the hotel glowing long after sunset.
                 </p>
               </div>
-              {/* Image slot */}
-              <div style={{ aspectRatio: '4/3', background: 'rgba(201,168,76,0.04)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.3)' }}>Image Slot</div>
-                <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.2)', textAlign: 'center', padding: '0 1.5rem' }}>Sunrise · Solar array · Battery infrastructure</div>
+              {/* Sunrise over the Eldorado land */}
+              <div style={{ aspectRatio: '4/3', border: '1px solid rgba(201,168,76,0.15)', borderRadius: 3, overflow: 'hidden' }}>
+                <img src="/assets/milestone-land.jpg" alt="Sunrise over the Eldorado land in Akwa Ibom" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               </div>
             </div>
           </div>
@@ -214,10 +213,9 @@ export default function Capital() {
         <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)', background: 'rgba(255,255,255,0.015)' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
 
-            {/* Image slot — left on this chapter */}
-            <div style={{ aspectRatio: '3/4', background: 'rgba(201,168,76,0.04)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.3)' }}>Image Slot</div>
-              <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.2)', textAlign: 'center', padding: '0 1.5rem' }}>Craftsmen · Artisans · Diaspora professionals · Kitchen</div>
+            {/* Hands building Eldorado — left on this chapter */}
+            <div style={{ aspectRatio: '3/4', border: '1px solid rgba(201,168,76,0.15)', borderRadius: 3, overflow: 'hidden' }}>
+              <img src="/assets/milestone-borehole.jpg" alt="Tradesmen at work on the Eldorado site in Akwa Ibom" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
 
             {/* Text column */}
@@ -266,11 +264,10 @@ export default function Capital() {
               </p>
             </div>
 
-            {/* Image slot */}
+            {/* Community & Eldorado Cares */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              <div style={{ aspectRatio: '4/3', background: 'rgba(201,168,76,0.04)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.3)' }}>Image Slot</div>
-                <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.2)', textAlign: 'center', padding: '0 1.5rem' }}>Local suppliers · Community · Eldorado Cares</div>
+              <div style={{ aspectRatio: '4/3', border: '1px solid rgba(201,168,76,0.15)', borderRadius: 3, overflow: 'hidden' }}>
+                <img src="/assets/cares-mentorship.jpg" alt="Eldorado Cares mentorship at the Uyo Innovation Hub" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               </div>
             </div>
           </div>
@@ -284,16 +281,16 @@ export default function Capital() {
               Today, these are intentions.<br /><em style={{ color: 'rgba(250,248,242,0.65)' }}>Over time, this page will change.</em>
             </h3>
             <p style={{ fontSize: '0.95rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.5rem', maxWidth: 680, margin: '0 auto 1.5rem' }}>
-              We intend to will become <em>we did.</em> Plans will become photographs. Renderings will become rooms. Craftsmen will leave their marks, artists will finish their walls, chefs will serve their first plates. Solar panels will face the Akwa Ibom sky, and batteries will quietly hold the sun after dark.
+              "We intend to" will become <em>"we did."</em> Plans will become photographs. Renderings will become rooms. Craftsmen will leave their marks, artists will finish their walls, chefs will serve their first plates. Solar panels will face the Akwa Ibom sky, and batteries will quietly hold the sun after dark.
             </p>
             <p style={{ fontSize: '0.95rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '2.5rem', maxWidth: 680, margin: '0 auto 2.5rem' }}>
               Guests will arrive. Young people will be given opportunities. And a building will begin to become something more than a building.
             </p>
 
-            {/* Image slot — renderings to real photos */}
-            <div style={{ maxWidth: 680, margin: '0 auto 2.5rem', aspectRatio: '16/7', background: 'rgba(201,168,76,0.04)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem' }}>
-              <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.3)' }}>Image Slot — Updates Over Time</div>
-              <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.2)', textAlign: 'center', padding: '0 2rem' }}>Renderings transitioning to real construction photos as the project progresses</div>
+            {/* Rendering, today — will update to real construction photos as the project progresses */}
+            <div style={{ maxWidth: 680, margin: '0 auto 2.5rem', aspectRatio: '16/7', border: '1px solid rgba(201,168,76,0.15)', borderRadius: 3, overflow: 'hidden', position: 'relative' }}>
+              <img src="/assets/aerial-night.jpg" alt="Architectural rendering of Eldorado at night" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <div style={{ position: 'absolute', bottom: '0.6rem', right: '0.75rem', fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(250,248,242,0.6)', background: 'rgba(10,26,46,0.55)', padding: '0.25rem 0.6rem', borderRadius: 2 }}>Rendering — updates as we build</div>
             </div>
 
             <div style={{ borderTop: '1px solid rgba(201,168,76,0.15)', paddingTop: '2.5rem' }}>
