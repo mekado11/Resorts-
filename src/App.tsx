@@ -70,7 +70,7 @@ function EldoradoApp() {
         {/* Public pages */}
         {page === 'home'          && <Home setPage={setPage_} />}
         {page === 'rooms'         && <Rooms onToast={showToast} />}
-        {page === 'dining'        && <Dining />}
+        {page === 'dining'        && <Dining onToast={showToast} />}
         {page === 'experiences'   && <Experiences setPage={setPage_} />}
         {page === 'membership'    && <Membership onToast={showToast} />}
         {page === 'contact'       && <Contact onToast={showToast} />}

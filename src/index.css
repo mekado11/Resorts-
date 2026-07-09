@@ -182,3 +182,64 @@ body {
   font-size: 0.9rem; max-width: 360px;
   animation: fadeUp 0.4s var(--ease-out);
 }
+
+/* ── Date Picker (react-day-picker v9 brand overrides) ── */
+.rdp-root {
+  --rdp-accent-color: var(--navy);
+  --rdp-accent-background-color: rgba(201, 168, 76, 0.15);
+  --rdp-today-color: var(--gold);
+  --rdp-day_button-border-radius: 3px;
+  --rdp-day-width: 40px;
+  --rdp-day-height: 40px;
+  --rdp-day_button-width: 38px;
+  --rdp-day_button-height: 38px;
+  --rdp-nav_button-width: 2rem;
+  --rdp-nav_button-height: 2rem;
+  font-family: 'Jost', sans-serif;
+}
+.rdp-month_caption,
+.rdp-caption_label {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 1.15rem;
+  color: var(--navy);
+}
+.rdp-weekday {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(13, 27, 42, 0.45);
+}
+.rdp-day_button {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: var(--navy);
+  transition: background 0.15s, color 0.15s;
+}
+.rdp-day_button:hover:not(:disabled) {
+  background: rgba(201, 168, 76, 0.15);
+}
+.rdp-selected .rdp-day_button {
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  font-weight: 600;
+}
+.rdp-today:not(.rdp-outside):not(.rdp-selected) .rdp-day_button {
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+.rdp-disabled:not(.rdp-selected) {
+  opacity: 0.3;
+}
+.rdp-disabled .rdp-day_button {
+  cursor: not-allowed;
+}
+.rdp-chevron {
+  fill: var(--gold);
+}
+.rdp-button_next:hover:not(:disabled) .rdp-chevron,
+.rdp-button_previous:hover:not(:disabled) .rdp-chevron {
+  fill: var(--navy);
+}

@@ -46,10 +46,11 @@ const MENUS = {
       {
         heading: 'Dine',
         links: [
-          { label: 'Restaurant',           page: 'dining' },
+          { label: 'Restaurant',           page: 'dining', anchor: 'fine-dining' },
+          { label: 'Casual Dining',        page: 'dining', anchor: 'casual-dining' },
           { label: 'Private Dining',       page: 'dining' },
           { label: "Chef's Table",         page: 'dining' },
-          { label: 'Afternoon Tea',        page: 'dining' },
+          { label: 'Afternoon Tea',        page: 'dining', anchor: 'tea-at-eldorado' },
         ],
       },
       {
