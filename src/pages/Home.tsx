@@ -45,11 +45,37 @@ export default function Home({ setPage }: HomeProps) {
   }, []);
 
   const stats = [
-    { n: '90',  l: 'Rooms & Suites' },
-    { n: '6',   l: 'Floor Levels' },
-    { n: '380', l: 'Premier League Matches Per Season' },
-    { n: '5★',  l: 'Standard of Service' },
+    { n: '90',      l: 'Rooms & Suites' },
+    { n: 'Private', l: 'Villas & Suites' },
+    { n: '380',     l: 'Premier League Matches Per Season' },
+    { n: '5★',      l: 'Standard of Service' },
   ];
+
+  // Proximity locations — confirmed by Michael Effiong + Uyo research
+  const proximity = [
+    { tag: 'Airport',   name: 'Akwa Ibom International Airport',    dist: '~15 min', desc: 'Direct international and domestic connections. The only major airport serving the south-south coast.', img: null },
+    { tag: 'Sport',     name: 'PIO Football Academy',               dist: '~10 min', desc: 'Founded by Dr. Unoma Godswill Akpabio. Located along Airport Road — one of the most significant sports academies in the Niger Delta.', img: null },
+    { tag: 'Health',    name: 'Methodist General Hospital',         dist: '~15 min', desc: 'One of the most established medical institutions in Akwa Ibom State.', img: null },
+    { tag: 'Leisure',   name: 'Ibom Tropicana Entertainment Centre', dist: '~25 min', desc: 'A 14-storey complex with hotel, 10,000-seat dome, cinema, theme park, and shopping. Modelled after Sun City.', img: null },
+    { tag: 'Leisure',   name: 'Ibom Plaza',                        dist: '~27 min', desc: 'The commercial and social heart of Uyo — open theatre, double-rolled water fountain, and the city\'s foremost retail address.', img: null },
+    { tag: 'Faith',     name: 'International Christian Worship Centre', dist: '~25 min', desc: 'One of the most architecturally distinctive houses of worship in West Africa. Capacity exceeding 30,000.', img: '/assets/icwc-uyo.jpg' },
+    { tag: 'Coast',     name: 'Ibeno Beach',                       dist: '~60 min', desc: 'Nigeria\'s longest stretch of Atlantic coastline. 69 km of uninterrupted white sand where the Kwa Ibo River meets the sea.', img: '/assets/ibeno-beach.jpg' },
+    { tag: 'Culture',   name: 'Godswill Akpabio International Stadium', dist: '~20 min', desc: 'A 60,000-capacity landmark of continental football. Host of AFCON fixtures and the home ground of Akwa United FC.', img: null },
+    { tag: 'Culture',   name: 'National Museum of Colonial History', dist: '~22 min', desc: 'Artefacts, antiquities, and Akwa Ibom ethnography on Wellington Bassey Way. A shaded waterfront garden borders the creek.', img: null },
+    { tag: 'Culture',   name: 'Ibom Connection Monument',           dist: '~20 min', desc: 'The defining landmark at the heart of Uyo — a symbol of Akwa Ibom unity surrounded by curated gardens.', img: null },
+    { tag: 'Luxury',    name: 'Ibom Icon Hotel & Golf Resort',      dist: '~25 min', desc: 'The state\'s flagship 5-star reference. Eighteen-hole golf course, marina, and a direct neighbour to Ibom Tropicana.', img: null },
+  ];
+
+  const tagColor: Record<string, string> = {
+    Airport: '#1B474D',
+    Sport:   '#6E522B',
+    Health:  '#437A22',
+    Leisure: '#7A39BB',
+    Faith:   '#A84B2F',
+    Coast:   '#006494',
+    Culture: '#0D1B2A',
+    Luxury:  '#C9A84C',
+  };
 
   const experiences = [
     { tag: 'Weddings',         title: 'Where Ceremonies Become Legacy', desc: 'The day you have imagined, held in a space built to hold it.', img: 'hero-wedding.jpg', page: 'experiences' },
@@ -217,6 +243,52 @@ export default function Home({ setPage }: HomeProps) {
                   <div style={{ fontSize: '0.74rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.5rem' }}>{e.tag}</div>
                   <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.74rem', fontWeight: 500, marginBottom: '0.75rem' }}>{e.title}</div>
                   <p style={{ fontSize: 'clamp(0.88rem, 2vw, 1.09rem)', lineHeight: 1.75, color: 'rgba(13,27,42,0.7)' }}>{e.desc}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Private Villas teaser ── */}
+      <section className="section section-navy" style={{ textAlign: 'center' }}>
+        <Reveal>
+          <div style={{ fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1.25rem' }}>Accommodations</div>
+          <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(2.5rem,5vw,3.7rem)', fontWeight: 300, color: 'var(--ivory)', marginBottom: '1.5rem' }}>Private Villas &amp; Suites</h2>
+          <p style={{ fontFamily: "'Jost',sans-serif", fontSize: '1.06rem', fontWeight: 300, color: 'rgba(250,248,242,0.68)', maxWidth: 640, margin: '0 auto 2.5rem', lineHeight: 1.9 }}>
+            Six distinct accommodations — from The Manor to the Eldorado Flagship Suite — each a private world shaped around those who inhabit it. No two stays are the same. Every tier begins where other hotels end.
+          </p>
+          <button className="btn-primary" onClick={() => nav('rooms')}>View Rooms &amp; Suites</button>
+        </Reveal>
+      </section>
+
+      {/* ── What Surrounds You — Proximity ── */}
+      <section className="section section-ivory">
+        <Reveal>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(2.2rem,4.5vw,3.5rem)', fontWeight: 300, marginBottom: '1rem' }}>What Surrounds You</h2>
+            <p style={{ fontFamily: "'Jost',sans-serif", fontSize: '1rem', fontWeight: 300, color: 'rgba(13,27,42,0.58)', maxWidth: 580, margin: '0 auto', lineHeight: 1.85 }}>
+              Uyo, Akwa Ibom — a city of surprising ambition. From our position on the Lagos-Calabar Coastal Road, the region's most significant landmarks are within reach.
+            </p>
+          </div>
+        </Reveal>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '1.25rem', maxWidth: 1200, margin: '0 auto' }}>
+          {proximity.map((p, i) => (
+            <Reveal key={p.name} delay={i * 60}>
+              <div style={{ background: '#fff', borderRadius: 4, overflow: 'hidden', border: '1px solid var(--linen)', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                {p.img && (
+                  <div style={{ height: 180, overflow: 'hidden' }}>
+                    <img src={p.img} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                )}
+                <div style={{ padding: '1.1rem 1.25rem 1.4rem', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
+                    <span style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#fff', background: tagColor[p.tag] || '#0D1B2A', padding: '0.28rem 0.6rem', borderRadius: 2 }}>{p.tag}</span>
+                    <span style={{ fontSize: '0.72rem', fontFamily: "'Jost',sans-serif", color: 'var(--gold)', letterSpacing: '0.06em', fontWeight: 600 }}>{p.dist}</span>
+                  </div>
+                  <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.2rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '0.5rem', lineHeight: 1.3 }}>{p.name}</div>
+                  <p style={{ fontSize: '0.82rem', lineHeight: 1.7, color: 'rgba(13,27,42,0.62)', margin: 0 }}>{p.desc}</p>
                 </div>
               </div>
             </Reveal>
