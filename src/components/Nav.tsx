@@ -105,7 +105,7 @@ const MENUS = {
         heading: 'Eldorado',
         links: [
           { label: 'Our Journey',          page: 'journey' },
-          { label: 'Sustainability',        page: 'journey' },
+          { label: 'Sustainability',        page: 'capital', anchor: 'sustainability' },
           { label: 'The People Behind Eldorado', page: 'journey' },
         ],
       },
@@ -195,12 +195,19 @@ export default function Nav({ currentPage, setPage }: NavProps) {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const nav = (page: string) => {
+  const nav = (page: string, anchor?: string) => {
     setPage(page);
     setMobileOpen(false);
     setActiveMenu(null);
     setAccountOpen(false);
-    window.scrollTo(0, 0);
+    if (anchor) {
+      // wait for the target page to mount before scrolling to its section
+      setTimeout(() => {
+        document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 60);
+    } else {
+      window.scrollTo(0, 0);
+    }
   };
 
   const handleMouseEnter = (id: MenuKey) => {
@@ -436,7 +443,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
                   {col.links.map(link => (
                     <button
                       key={link.label}
-                      onClick={() => nav(link.page)}
+                      onClick={() => nav(link.page, (link as { anchor?: string }).anchor)}
                       style={{
                         background: 'none', border: 'none', padding: '0.3rem 0',
                         textAlign: 'left', cursor: 'pointer',
@@ -541,7 +548,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
                 {isOpen && (
                   <div style={{ paddingBottom: '1rem' }}>
                     {menu.cols.flatMap(col => col.links).map(l => (
-                      <button key={l.label} onClick={() => nav(l.page)} style={{
+                      <button key={l.label} onClick={() => nav(l.page, (l as { anchor?: string }).anchor)} style={{
                         display: 'block', width: '100%', background: 'none', border: 'none',
                         padding: '0.5rem 0.75rem', textAlign: 'left', cursor: 'pointer',
                         fontFamily: "'Jost',sans-serif", fontSize: '0.8rem',
