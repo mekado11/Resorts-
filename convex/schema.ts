@@ -115,6 +115,11 @@ export default defineSchema({
     totalNGN: v.number(),
     status: v.string(),
 
+    // Membership credit tracking
+    bookingSource: v.optional(v.string()),      // "direct" | "third_party"
+    eligibleSpendNGN: v.optional(v.number()),   // spend credited toward membership (post-source rules)
+    courtesyNight: v.optional(v.boolean()),     // true = 3rd-party courtesy night (counts as 1 qualifying night)
+
     // Guest Arrival Profile
     occasion: v.optional(v.string()),
     roomMood: v.optional(v.string()),
@@ -183,12 +188,27 @@ export default defineSchema({
     name: v.string(),
     email: v.string(),
     phone: v.string(),
-    tier: v.string(),
+    tier: v.string(),                             // "member" | "reserve" | "estate" | "pinnacle"
     organisation: v.optional(v.string()),
     notes: v.optional(v.string()),
-    status: v.string(),
+    status: v.string(),                           // "pending" | "active" | "declined" | "expired"
     createdAt: v.number(),
+
+    // Linked account
+    userId: v.optional(v.id("eldoradoUsers")),
+
+    // Rolling qualification window (12 months for Member/Reserve/Estate; 24 for Pinnacle)
+    windowStart: v.optional(v.number()),          // timestamp of rolling window start
+    qualifyingNights: v.optional(v.number()),     // nights credited in current window
+    separateStays: v.optional(v.number()),        // distinct stay count in current window
+    spendForYear: v.optional(v.number()),         // eligible spend (NGN) in current window
+
+    // Staff approval
+    approvedBy: v.optional(v.string()),           // staff name or ID
+    approvedAt: v.optional(v.number()),           // timestamp
   })
     .index("by_tier", ["tier"])
-    .index("by_status", ["status"]),
+    .index("by_status", ["status"])
+    .index("by_email", ["email"])
+    .index("by_user", ["userId"]),
 });

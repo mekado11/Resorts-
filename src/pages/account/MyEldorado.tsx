@@ -3,6 +3,31 @@ import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import AccountLayout from './AccountLayout';
 
+// ─── Tier display helpers ─────────────────────────────────────────────────────
+const TIER_LABELS: Record<string, string> = {
+  member:  'Member',
+  reserve: 'Reserve',
+  estate:  'Estate',
+  pinnacle: 'Pinnacle',
+};
+const TIER_COLORS: Record<string, string> = {
+  member:  'rgba(201,168,76,0.75)',
+  reserve: '#C9A84C',
+  estate:  '#20808D',
+  pinnacle: '#8B2035',
+};
+const TIER_THRESHOLDS: Record<string, { nights: number; spend: number; spendLabel: string }> = {
+  member:  { nights: 5,  spend: 1_250_000, spendLabel: '₦1.25M' },
+  reserve: { nights: 12, spend: 3_500_000, spendLabel: '₦3.5M' },
+  estate:  { nights: 25, spend: 8_000_000, spendLabel: '₦8M' },
+};
+
+function formatNGN(n: number): string {
+  if (n >= 1_000_000) return `₦${(n / 1_000_000).toFixed(2)}M`;
+  if (n >= 1_000)     return `₦${(n / 1_000).toFixed(0)}K`;
+  return `₦${n.toLocaleString()}`;
+}
+
 function greeting(): string {
   const h = new Date().getHours();
   if (h < 12) return 'Good morning';
@@ -19,6 +44,105 @@ const cardTitle: React.CSSProperties = {
 const sectionHead: React.CSSProperties = {
   fontFamily: "'Cormorant Garamond',serif", fontSize: '1.35rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '0.5rem',
 };
+
+// ─── Membership progress card component ────────────────────────────────────────
+function ProgressBar({ value, max, color }: { value: number; max: number; color: string }) {
+  const pct = Math.min(100, max > 0 ? (value / max) * 100 : 0);
+  return (
+    <div style={{ background: 'rgba(13,27,42,0.08)', borderRadius: 2, height: 4, overflow: 'hidden', marginTop: '0.25rem' }}>
+      <div style={{ width: `${pct}%`, height: '100%', background: color, borderRadius: 2, transition: 'width 0.5s ease' }} />
+    </div>
+  );
+}
+
+function MembershipCard({ token, setPage, createdAt }: { token: string | null; setPage: (p: string) => void; createdAt?: number }) {
+  const status = useQuery(api.memberships.getMyStatus, token ? { token } : 'skip');
+
+  // status === undefined → loading; null → no active membership or not signed in
+  const accentColor = status ? (TIER_COLORS[status.tier] ?? 'var(--gold)') : 'var(--gold)';
+
+  return (
+    <div style={{ background: '#fff', border: '1px solid var(--linen)', borderRadius: 4, padding: '1.5rem' }} data-testid="card-membership-progress">
+      <div style={{ fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.75rem' }}>The Eldorado Circle</div>
+
+      {status === undefined && (
+        // loading skeleton
+        <div style={{ height: 60, background: 'rgba(13,27,42,0.04)', borderRadius: 3, marginBottom: '1rem', animation: 'pulse 1.5s ease-in-out infinite' }} />
+      )}
+
+      {status === null && (
+        // no active membership
+        <>
+          <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.05rem', fontStyle: 'italic', color: 'rgba(13,27,42,0.5)', lineHeight: 1.65, marginBottom: '1.25rem' }}>
+            Discover the privileges reserved for Eldorado Circle members.
+          </p>
+          <button className="btn-primary" onClick={() => setPage('membership')}>Explore The Eldorado Circle</button>
+        </>
+      )}
+
+      {status && (
+        <>
+          <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.35rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '0.25rem' }}>
+            {TIER_LABELS[status.tier] ?? status.tier}
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'rgba(13,27,42,0.4)', marginBottom: '1rem' }}>
+            Member since {new Date(createdAt ?? Date.now()).getFullYear()}
+          </div>
+
+          {/* Pinnacle: no progress, no bars */}
+          {status.isPinnacle ? (
+            <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.5)', fontStyle: 'italic', marginBottom: '1.25rem', lineHeight: 1.65 }}>
+              Your membership is by invitation — a distinction we extend to very few.
+            </div>
+          ) : (
+            <>
+              {/* Nights progress */}
+              {status.thresholds && (
+                <div style={{ marginBottom: '0.85rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.2rem' }}>
+                    <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.55)' }}>Nights this year</span>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--navy)' }}>
+                      {status.qualifyingNights} / {status.thresholds.nights}
+                    </span>
+                  </div>
+                  <ProgressBar value={status.qualifyingNights} max={status.thresholds.nights} color={accentColor} />
+                </div>
+              )}
+
+              {/* Spend progress */}
+              {status.thresholds && (
+                <div style={{ marginBottom: '1rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.2rem' }}>
+                    <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.55)' }}>Spend for this year</span>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--navy)' }}>
+                      {formatNGN(status.spendForYear)} / {status.thresholds.spendLabel}
+                    </span>
+                  </div>
+                  <ProgressBar value={status.spendForYear} max={status.thresholds.spend} color={accentColor} />
+                </div>
+              )}
+
+              {/* Closest path hint */}
+              {status.closestPath && (
+                <div style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.5)', lineHeight: 1.65, marginBottom: '1.1rem', fontStyle: 'italic' }}>
+                  {status.closestPath}
+                </div>
+              )}
+
+              {status.nextTier && (
+                <div style={{ fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: accentColor, marginBottom: '1.1rem' }}>
+                  Next: {TIER_LABELS[status.nextTier] ?? status.nextTier} Status
+                </div>
+              )}
+            </>
+          )}
+
+          <button className="btn-primary" onClick={() => setPage('membership')}>View Membership</button>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function MyEldorado({ setPage }: { setPage: (p: string) => void }) {
   const { user, token, displayName } = useAuth();
@@ -129,15 +253,8 @@ export default function MyEldorado({ setPage }: { setPage: (p: string) => void }
           )}
         </div>
 
-        {/* Membership */}
-        <div style={card}>
-          <div style={cardTitle}>Your Membership</div>
-          <div style={sectionHead}>Member</div>
-          <div style={{ fontSize: '0.8rem', color: 'rgba(13,27,42,0.45)', marginBottom: '1.25rem' }}>
-            Member since {new Date(user?.createdAt ?? Date.now()).getFullYear()}
-          </div>
-          <button className="btn-primary" onClick={() => setPage('membership')}>View Membership</button>
-        </div>
+        {/* ── Membership progress card ── */}
+        <MembershipCard token={token} setPage={setPage} createdAt={user?.createdAt} />
 
         {/* Past Stays */}
         {past.length > 0 && (
