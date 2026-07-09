@@ -53,17 +53,17 @@ export default function Home({ setPage }: HomeProps) {
 
   // Proximity locations — confirmed by Michael Effiong + Uyo research
   const proximity = [
-    { tag: 'Airport',   name: 'Akwa Ibom International Airport',    dist: '~15 min', desc: 'Direct international and domestic connections. The only major airport serving the south-south coast.', img: null },
-    { tag: 'Sport',     name: 'PIO Football Academy',               dist: '~10 min', desc: 'Founded by Dr. Unoma Godswill Akpabio. Located along Airport Road — one of the most significant sports academies in the Niger Delta.', img: null },
+    { tag: 'Airport',   name: 'Akwa Ibom International Airport',    dist: '~5 min', desc: 'Direct international and domestic connections. The only major airport serving the south-south coast.', img: null },
+    { tag: 'Sport',     name: 'PIO Football Academy',               dist: '~6 min', desc: 'Founded by Godswill Akpabio. Located along Airport Road — one of the most significant sports academies in the Niger Delta.', img: null },
     { tag: 'Health',    name: 'Methodist General Hospital',         dist: '~15 min', desc: 'One of the most established medical institutions in Akwa Ibom State.', img: null },
     { tag: 'Leisure',   name: 'Ibom Tropicana Entertainment Centre', dist: '~25 min', desc: 'A 14-storey complex with hotel, 10,000-seat dome, cinema, theme park, and shopping. Modelled after Sun City.', img: null },
     { tag: 'Leisure',   name: 'Ibom Plaza',                        dist: '~27 min', desc: 'The commercial and social heart of Uyo — open theatre, double-rolled water fountain, and the city\'s foremost retail address.', img: null },
-    { tag: 'Faith',     name: 'International Christian Worship Centre', dist: '~25 min', desc: 'One of the most architecturally distinctive houses of worship in West Africa. Capacity exceeding 30,000.', img: '/assets/icwc-uyo.jpg' },
-    { tag: 'Coast',     name: 'Ibeno Beach',                       dist: '~60 min', desc: 'Nigeria\'s longest stretch of Atlantic coastline. 69 km of uninterrupted white sand where the Kwa Ibo River meets the sea.', img: '/assets/ibeno-beach.jpg' },
-    { tag: 'Culture',   name: 'Godswill Akpabio International Stadium', dist: '~20 min', desc: 'A 60,000-capacity landmark of continental football. Host of AFCON fixtures and the home ground of Akwa United FC.', img: null },
+    { tag: 'Faith',     name: 'International Christian Worship Centre', dist: '~25 min', desc: 'One of the most architecturally distinctive houses of worship in West Africa.', img: '/assets/icwc-uyo.jpg' },
+    { tag: 'Coast',     name: 'Ibeno Beach',                       dist: '~60 min', desc: 'Nigeria\'s longest stretch of Atlantic coastline. uninterrupted white sand where the Kwa Ibo River meets the sea.', img: '/assets/ibeno-beach.jpg' },
+    { tag: 'Culture',   name: 'Godswill Akpabio International Stadium', dist: '~20 min', desc: 'A 30,000-capacity landmark of continental football. Host of AFCON fixtures and the home ground of Akwa United FC.', img: null },
     { tag: 'Culture',   name: 'National Museum of Colonial History', dist: '~22 min', desc: 'Artefacts, antiquities, and Akwa Ibom ethnography on Wellington Bassey Way. A shaded waterfront garden borders the creek.', img: null },
     { tag: 'Culture',   name: 'Ibom Connection Monument',           dist: '~20 min', desc: 'The defining landmark at the heart of Uyo — a symbol of Akwa Ibom unity surrounded by curated gardens.', img: null },
-    { tag: 'Luxury',    name: 'Ibom Icon Hotel & Golf Resort',      dist: '~25 min', desc: 'The state\'s flagship 5-star reference. Eighteen-hole golf course, marina, and a direct neighbour to Ibom Tropicana.', img: null },
+    { tag: 'Luxury',    name: 'Ibom Icon Hotel & Golf Resort',      dist: '~25 min', desc: 'The state\'s flagship 3-star reference. Eighteen-hole golf course, marina, and a direct neighbour to Ibom Tropicana.', img: null },
   ];
 
   const tagColor: Record<string, string> = {
