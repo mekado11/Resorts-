@@ -136,6 +136,11 @@ const MENUS = {
 
 type MenuKey = keyof typeof MENUS;
 
+// Maps a current page to whichever menu section it belongs to (for persistent gold underline)
+function isPageInMenu(menuId: MenuKey, page: string): boolean {
+  return MENUS[menuId].cols.some(col => col.links.some(l => l.page === page));
+}
+
 const TOP_LINKS: { id: MenuKey; label: string }[] = [
   { id: 'stay',        label: 'Stay' },
   { id: 'experience',  label: 'Experience' },
@@ -257,12 +262,12 @@ export default function Nav({ currentPage, setPage }: NavProps) {
           {/* Logo */}
           <div onClick={() => nav('home')} style={{ cursor: 'pointer', flexShrink: 0 }}>
             <img src="/assets/logo-white.png" alt="Heights of Eldorado"
-              style={{ height: isMobile ? 56 : 80, width: 'auto' }} />
+              style={{ height: isMobile ? 72 : 162, width: 'auto' }} />
           </div>
 
           {/* Desktop centre links */}
           {!isMobile && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1.8rem, 2.2vw, 3rem)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1.4rem, 1.8vw, 2.5rem)' }}>
               {TOP_LINKS.map(link => (
                 <div
                   key={link.id}
@@ -271,20 +276,22 @@ export default function Nav({ currentPage, setPage }: NavProps) {
                   style={{ position: 'relative', height: 104, display: 'flex', alignItems: 'center' }}
                 >
                   <span style={{
-                    fontFamily: "'Jost',sans-serif", fontSize: '0.72rem',
-                    letterSpacing: '0.18em', textTransform: 'uppercase',
-                    color: activeMenu === link.id ? '#C9A84C' : 'rgba(250,248,242,0.85)',
+                    fontFamily: "'Jost',sans-serif", fontSize: '0.85rem',
+                    letterSpacing: '0.13em', textTransform: 'uppercase',
+                    color: (activeMenu === link.id || isPageInMenu(link.id, currentPage))
+                      ? '#C9A84C'
+                      : 'rgba(250,248,242,0.9)',
                     cursor: 'pointer', transition: 'color 0.2s', whiteSpace: 'nowrap',
-                    userSelect: 'none',
+                    userSelect: 'none', fontWeight: 400,
                   }}>
                     {link.label}
-                    <span style={{ fontSize: '0.45rem', marginLeft: '0.35rem', opacity: 0.55 }}>▼</span>
+                    <span style={{ fontSize: '0.48rem', marginLeft: '0.3rem', opacity: 0.5 }}>▼</span>
                   </span>
-                  {/* Active underline */}
+                  {/* Active / hover underline */}
                   <div style={{
                     position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
                     background: '#C9A84C',
-                    opacity: activeMenu === link.id ? 1 : 0,
+                    opacity: (activeMenu === link.id || isPageInMenu(link.id, currentPage)) ? 1 : 0,
                     transition: 'opacity 0.2s',
                   }} />
                 </div>
@@ -407,37 +414,38 @@ export default function Nav({ currentPage, setPage }: NavProps) {
               background: 'rgba(13,27,42,0.98)', backdropFilter: 'blur(20px)',
               borderTop: '1px solid rgba(201,168,76,0.15)',
               borderBottom: '1px solid rgba(201,168,76,0.15)',
-              padding: '2.5rem clamp(1.5rem,5vw,5rem)',
-              display: 'grid',
-              gridTemplateColumns: `repeat(${MENUS[activeMenu].cols.length}, 1fr) 240px`,
-              gap: '2.5rem',
+              padding: '1.6rem clamp(1.5rem,5vw,5rem)',
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '3rem',
               zIndex: 99,
               animation: 'megaFadeIn 0.18s ease',
             }}
           >
-            {/* Columns */}
+            {/* Columns — each one self-contained, no stretching */}
             {MENUS[activeMenu].cols.map((col) => (
-              <div key={col.heading}>
+              <div key={col.heading} style={{ minWidth: 160, flexShrink: 0 }}>
                 <div style={{
-                  fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase',
-                  color: 'rgba(201,168,76,0.5)', marginBottom: '1.1rem', fontFamily: "'Jost',sans-serif",
+                  fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase',
+                  color: 'rgba(201,168,76,0.6)', marginBottom: '0.75rem', fontFamily: "'Jost',sans-serif",
+                  fontWeight: 600,
                 }}>
                   {col.heading}
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0rem' }}>
                   {col.links.map(link => (
                     <button
                       key={link.label}
                       onClick={() => nav(link.page)}
                       style={{
-                        background: 'none', border: 'none', padding: '0.4rem 0',
+                        background: 'none', border: 'none', padding: '0.3rem 0',
                         textAlign: 'left', cursor: 'pointer',
-                        fontFamily: "'Jost',sans-serif", fontSize: '0.82rem',
-                        color: 'rgba(250,248,242,0.72)', letterSpacing: '0.04em',
-                        transition: 'color 0.15s',
+                        fontFamily: "'Jost',sans-serif", fontSize: '1.05rem',
+                        color: 'rgba(250,248,242,0.78)', letterSpacing: '0.02em',
+                        transition: 'color 0.15s', lineHeight: 1.4,
                       }}
                       onMouseEnter={e => (e.currentTarget.style.color = '#C9A84C')}
-                      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(250,248,242,0.72)')}
+                      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(250,248,242,0.78)')}
                     >
                       {link.label}
                     </button>
@@ -446,7 +454,7 @@ export default function Nav({ currentPage, setPage }: NavProps) {
               </div>
             ))}
 
-            {/* Featured card */}
+            {/* Featured card — compact, self-contained */}
             {(() => {
               const f = MENUS[activeMenu].featured;
               return (
@@ -454,27 +462,27 @@ export default function Nav({ currentPage, setPage }: NavProps) {
                   onClick={() => nav(f.page)}
                   style={{
                     position: 'relative', borderRadius: 5, overflow: 'hidden',
-                    cursor: 'pointer', minHeight: 200,
+                    cursor: 'pointer', width: 200, flexShrink: 0,
+                    minHeight: 160, alignSelf: 'stretch',
                   }}
                 >
                   <div style={{
                     position: 'absolute', inset: 0,
                     backgroundImage: `url('${f.img}')`,
                     backgroundSize: 'cover', backgroundPosition: 'center',
-                    transition: 'transform 0.4s ease',
                   }} />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.9) 0%, rgba(13,27,42,0.3) 60%)' }} />
-                  <div style={{ position: 'absolute', bottom: '1.2rem', left: '1.2rem', right: '1.2rem' }}>
-                    <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.2rem', fontWeight: 400, color: 'var(--ivory)', marginBottom: '0.3rem', lineHeight: 1.2 }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.2) 55%)' }} />
+                  <div style={{ position: 'absolute', bottom: '0.85rem', left: '0.9rem', right: '0.9rem' }}>
+                    <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.05rem', fontWeight: 400, color: 'var(--ivory)', marginBottom: '0.2rem', lineHeight: 1.2 }}>
                       {f.headline}
                     </div>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(250,248,242,0.55)', marginBottom: '0.9rem', lineHeight: 1.5 }}>
+                    <div style={{ fontSize: '0.65rem', color: 'rgba(250,248,242,0.5)', marginBottom: '0.6rem', lineHeight: 1.4 }}>
                       {f.sub}
                     </div>
                     <div style={{
-                      display: 'inline-block', padding: '0.45rem 1rem',
-                      border: '1px solid rgba(201,168,76,0.6)', borderRadius: 2,
-                      fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+                      display: 'inline-block', padding: '0.32rem 0.8rem',
+                      border: '1px solid rgba(201,168,76,0.55)', borderRadius: 2,
+                      fontSize: '0.55rem', letterSpacing: '0.16em', textTransform: 'uppercase',
                       color: '#C9A84C', fontFamily: "'Jost',sans-serif",
                     }}>
                       {f.cta}
