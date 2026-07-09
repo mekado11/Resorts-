@@ -16,15 +16,15 @@ const WORLDS: World[] = [
     tagline: 'Where ceremonies become legacy.',
     img: 'hero-wedding.jpg',
     teasers: [
-      { title: 'The Ekom Iban Pavilion', detail: 'Designed for the traditional Ibibio ceremony. The architecture, the ceremony flow, and the gathering are held within a space built for exactly this moment.' },
+      { title: 'The Pavilion', detail: 'Designed for the traditional Ibibio ceremony. The architecture, the ceremony flow, and the gathering are held within a space built for exactly this moment.' },
       { title: 'The Grand Ballroom', detail: 'For the reception that follows. Eight hundred guests, crystal chandeliers, and a service team that anticipates before it is asked.' },
       { title: 'The Bridal Experience', detail: 'A private suite, a dedicated host, and a morning of calm before everything begins.' },
       { title: 'The Proposal', detail: 'Before the wedding, there is the question. We help you ask it in a way that will be retold for decades.' },
     ],
   },
   {
-    id: 'ekom-iban',
-    name: 'Ekom Iban',
+    id: 'The Pavilion',
+    name: 'The Pavilion',
     tagline: 'Tradition, returned home.',
     img: 'hero-wedding.jpg',
     teasers: [
