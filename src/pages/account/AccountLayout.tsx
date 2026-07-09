@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { id: 'my-profile',        label: 'Personal Details' },
   { id: 'my-communications', label: 'Communications' },
   { id: 'my-security',       label: 'Security' },
+  { id: 'eldorado-cares',    label: 'Eldorado Cares' },
 ];
 
 interface Props {

@@ -56,9 +56,10 @@ export default function Nav({ currentPage, setPage }: NavProps) {
     { id: 'dining',      label: 'Dining' },
     { id: 'experiences', label: 'Experiences' },
     { id: 'membership',  label: 'Membership' },
-    { id: 'journey',     label: 'Our Journey' },
-    { id: 'capital',     label: 'Private Capital' },
-    { id: 'contact',     label: 'Contact' },
+    { id: 'journey',         label: 'Our Journey' },
+    { id: 'eldorado-cares',  label: 'Eldorado Cares' },
+    { id: 'capital',         label: 'Private Capital' },
+    { id: 'contact',         label: 'Contact' },
   ];
 
   const isDark = !HERO_PAGES.includes(currentPage) || scrolled;

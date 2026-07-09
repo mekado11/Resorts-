@@ -24,6 +24,7 @@ import MyProfile from './pages/account/MyProfile';
 import MyCommunications from './pages/account/MyCommunications';
 import MySecurity from './pages/account/MySecurity';
 import StaffView from './pages/StaffView';
+import EldoradoCares from './pages/EldoradoCares';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL);
 
@@ -92,6 +93,7 @@ function EldoradoApp() {
 
         {/* Staff view */}
         {page === 'staff'         && <StaffView />}
+        {page === 'eldorado-cares' && <EldoradoCares setPage={setPage_} />}
       </main>
 
       {showFooter && <Footer setPage={setPage_} />}
