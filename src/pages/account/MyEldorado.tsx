@@ -16,17 +16,12 @@ const TIER_COLORS: Record<string, string> = {
   estate:  '#20808D',
   pinnacle: '#8B2035',
 };
-const TIER_THRESHOLDS: Record<string, { nights: number; spend: number; spendLabel: string }> = {
-  member:  { nights: 5,  spend: 1_250_000, spendLabel: '₦1.25M' },
-  reserve: { nights: 12, spend: 3_500_000, spendLabel: '₦3.5M' },
-  estate:  { nights: 25, spend: 8_000_000, spendLabel: '₦8M' },
+// thresholds for the NEXT tier (used as progress targets in the dashboard)
+const TIER_THRESHOLDS: Record<string, { nights: number; stays: number }> = {
+  member:  { nights: 5,  stays: 2 },  // member -> reserve
+  reserve: { nights: 12, stays: 3 },  // reserve -> estate
+  estate:  { nights: 0,  stays: 0 },  // estate -> pinnacle (invitation)
 };
-
-function formatNGN(n: number): string {
-  if (n >= 1_000_000) return `₦${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000)     return `₦${(n / 1_000).toFixed(0)}K`;
-  return `₦${n.toLocaleString()}`;
-}
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -100,32 +95,25 @@ function MembershipCard({ token, setPage, createdAt }: { token: string | null; s
               {status.thresholds && (
                 <div style={{ marginBottom: '0.85rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.2rem' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.55)' }}>Nights this year</span>
+                    <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.55)' }}>Qualifying nights</span>
                     <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--navy)' }}>
-                      {status.qualifyingNights} / {status.thresholds.nights}
+                      {status.qualifyingNights} of {status.thresholds.nights}
                     </span>
                   </div>
                   <ProgressBar value={status.qualifyingNights} max={status.thresholds.nights} color={accentColor} />
                 </div>
               )}
 
-              {/* Spend progress */}
+              {/* Separate stays progress */}
               {status.thresholds && (
                 <div style={{ marginBottom: '1rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.2rem' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.55)' }}>Spend for this year</span>
+                    <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.55)' }}>Separate stays</span>
                     <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--navy)' }}>
-                      {formatNGN(status.spendForYear)} / {status.thresholds.spendLabel}
+                      {status.separateStays ?? 0} of {status.thresholds.stays} required
                     </span>
                   </div>
-                  <ProgressBar value={status.spendForYear} max={status.thresholds.spend} color={accentColor} />
-                </div>
-              )}
-
-              {/* Closest path hint */}
-              {status.closestPath && (
-                <div style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.5)', lineHeight: 1.65, marginBottom: '1.1rem', fontStyle: 'italic' }}>
-                  {status.closestPath}
+                  <ProgressBar value={status.separateStays ?? 0} max={status.thresholds.stays} color={accentColor} />
                 </div>
               )}
 

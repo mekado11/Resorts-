@@ -4,8 +4,8 @@ import { v } from "convex/values";
 // ─── Qualification thresholds ─────────────────────────────────────────────────
 const THRESHOLDS = {
   member:  { nights: 5,  spend: 1_250_000, stays: 2 },
-  reserve: { nights: 12, spend: 3_500_000, stays: 3 },
-  estate:  { nights: 25, spend: 8_000_000, stays: 5 },
+  reserve: { nights: 5,  spend: 3_500_000, stays: 2 },
+  estate:  { nights: 12, spend: 8_000_000, stays: 3 },
   pinnacle: null, // invitation only
 };
 
@@ -19,28 +19,18 @@ function nextTier(current: string): string | null {
 
 function closestPath(
   nights: number,
-  spend: number,
   stays: number,
   tier: string
 ): string | null {
   const th = THRESHOLDS[tier as keyof typeof THRESHOLDS];
   if (!th) return null;
   const nightsLeft = Math.max(0, th.nights - nights);
-  const spendLeft  = Math.max(0, th.spend  - spend);
   const staysLeft  = Math.max(0, th.stays  - stays);
-  if (nightsLeft === 0 && spendLeft === 0 && staysLeft === 0) return "You qualify. Awaiting staff review.";
+  if (nightsLeft === 0 && staysLeft === 0) return "You qualify. Awaiting staff review.";
   const parts: string[] = [];
   if (nightsLeft > 0) parts.push(`${nightsLeft} more night${nightsLeft > 1 ? "s" : ""}`);
   if (staysLeft  > 0) parts.push(`${staysLeft} more stay${staysLeft  > 1 ? "s" : ""}`);
-  // pick shortest path
-  const nightPath = nightsLeft > 0 ? `${nightsLeft} more night${nightsLeft > 1 ? "s" : ""}` : null;
-  const spendPath = spendLeft  > 0 ? `\u20a6${(spendLeft / 1_000_000).toFixed(2)}M more in eligible spend` : null;
-  if (nightsLeft > 0 && spendLeft > 0) {
-    return `Your closest path: ${nightsLeft} more night${nightsLeft > 1 ? "s" : ""} OR \u20a6${(spendLeft / 1_000_000).toFixed(2)}M more spend${staysLeft > 0 ? ` \u00b7 ${staysLeft} more stay${staysLeft > 1 ? "s" : ""}` : ""}.`;
-  }
-  if (nightsLeft > 0) return `Your closest path: ${nightsLeft} more night${nightsLeft > 1 ? "s" : ""}${staysLeft > 0 ? ` \u00b7 ${staysLeft} more stay${staysLeft > 1 ? "s" : ""}` : ""}.`;
-  if (spendLeft  > 0) return `Your closest path: \u20a6${(spendLeft / 1_000_000).toFixed(2)}M more in eligible spend${staysLeft > 0 ? ` \u00b7 ${staysLeft} more stay${staysLeft > 1 ? "s" : ""}` : ""}.`;
-  return staysLeft > 0 ? `Your closest path: ${staysLeft} more stay${staysLeft > 1 ? "s" : ""}.` : null;
+  return `${parts.join(" \u00b7 ")} to next status.`;
 }
 
 // ─── Public: get current membership status for authenticated guest ─────────────
@@ -88,7 +78,7 @@ export const getMyStatus = query({
       qualifyingNights: nights,
       spendForYear: spend,
       separateStays: stays,
-      closestPath: nextTh ? closestPath(nights, spend, stays, next!) : null,
+      closestPath: nextTh ? closestPath(nights, stays, next!) : null,
       nextTier: next,
       thresholds: nextTh,
     };

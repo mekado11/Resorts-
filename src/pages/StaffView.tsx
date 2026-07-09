@@ -318,13 +318,11 @@ function MembershipApplications() {
                     {app.phone        && <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginBottom: '0.25rem' }}>{app.phone}</div>}
                     {app.organisation && <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginBottom: '0.25rem' }}><span style={{ color: 'rgba(13,27,42,0.3)' }}>Organisation: </span>{app.organisation}</div>}
                     {app.notes        && <div style={{ marginTop: '0.75rem', padding: '0.65rem 0.85rem', background: 'rgba(13,27,42,0.03)', borderRadius: 3, fontSize: '0.8rem', color: 'rgba(13,27,42,0.6)', fontStyle: 'italic', lineHeight: 1.65 }}>"{app.notes}"</div>}
-                    {isActive && (
-                      <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'rgba(13,27,42,0.4)', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+                    <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'rgba(13,27,42,0.4)', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
                         <span><span style={{ color: 'rgba(13,27,42,0.3)' }}>Nights: </span><strong>{app.qualifyingNights ?? 0}</strong></span>
                         <span><span style={{ color: 'rgba(13,27,42,0.3)' }}>Stays: </span><strong>{app.separateStays ?? 0}</strong></span>
                         <span><span style={{ color: 'rgba(13,27,42,0.3)' }}>Spend: </span><strong>₦{((app.spendForYear ?? 0) / 1_000_000).toFixed(2)}M</strong></span>
                       </div>
-                    )}
                     <div style={{ marginTop: '0.75rem', fontSize: '0.7rem', color: 'rgba(13,27,42,0.3)' }}>
                       Submitted {new Date(app.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                       {app.approvedBy && <span> · {app.status === 'active' ? 'Approved' : 'Reviewed'} by <strong style={{ color: 'rgba(13,27,42,0.5)' }}>{app.approvedBy}</strong>{app.approvedAt ? ` on ${new Date(app.approvedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}` : ''}</span>}
@@ -343,7 +341,7 @@ function MembershipApplications() {
                         ✕  Decline
                       </button>
                     </>}
-                    {isActive && !isEditing && (
+                    {!isEditing && (
                       <button data-testid={`button-edit-${app._id}`} onClick={() => startEdit(app)}
                         style={{ padding: '0.6rem 1rem', background: 'transparent', color: NAVY, border: '1px solid rgba(13,27,42,0.2)', borderRadius: 3, fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer', textAlign: 'center' }}>
                         ✎  Edit Record
@@ -353,7 +351,7 @@ function MembershipApplications() {
                 </div>
 
                 {/* Inline edit panel — full width below */}
-                {isActive && isEditing && (
+                {isEditing && (
                   <div style={{ marginTop: '1.25rem', padding: '1.25rem 1.5rem', background: 'rgba(13,27,42,0.03)', border: '1px solid rgba(13,27,42,0.1)', borderRadius: 3 }}>
                     <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', marginBottom: '1rem' }}>Edit Qualifying Record</div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: '1rem', marginBottom: '1rem' }}>

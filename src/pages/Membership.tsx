@@ -14,12 +14,8 @@ const TIERS = [
     textOnAccent: 'rgba(13,27,42,0.9)',
     cta: 'Join My Eldorado',
     ctaActive: true,
-    qualification: {
-      nights: 5,
-      spend: '₦1.25M',
-      stays: 2,
-      window: 'rolling 12 months',
-    },
+    qualification: null as null | { nights: number; stays: number; window: string },
+    qualLabel: 'Begin your membership journey.',
     perks: [
       '1 complimentary night upon annual status renewal',
       '10% discount on room bookings',
@@ -38,14 +34,14 @@ const TIERS = [
     accentSolid: '#C9A84C',
     textOnAccent: '#fff',
     featured: true,
-    cta: 'Earn Reserve Status',
+    cta: 'View Benefits',
     ctaActive: true,
     qualification: {
-      nights: 12,
-      spend: '₦3.5M',
-      stays: 3,
+      nights: 5,
+      stays: 2,
       window: 'rolling 12 months',
     },
+    qualLabel: null as null | string,
     perks: [
       'Member benefits, plus:',
       '2 complimentary nights upon annual status renewal',
@@ -64,14 +60,14 @@ const TIERS = [
     accent: '#20808D',
     accentSolid: '#20808D',
     textOnAccent: '#fff',
-    cta: 'Earn Estate Status',
+    cta: 'View Benefits',
     ctaActive: true,
     qualification: {
-      nights: 25,
-      spend: '₦8M',
-      stays: 5,
+      nights: 12,
+      stays: 3,
       window: 'rolling 12 months',
     },
+    qualLabel: null as null | string,
     perks: [
       'Reserve benefits, plus:',
       '4 complimentary nights upon annual status renewal',
@@ -90,9 +86,10 @@ const TIERS = [
     accent: '#8B2035',
     accentSolid: '#8B2035',
     textOnAccent: '#fff',
-    cta: 'By Invitation Only',
+    cta: 'Discover Pinnacle',
     ctaActive: false,
-    qualification: null,
+    qualification: null as null | { nights: number; stays: number; window: string },
+    qualLabel: 'Membership is extended by personal invitation only.',
     perks: [
       'Estate benefits, plus:',
       '8 complimentary nights over membership term',
@@ -108,45 +105,10 @@ const TIERS = [
   },
 ];
 
-// ─── Spend explainer data ─────────────────────────────────────────────────────
-const SPEND_RULES = [
-  {
-    label: '100% credited',
-    color: '#437A22',
-    items: [
-      'Room & suite charges (direct bookings)',
-      'Dining charged to your guest profile',
-      'Spa & wellness (The Still Room)',
-      'Experiences & activities',
-      'Airport transfers',
-      'Ticketed events',
-    ],
-  },
-  {
-    label: '25% credited',
-    color: '#C9A84C',
-    items: [
-      'Qualifying event spend (e.g. weddings, private functions)',
-      'Example: ₦20M wedding → ₦5M credited to your spend total',
-    ],
-  },
-  {
-    label: 'Not credited',
-    color: '#A13544',
-    items: [
-      'Taxes and service charges',
-      'Refunded or cancelled stays',
-      'Third-party commissions (Travelocity, Booking.com, etc.)',
-      'Complimentary stays',
-      "Charges billed to another guest's account",
-    ],
-  },
-];
-
-// ─── Live approved member count component ───────────────────────────────────────
+// ─── Live approved member count component ─────────────────────────────────────
 function MemberCount() {
   const count = useQuery(api.memberships.getApprovedCount);
-  if (!count) return null; // hide when 0 or loading
+  if (!count) return null;
   return (
     <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
       <div style={{
@@ -177,7 +139,6 @@ export default function Membership({ onToast }: MembershipProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '', organisation: '', notes: '' });
   const [loading, setLoading] = useState(false);
-  const [spendOpen, setSpendOpen] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -231,19 +192,20 @@ export default function Membership({ onToast }: MembershipProps) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '1.5rem', maxWidth: 1200, margin: '0 auto 1.5rem', alignItems: 'start' }}>
           {TIERS.map(t => {
             const isSel = selected === t.id;
+            const canSelect = t.ctaActive && t.id !== 'pinnacle';
             return (
               <div
                 key={t.id}
                 data-testid={`card-tier-${t.id}`}
-                onClick={() => t.ctaActive && setSelected(t.id)}
+                onClick={() => canSelect && setSelected(t.id)}
                 style={{
                   border: isSel ? `2px solid ${t.accentSolid}` : '1px solid var(--linen)',
                   borderRadius: 5,
-                  cursor: t.ctaActive ? 'pointer' : 'default',
-                  background: isSel ? `rgba(201,168,76,0.04)` : '#fff',
+                  cursor: canSelect ? 'pointer' : 'default',
+                  background: isSel ? 'rgba(201,168,76,0.04)' : '#fff',
                   transition: 'all 0.25s',
                   overflow: 'hidden',
-                  boxShadow: isSel ? `0 8px 32px rgba(0,0,0,0.10)` : 'none',
+                  boxShadow: isSel ? '0 8px 32px rgba(0,0,0,0.10)' : 'none',
                   display: 'flex',
                   flexDirection: 'column',
                 }}
@@ -257,22 +219,20 @@ export default function Membership({ onToast }: MembershipProps) {
                 {/* Qualification block */}
                 <div style={{ padding: '1rem 1.5rem 0', borderBottom: '1px solid var(--linen)', flexShrink: 0 }}>
                   {t.qualification ? (
-                    <>
-                      <div style={{ fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', marginBottom: '0.5rem' }}>How to qualify — {t.qualification.window}</div>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
-                        <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.2rem', fontWeight: 600, color: t.accentSolid }}>{t.qualification.nights} nights</span>
-                        <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.45)' }}>or</span>
-                        <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.2rem', fontWeight: 600, color: t.accentSolid }}>{t.qualification.spend} spend</span>
+                    <div style={{ paddingBottom: '0.9rem' }}>
+                      <div style={{ fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', marginBottom: '0.5rem' }}>How to qualify</div>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem', marginBottom: '0.3rem' }}>
+                        <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.2rem', fontWeight: 600, color: t.accentSolid }}>{t.qualification.nights}</span>
+                        <span style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.65)' }}>qualifying nights per year</span>
                       </div>
-                      <div style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.5)', marginBottom: '0.9rem' }}>
-                        Minimum {t.qualification.stays} separate stays required
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(13,27,42,0.5)', marginBottom: '0.15rem' }}>
+                        Minimum {t.qualification.stays} separate stay{t.qualification.stays > 1 ? 's' : ''}
                       </div>
-                    </>
+                    </div>
                   ) : (
                     <div style={{ padding: '0.6rem 0 0.9rem' }}>
-                      <div style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.5)', lineHeight: 1.65 }}>
-                        Extended evaluation period.<br />
-                        Membership is extended by personal invitation only.
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(13,27,42,0.5)', lineHeight: 1.65 }}>
+                        {t.id === 'pinnacle' ? 'By invitation only.' : t.qualLabel}
                       </div>
                     </div>
                   )}
@@ -305,7 +265,10 @@ export default function Membership({ onToast }: MembershipProps) {
                   {/* CTA button */}
                   <button
                     data-testid={`button-cta-${t.id}`}
-                    onClick={e => { e.stopPropagation(); if (t.ctaActive) setSelected(t.id); }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      if (canSelect) setSelected(t.id);
+                    }}
                     disabled={!t.ctaActive}
                     style={{
                       width: '100%',
@@ -332,57 +295,12 @@ export default function Membership({ onToast }: MembershipProps) {
           })}
         </div>
 
-        {/* ── Booking source note ── */}
-        <div style={{ maxWidth: 1200, margin: '0 auto 2.5rem', padding: '0 0.25rem' }}>
+        {/* ── Membership note ── */}
+        <div style={{ maxWidth: 1200, margin: '0 auto 3.5rem', padding: '0 0.25rem' }}>
           <p style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.45)', lineHeight: 1.8, textAlign: 'center' }}>
-            Direct bookings made on this site earn full night and spend credit.
-            Third-party bookings (Travelocity, Booking.com, etc.) earn 25% spend credit and 1 courtesy qualifying night.
-            All membership status changes require staff review and approval.
+            All qualifying stays must be direct bookings made through Eldorado.<br />
+            Membership status changes require staff review and approval.
           </p>
-        </div>
-
-        {/* ── Eligible spend explainer ── */}
-        <div style={{ maxWidth: 760, margin: '0 auto 3.5rem' }}>
-          <button
-            data-testid="button-spend-explainer"
-            onClick={() => setSpendOpen(o => !o)}
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '1rem 1.5rem',
-              background: '#fff',
-              border: '1px solid var(--linen)',
-              borderRadius: spendOpen ? '4px 4px 0 0' : 4,
-              cursor: 'pointer',
-              fontFamily: "'Jost',sans-serif",
-            }}
-          >
-            <span style={{ fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.75)' }}>What counts toward your spend?</span>
-            <span style={{ fontSize: '1rem', color: 'var(--gold)', transition: 'transform 0.2s', display: 'inline-block', transform: spendOpen ? 'rotate(180deg)' : 'none' }}>▾</span>
-          </button>
-
-          {spendOpen && (
-            <div style={{ background: '#fff', border: '1px solid var(--linen)', borderTop: 'none', borderRadius: '0 0 4px 4px', padding: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '1.5rem' }}>
-              {SPEND_RULES.map(rule => (
-                <div key={rule.label}>
-                  <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: rule.color, fontWeight: 700, marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: rule.color, display: 'inline-block', flexShrink: 0 }} />
-                    {rule.label}
-                  </div>
-                  <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                    {rule.items.map((item, i) => (
-                      <li key={i} style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.65)', lineHeight: 1.55, paddingLeft: '0.9rem', position: 'relative' }}>
-                        <span style={{ position: 'absolute', left: 0, color: rule.color }}>·</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* ── Application form ── */}
@@ -419,7 +337,7 @@ export default function Membership({ onToast }: MembershipProps) {
                 <textarea data-testid="input-notes" className="form-input" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} style={{ resize: 'vertical' }} />
               </div>
               <button data-testid="button-submit" type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={loading}>
-                {loading ? 'Submitting…' : 'Submit Expression of Interest'}
+                {loading ? 'Submitting\u2026' : 'Submit Expression of Interest'}
               </button>
             </form>
           </div>
