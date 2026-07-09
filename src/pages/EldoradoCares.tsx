@@ -15,22 +15,26 @@ const PILLARS = [
   },
 ];
 
-const PROGRAMMES = [
+const PROGRAMMES_WITH_IMAGES = [
   {
     title: 'Boys and Girls Programmes',
     body: 'Creating safe, structured environments where young people can learn, grow, and belong.',
+    img: '/assets/cares-hero.jpg',
   },
   {
     title: 'Mentorship and Career Exposure',
     body: 'Connecting students directly with professionals across hospitality, business, and the creative industries.',
+    img: '/assets/cares-mentorship.jpg',
   },
   {
     title: 'Creative Arts and Sport',
     body: 'Supporting expression, discipline, and teamwork through culture, music, and athletics.',
+    img: '/assets/cares-arts.jpg',
   },
   {
     title: 'Skills and Hospitality Opportunities',
     body: 'Building practical skills that open doors to employment and entrepreneurship in the community.',
+    img: '/assets/cares-sport.jpg',
   },
 ];
 
@@ -43,7 +47,7 @@ export default function EldoradoCares({ setPage }: CaresProps) {
         {/* Background image */}
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: "url('/assets/lobby.jpg')",
+          backgroundImage: "url('/assets/cares-hero.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center 30%',
         }} />
@@ -208,34 +212,48 @@ export default function EldoradoCares({ setPage }: CaresProps) {
             </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '1.5rem' }}>
-            {PROGRAMMES.map((prog, i) => (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: '1.75rem' }}>
+            {PROGRAMMES_WITH_IMAGES.map((prog, i) => (
               <div key={prog.title} style={{
-                padding: '1.75rem',
-                background: 'var(--ivory)',
-                border: '1px solid rgba(13,27,42,0.08)',
-                borderRadius: 5,
+                background: '#fff',
+                border: '1px solid rgba(13,27,42,0.07)',
+                borderRadius: 6,
+                overflow: 'hidden',
               }}>
-                <div style={{
-                  width: 36, height: 36, borderRadius: '50%',
-                  border: '1px solid rgba(201,168,76,0.4)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  marginBottom: '1rem',
-                }}>
-                  <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1rem', color: '#C9A84C', fontWeight: 600 }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
+                {/* Programme image */}
+                {prog.img && (
+                  <div style={{
+                    height: 180,
+                    backgroundImage: `url('${prog.img}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    position: 'relative',
+                  }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, rgba(13,27,42,0.25) 100%)' }} />
+                  </div>
+                )}
+                <div style={{ padding: '1.5rem 1.5rem 1.75rem' }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: '50%',
+                    border: '1px solid rgba(201,168,76,0.4)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    marginBottom: '0.85rem',
+                  }}>
+                    <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '0.9rem', color: '#C9A84C', fontWeight: 600 }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+                  <h3 style={{
+                    fontFamily: "'Cormorant Garamond',serif",
+                    fontSize: '1.25rem',
+                    fontWeight: 500,
+                    color: 'var(--navy)',
+                    marginBottom: '0.6rem',
+                  }}>
+                    {prog.title}
+                  </h3>
+                  <p style={{ fontSize: '0.85rem', color: 'rgba(13,27,42,0.6)', lineHeight: 1.8 }}>{prog.body}</p>
                 </div>
-                <h3 style={{
-                  fontFamily: "'Cormorant Garamond',serif",
-                  fontSize: '1.25rem',
-                  fontWeight: 500,
-                  color: 'var(--navy)',
-                  marginBottom: '0.6rem',
-                }}>
-                  {prog.title}
-                </h3>
-                <p style={{ fontSize: '0.85rem', color: 'rgba(13,27,42,0.6)', lineHeight: 1.75 }}>{prog.body}</p>
               </div>
             ))}
           </div>

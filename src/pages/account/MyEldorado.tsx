@@ -497,7 +497,7 @@ function SavedExperiencesCard({ token, setPage }: { token: string | null; setPag
 function CaresImpactCard({ setPage }: { setPage: (p: string) => void }) {
   return (
     <div style={{ background: '#fff', border: '1px solid var(--linen)', borderRadius: 8, overflow: 'hidden' }}>
-      <div style={{ height: 130, backgroundImage: "url('/assets/lobby.jpg')", backgroundSize: 'cover', backgroundPosition: 'center top', position: 'relative' }}>
+      <div style={{ height: 130, backgroundImage: "url('/assets/cares-hero.jpg')", backgroundSize: 'cover', backgroundPosition: 'center 20%', position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.75) 100%)' }} />
         <div style={{ position: 'absolute', bottom: '0.75rem', left: '1rem', right: '1rem' }}>
           <div style={{ fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.85)', marginBottom: '0.2rem' }}>Eldorado Cares Impact</div>
@@ -526,9 +526,14 @@ function CaresImpactCard({ setPage }: { setPage: (p: string) => void }) {
 export default function MyEldorado({ setPage }: { setPage: (p: string) => void }) {
   const { user, token, displayName } = useAuth();
 
+  // Initials for avatar circle
+  const initials = displayName
+    ? displayName.split(' ').map((w: string) => w[0]).slice(0, 2).join('').toUpperCase()
+    : 'ME';
+
   return (
     <AccountLayout current="my-eldorado" setPage={setPage}>
-      {/* ── Top bar: greeting + user avatar area ── */}
+      {/* ── Top bar: greeting + notification bell + avatar ── */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(1.8rem,3vw,2.6rem)', fontWeight: 300, color: 'var(--navy)', marginBottom: '0.25rem', lineHeight: 1.1 }}>
@@ -537,6 +542,39 @@ export default function MyEldorado({ setPage }: { setPage: (p: string) => void }
           <p style={{ fontSize: '0.88rem', color: 'rgba(13,27,42,0.5)', lineHeight: 1.7 }}>
             Welcome back to My Eldorado.
           </p>
+        </div>
+        {/* Notification bell + avatar */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', flexShrink: 0 }}>
+          {/* Bell */}
+          <div style={{ position: 'relative', cursor: 'pointer' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="rgba(13,27,42,0.45)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="rgba(13,27,42,0.45)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {/* Badge */}
+            <div style={{
+              position: 'absolute', top: -3, right: -3,
+              width: 16, height: 16, borderRadius: '50%',
+              background: '#C9A84C', border: '2px solid var(--ivory)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <span style={{ fontSize: '0.42rem', color: '#fff', fontWeight: 700, fontFamily: "'Jost',sans-serif" }}>2</span>
+            </div>
+          </div>
+          {/* Avatar circle */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', cursor: 'pointer' }} onClick={() => setPage('my-profile')}>
+            <div style={{
+              width: 40, height: 40, borderRadius: '50%',
+              background: 'rgba(13,27,42,0.08)', border: '1.5px solid rgba(201,168,76,0.4)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <span style={{ fontFamily: "'Jost',sans-serif", fontSize: '0.7rem', fontWeight: 600, color: '#C9A84C', letterSpacing: '0.04em' }}>{initials}</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <span style={{ fontFamily: "'Jost',sans-serif", fontSize: '0.78rem', color: 'var(--navy)', fontWeight: 500 }}>{displayName}</span>
+              <span style={{ fontSize: '0.5rem', color: 'rgba(13,27,42,0.35)' }}>▼</span>
+            </div>
+          </div>
         </div>
       </div>
 
