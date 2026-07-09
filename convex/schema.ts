@@ -141,6 +141,26 @@ export default defineSchema({
     .index("by_room_tier", ["roomTier"])
     .index("by_user", ["userId"]),
 
+  // ─── Dining Reservations ─────────────────────────────────────────────────
+
+  diningReservations: defineTable({
+    guestName: v.string(),
+    guestEmail: v.string(),
+    guestPhone: v.string(),
+    diningType: v.string(),      // "casual" | "fine" | "tea"
+    venueName: v.string(),       // "The Table" | "Oro Lounge & Gaffer's Grill" | "Tea at Eldorado"
+    date: v.string(),            // ISO yyyy-mm-dd
+    time: v.string(),            // 24h value, e.g. "19:30"
+    partySize: v.number(),       // 1–10 (parties larger than 10 route through enquiries)
+    occasion: v.optional(v.string()),
+    specialRequests: v.optional(v.string()),
+    status: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_email", ["guestEmail"])
+    .index("by_status", ["status"])
+    .index("by_date", ["date"]),
+
   // ─── Legacy tables (kept for backward compat) ─────────────────────────────
 
   guests: defineTable({
