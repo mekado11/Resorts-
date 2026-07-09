@@ -305,7 +305,7 @@ function WorldPanel({ w, onClose }: { w: World; onClose: () => void }) {
 }
 
 // ── Page ───────────────────────────────────────────────────────────────────────
-export default function Experiences() {
+export default function Experiences({ setPage }: { setPage?: (p: string) => void }) {
   const [open, setOpen] = useState<string | null>(null);
 
   const handleSelect = (id: string) => {

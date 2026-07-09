@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 interface NavProps {
   currentPage: string;
@@ -9,9 +10,27 @@ interface NavProps {
 const HERO_PAGES = ['home'];
 
 export default function Nav({ currentPage, setPage }: NavProps) {
+  const { user, signOut, displayName } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
+
+  // Close account dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) setAccountOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const handleSignOut = async () => {
+    await signOut();
+    setAccountOpen(false);
+    setPage('home');
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -91,6 +110,57 @@ export default function Nav({ currentPage, setPage }: NavProps) {
                 {l.label}
               </span>
             ))}
+            {/* Auth — Sign In or account dropdown */}
+            {user ? (
+              <div ref={accountRef} style={{ position: 'relative' }}>
+                <button onClick={() => setAccountOpen(o => !o)} style={{
+                  background: 'none', border: '1px solid rgba(250,248,242,0.35)', borderRadius: 3,
+                  padding: '0.55rem 0.95rem', color: 'rgba(250,248,242,0.9)', fontSize: '0.72rem',
+                  letterSpacing: '0.1em', fontFamily: "'Jost',sans-serif", cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: '0.4rem', whiteSpace: 'nowrap',
+                }}>
+                  {displayName}
+                  <span style={{ fontSize: '0.55rem', opacity: 0.6 }}>▼</span>
+                </button>
+                {accountOpen && (
+                  <div style={{
+                    position: 'absolute', top: 'calc(100% + 0.5rem)', right: 0, background: 'var(--ivory)',
+                    borderRadius: 3, boxShadow: '0 4px 20px rgba(13,27,42,0.18)', minWidth: 180, zIndex: 200, overflow: 'hidden',
+                  }}>
+                    {[
+                      { id: 'my-eldorado', label: 'My Eldorado' },
+                      { id: 'my-stays', label: 'My Stays' },
+                      { id: 'my-preferences', label: 'My Preferences' },
+                      { id: 'my-profile', label: 'Profile' },
+                    ].map(item => (
+                      <button key={item.id} onClick={() => { nav(item.id); setAccountOpen(false); }} style={{
+                        display: 'block', width: '100%', padding: '0.75rem 1rem', background: 'none',
+                        border: 'none', textAlign: 'left', fontSize: '0.82rem', fontFamily: "'Jost',sans-serif",
+                        color: 'var(--navy)', cursor: 'pointer', borderBottom: '1px solid rgba(13,27,42,0.06)',
+                      }}>
+                        {item.label}
+                      </button>
+                    ))}
+                    <button onClick={handleSignOut} style={{
+                      display: 'block', width: '100%', padding: '0.75rem 1rem', background: 'none',
+                      border: 'none', textAlign: 'left', fontSize: '0.82rem', fontFamily: "'Jost',sans-serif",
+                      color: 'rgba(13,27,42,0.45)', cursor: 'pointer',
+                    }}>
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button onClick={() => nav('signin')} style={{
+                background: 'none', border: '1px solid rgba(250,248,242,0.35)', borderRadius: 3,
+                padding: '0.55rem 0.95rem', color: 'rgba(250,248,242,0.9)', fontSize: '0.72rem',
+                letterSpacing: '0.1em', fontFamily: "'Jost',sans-serif", cursor: 'pointer', whiteSpace: 'nowrap',
+              }}>
+                Sign In
+              </button>
+            )}
+
             <button className="btn-primary" onClick={() => nav('rooms')}
               style={{ padding: '0.75rem 1.6rem', fontSize: '0.72rem', whiteSpace: 'nowrap' }}>
               Reserve

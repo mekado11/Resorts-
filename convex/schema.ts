@@ -2,7 +2,142 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-  // Guest accounts
+  // ─── Authentication ────────────────────────────────────────────────────────
+
+  eldoradoUsers: defineTable({
+    firstName: v.string(),
+    lastName: v.string(),
+    preferredName: v.optional(v.string()),
+    email: v.string(),
+    passwordHash: v.string(),
+    mobile: v.optional(v.string()),
+    country: v.optional(v.string()),
+    dateOfBirth: v.optional(v.string()),
+    emailVerified: v.boolean(),
+    marketingConsent: v.boolean(),
+    createdAt: v.number(),
+    lastLoginAt: v.optional(v.number()),
+  })
+    .index("by_email", ["email"]),
+
+  sessions: defineTable({
+    userId: v.id("eldoradoUsers"),
+    token: v.string(),
+    createdAt: v.number(),
+    expiresAt: v.number(),
+  })
+    .index("by_token", ["token"])
+    .index("by_user", ["userId"]),
+
+  passwordResets: defineTable({
+    userId: v.id("eldoradoUsers"),
+    token: v.string(),
+    expiresAt: v.number(),
+    used: v.boolean(),
+  })
+    .index("by_token", ["token"]),
+
+  // ─── Guest Profile ─────────────────────────────────────────────────────────
+
+  guestProfiles: defineTable({
+    userId: v.id("eldoradoUsers"),
+    guestStatus: v.string(),       // "guest" | "returning" | "member"
+    totalStayCount: v.number(),
+    firstStayDate: v.optional(v.string()),
+    lastStayDate: v.optional(v.string()),
+    favouriteRoomCategory: v.optional(v.string()),
+  })
+    .index("by_user", ["userId"]),
+
+  // ─── Preferences ──────────────────────────────────────────────────────────
+
+  guestPreferences: defineTable({
+    userId: v.id("eldoradoUsers"),
+    category: v.string(),          // "room" | "food" | "arrival" | "travelStyle" | "communication"
+    preferenceType: v.string(),    // e.g. "pillowPreference", "morningDrink"
+    value: v.string(),             // JSON string for multi-select, plain string for single
+    persistent: v.boolean(),       // true = remember across stays, false = this stay only
+    source: v.string(),            // "guest_profile" | "during_booking" | "staff_confirmed"
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_user_category", ["userId", "category"]),
+
+  // ─── Occasions ────────────────────────────────────────────────────────────
+
+  occasions: defineTable({
+    userId: v.id("eldoradoUsers"),
+    occasionType: v.string(),      // "birthday" | "anniversary" | "other"
+    occasionDate: v.string(),      // MM-DD format
+    label: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_user", ["userId"]),
+
+  // ─── Saved Experiences ────────────────────────────────────────────────────
+
+  savedExperiences: defineTable({
+    userId: v.id("eldoradoUsers"),
+    experienceName: v.string(),
+    experienceCategory: v.string(),
+    experienceDesc: v.optional(v.string()),
+    savedAt: v.number(),
+  })
+    .index("by_user", ["userId"]),
+
+  // ─── Communication Preferences ────────────────────────────────────────────
+
+  communicationPrefs: defineTable({
+    userId: v.id("eldoradoUsers"),
+    serviceEmail: v.boolean(),
+    marketingEmail: v.boolean(),
+    marketingSMS: v.boolean(),
+    eventInvitations: v.boolean(),
+    preferredStayContact: v.string(), // "whatsapp" | "sms" | "email" | "phone" | "none"
+    updatedAt: v.number(),
+  })
+    .index("by_user", ["userId"]),
+
+  // ─── Bookings (updated to support account linking) ─────────────────────────
+
+  bookings: defineTable({
+    userId: v.optional(v.id("eldoradoUsers")),   // linked account (optional)
+    guestId: v.optional(v.id("guests")),
+    guestName: v.string(),
+    guestEmail: v.string(),
+    guestPhone: v.string(),
+    roomTier: v.number(),
+    roomName: v.string(),
+    checkIn: v.string(),
+    checkOut: v.string(),
+    nights: v.number(),
+    totalNGN: v.number(),
+    status: v.string(),
+
+    // Guest Arrival Profile
+    occasion: v.optional(v.string()),
+    roomMood: v.optional(v.string()),
+    arrivalWelcome: v.optional(v.string()),
+    welcomeStyle: v.optional(v.string()),
+    firstNightPriority: v.optional(v.string()),
+    oneMoreThing: v.optional(v.string()),
+
+    // Operational
+    dietaryRequirements: v.optional(v.string()),
+    accessibilityNeeds: v.optional(v.string()),
+    prayerRoom: v.optional(v.string()),
+    notes: v.optional(v.string()),
+
+    createdAt: v.number(),
+  })
+    .index("by_email", ["guestEmail"])
+    .index("by_status", ["status"])
+    .index("by_room_tier", ["roomTier"])
+    .index("by_user", ["userId"]),
+
+  // ─── Legacy tables (kept for backward compat) ─────────────────────────────
+
   guests: defineTable({
     name: v.string(),
     email: v.string(),
@@ -12,7 +147,6 @@ export default defineSchema({
     createdAt: v.number(),
   }).index("by_email", ["email"]),
 
-  // Room catalogue (seed data)
   rooms: defineTable({
     tier: v.number(),
     name: v.string(),
@@ -25,47 +159,6 @@ export default defineSchema({
     totalUnits: v.number(),
   }),
 
-  // Booking enquiries — now includes the Guest Arrival Profile
-  bookings: defineTable({
-    guestId: v.optional(v.id("guests")),
-    guestName: v.string(),
-    guestEmail: v.string(),
-    guestPhone: v.string(),
-    roomTier: v.number(),
-    roomName: v.string(),
-    checkIn: v.string(),
-    checkOut: v.string(),
-    nights: v.number(),
-    totalNGN: v.number(),
-    status: v.string(),     // "pending" | "confirmed" | "cancelled"
-
-    // Guest Arrival Profile — 5 intentional fields
-    occasion: v.optional(v.string()),         // What brings you to Eldorado?
-    roomMood: v.optional(v.string()),         // How would you like your room to feel?
-    arrivalWelcome: v.optional(v.string()),   // What should be waiting for you?
-    welcomeStyle: v.optional(v.string()),     // How do you prefer to be welcomed?
-    firstNightPriority: v.optional(v.string()), // What matters most for your first night?
-
-    // Open field
-    oneMoreThing: v.optional(v.string()),     // "One More Thing" free text
-
-    // Operational — separate from preferences
-    dietaryRequirements: v.optional(v.string()),
-    accessibilityNeeds: v.optional(v.string()),
-
-    // Prayer / faith
-    prayerRoom: v.optional(v.string()),       // "No" | "Christian" | "Muslim" | "Other"
-
-    // Legacy notes field (kept for backward compat)
-    notes: v.optional(v.string()),
-
-    createdAt: v.number(),
-  })
-    .index("by_email", ["guestEmail"])
-    .index("by_status", ["status"])
-    .index("by_room_tier", ["roomTier"]),
-
-  // General enquiries
   enquiries: defineTable({
     name: v.string(),
     email: v.string(),
@@ -77,7 +170,6 @@ export default defineSchema({
     createdAt: v.number(),
   }).index("by_status", ["status"]),
 
-  // Newsletter & waiting list subscribers
   subscribers: defineTable({
     name: v.string(),
     email: v.string(),
@@ -87,7 +179,6 @@ export default defineSchema({
     .index("by_email", ["email"])
     .index("by_list", ["listType"]),
 
-  // Membership applications
   memberships: defineTable({
     name: v.string(),
     email: v.string(),
@@ -97,6 +188,7 @@ export default defineSchema({
     notes: v.optional(v.string()),
     status: v.string(),
     createdAt: v.number(),
-  }).index("by_tier", ["tier"])
+  })
+    .index("by_tier", ["tier"])
     .index("by_status", ["status"]),
 });
