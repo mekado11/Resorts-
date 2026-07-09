@@ -172,64 +172,64 @@ function statusPill(status: string) {
 }
 
 function MembershipApplications() {
-  const applications = useQuery(api.memberships.listAll) ?? [];
-  const adminGrant   = useMutation(api.memberships.adminGrant);
+  const applications        = useQuery(api.memberships.listAll) ?? [];
+  const adminGrant          = useMutation(api.memberships.adminGrant);
+  const updateQualification = useMutation(api.memberships.updateQualification);
 
-  const [filter, setFilter]       = useState<AppStatus | 'all'>('pending');
-  const [staffName, setStaffName] = useState('');
-  const [acting, setActing]       = useState<string | null>(null); // membershipId being actioned
-  const [confirmId, setConfirmId] = useState<string | null>(null); // decline confirm dialog
-  const [toast, setToast]         = useState('');
+  const [filter,     setFilter]     = useState<AppStatus | 'all'>('pending');
+  const [staffName,  setStaffName]  = useState('');
+  const [acting,     setActing]     = useState<string | null>(null);
+  const [confirmId,  setConfirmId]  = useState<string | null>(null);
+  const [toast,      setToast]      = useState('');
+  const [editingId,  setEditingId]  = useState<string | null>(null);
+  const [editForm,   setEditForm]   = useState({ nights: 0, stays: 0, spend: 0 });
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const showToast = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(''), 3500);
   };
 
-  const filtered = filter === 'all'
-    ? applications
-    : applications.filter((a: any) => a.status === filter);
-
-  const pendingCount = applications.filter((a: any) => a.status === 'pending').length;
+  const filtered    = filter === 'all' ? applications : (applications as any[]).filter((a: any) => a.status === filter);
+  const pendingCount = (applications as any[]).filter((a: any) => a.status === 'pending').length;
 
   const handleApprove = async (app: any) => {
     if (!staffName.trim()) { showToast('Enter your name before approving.'); return; }
     setActing(app._id);
     try {
-      await adminGrant({
-        staffPin:     'ELDORADO2026',
-        membershipId: app._id as Id<'memberships'>,
-        newTier:      app.tier,
-        newStatus:    'active',
-        approvedBy:   staffName.trim(),
-      });
+      await adminGrant({ staffPin: 'ELDORADO2026', membershipId: app._id as Id<'memberships'>, newTier: app.tier, newStatus: 'active', approvedBy: staffName.trim() });
       showToast(`${app.name} approved as ${TIER_LABELS[app.tier] ?? app.tier}.`);
-    } catch (err: any) {
-      showToast('Error: ' + (err?.message ?? 'Unknown error'));
-    } finally {
-      setActing(null);
-    }
+    } catch (err: any) { showToast('Error: ' + (err?.message ?? 'Unknown')); }
+    finally { setActing(null); }
   };
 
   const handleDecline = async (app: any) => {
     if (!staffName.trim()) { showToast('Enter your name before declining.'); return; }
-    setActing(app._id);
-    setConfirmId(null);
+    setActing(app._id); setConfirmId(null);
     try {
-      await adminGrant({
-        staffPin:     'ELDORADO2026',
-        membershipId: app._id as Id<'memberships'>,
-        newTier:      app.tier,
-        newStatus:    'declined',
-        approvedBy:   staffName.trim(),
-      });
+      await adminGrant({ staffPin: 'ELDORADO2026', membershipId: app._id as Id<'memberships'>, newTier: app.tier, newStatus: 'declined', approvedBy: staffName.trim() });
       showToast(`${app.name}'s application has been declined.`);
-    } catch (err: any) {
-      showToast('Error: ' + (err?.message ?? 'Unknown error'));
-    } finally {
-      setActing(null);
-    }
+    } catch (err: any) { showToast('Error: ' + (err?.message ?? 'Unknown')); }
+    finally { setActing(null); }
   };
+
+  const startEdit = (app: any) => {
+    setEditingId(app._id);
+    setEditForm({ nights: app.qualifyingNights ?? 0, stays: app.separateStays ?? 0, spend: app.spendForYear ?? 0 });
+  };
+
+  const saveEdit = async (app: any) => {
+    if (!staffName.trim()) { showToast('Enter your name before saving.'); return; }
+    setSavingEdit(true);
+    try {
+      await updateQualification({ staffPin: 'ELDORADO2026', membershipId: app._id as Id<'memberships'>, qualifyingNights: editForm.nights, separateStays: editForm.stays, spendForYear: editForm.spend, updatedBy: staffName.trim() });
+      showToast(`${app.name}'s qualifying record updated.`);
+      setEditingId(null);
+    } catch (err: any) { showToast('Error: ' + (err?.message ?? 'Unknown')); }
+    finally { setSavingEdit(false); }
+  };
+
+  const inputStyle: React.CSSProperties = { width: '100%', padding: '0.55rem 0.8rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.9rem', fontFamily: "'Jost',sans-serif", color: NAVY, boxSizing: 'border-box' };
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
@@ -243,7 +243,7 @@ function MembershipApplications() {
 
       {/* Decline confirmation dialog */}
       {confirmId && (() => {
-        const app = applications.find((a: any) => a._id === confirmId);
+        const app = (applications as any[]).find((a: any) => a._id === confirmId);
         if (!app) return null;
         return (
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(13,27,42,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '1rem' }}>
@@ -253,16 +253,10 @@ function MembershipApplications() {
                 You are about to decline <strong>{app.name}</strong>'s application for <strong>{TIER_LABELS[app.tier] ?? app.tier}</strong> membership. This action is recorded with your name.
               </p>
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button
-                  data-testid="button-decline-confirm"
-                  onClick={() => handleDecline(app)}
-                  style={{ flex: 1, padding: '0.75rem', background: '#A12C7B', color: '#fff', border: 'none', borderRadius: 3, fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
+                <button data-testid="button-decline-confirm" onClick={() => handleDecline(app)} style={{ flex: 1, padding: '0.75rem', background: '#A12C7B', color: '#fff', border: 'none', borderRadius: 3, fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
                   Decline Application
                 </button>
-                <button
-                  data-testid="button-decline-cancel"
-                  onClick={() => setConfirmId(null)}
-                  style={{ flex: 1, padding: '0.75rem', background: 'transparent', color: NAVY, border: '1px solid rgba(13,27,42,0.2)', borderRadius: 3, fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
+                <button data-testid="button-decline-cancel" onClick={() => setConfirmId(null)} style={{ flex: 1, padding: '0.75rem', background: 'transparent', color: NAVY, border: '1px solid rgba(13,27,42,0.2)', borderRadius: 3, fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
                   Cancel
                 </button>
               </div>
@@ -274,156 +268,121 @@ function MembershipApplications() {
       {/* Staff name field */}
       <div style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.25rem 1.5rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
         <div style={{ fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', flexShrink: 0 }}>Acting as</div>
-        <input
-          data-testid="input-staff-name"
-          type="text"
-          placeholder="Your name (required to approve or decline)"
-          value={staffName}
-          onChange={e => setStaffName(e.target.value)}
-          style={{ flex: 1, minWidth: 200, padding: '0.55rem 0.8rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.85rem', fontFamily: "'Jost',sans-serif", color: NAVY }}
-        />
+        <input data-testid="input-staff-name" type="text" placeholder="Your name (required to approve, decline or save)" value={staffName} onChange={e => setStaffName(e.target.value)}
+          style={{ flex: 1, minWidth: 200, padding: '0.55rem 0.8rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.85rem', fontFamily: "'Jost',sans-serif", color: NAVY }} />
       </div>
 
-      {/* Filter tabs + count */}
+      {/* Filter tabs */}
       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
         {(['pending', 'active', 'declined', 'all'] as const).map(f => (
-          <button
-            key={f}
-            data-testid={`tab-filter-${f}`}
-            onClick={() => setFilter(f)}
-            style={{
-              padding: '0.45rem 1rem',
-              border: filter === f ? `1px solid ${NAVY}` : `1px solid rgba(13,27,42,0.15)`,
-              borderRadius: 3,
-              background: filter === f ? NAVY : 'transparent',
-              color: filter === f ? GOLD : 'rgba(13,27,42,0.55)',
-              fontSize: '0.6rem',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              fontFamily: "'Jost',sans-serif",
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-            }}
-          >
+          <button key={f} data-testid={`tab-filter-${f}`} onClick={() => setFilter(f)}
+            style={{ padding: '0.45rem 1rem', border: filter === f ? `1px solid ${NAVY}` : '1px solid rgba(13,27,42,0.15)', borderRadius: 3, background: filter === f ? NAVY : 'transparent', color: filter === f ? GOLD : 'rgba(13,27,42,0.55)', fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             {f === 'all' ? 'All' : f === 'pending' ? 'Pending' : f === 'active' ? 'Approved' : 'Declined'}
             {f === 'pending' && pendingCount > 0 && (
               <span style={{ background: '#C9A84C', color: '#0D1B2A', borderRadius: 10, fontSize: '0.6rem', fontWeight: 700, padding: '0 0.4rem', lineHeight: '1.4' }}>{pendingCount}</span>
             )}
           </button>
         ))}
-        <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.35)', marginLeft: 'auto' }}>{filtered.length} application{filtered.length !== 1 ? 's' : ''}</span>
+        <span style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.35)', marginLeft: 'auto' }}>{(filtered as any[]).length} application{(filtered as any[]).length !== 1 ? 's' : ''}</span>
       </div>
 
       {/* Applications list */}
-      {filtered.length === 0 ? (
+      {(filtered as any[]).length === 0 ? (
         <div style={{ textAlign: 'center', padding: '3rem', color: 'rgba(13,27,42,0.35)', fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic' }}>
           {filter === 'pending' ? 'No pending applications.' : 'No applications in this category.'}
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {filtered.map((app: any) => {
+          {(filtered as any[]).map((app: any) => {
             const tierColor = TIER_COLORS[app.tier] ?? GOLD;
             const isActing  = acting === app._id;
             const isPending = app.status === 'pending';
+            const isActive  = app.status === 'active';
+            const isEditing = editingId === app._id;
 
             return (
-              <div
-                key={app._id}
-                data-testid={`card-application-${app._id}`}
-                style={{
-                  background: '#fff',
-                  border: isPending ? `1px solid ${LINEN}` : `1px solid ${LINEN}`,
-                  borderLeft: `4px solid ${tierColor}`,
-                  borderRadius: 4,
-                  padding: '1.5rem',
-                  display: 'grid',
-                  gridTemplateColumns: '1fr auto',
-                  gap: '1rem',
-                  alignItems: 'start',
-                }}
-              >
-                {/* Left: applicant info */}
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                    <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.2rem', color: NAVY, fontWeight: 500 }}>{app.name}</span>
-                    <span style={{ fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', background: tierColor, color: app.tier === 'member' ? '#0D1B2A' : '#fff', padding: '0.2rem 0.6rem', borderRadius: 2, fontWeight: 600 }}>
-                      {TIER_LABELS[app.tier] ?? app.tier}
-                    </span>
-                    {statusPill(app.status)}
+              <div key={app._id} data-testid={`card-application-${app._id}`}
+                style={{ background: '#fff', borderLeft: `4px solid ${tierColor}`, border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.5rem' }}>
+
+                {/* Two-column: info + action */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '1rem', alignItems: 'start' }}>
+
+                  {/* Left: info */}
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                      <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.2rem', color: NAVY, fontWeight: 500 }}>{app.name}</span>
+                      <span style={{ fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', background: tierColor, color: app.tier === 'member' ? '#0D1B2A' : '#fff', padding: '0.2rem 0.6rem', borderRadius: 2, fontWeight: 600 }}>{TIER_LABELS[app.tier] ?? app.tier}</span>
+                      {statusPill(app.status)}
+                    </div>
+                    <div style={{ fontSize: '0.82rem', color: 'rgba(13,27,42,0.55)', marginBottom: '0.25rem' }}>{app.email}</div>
+                    {app.phone        && <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginBottom: '0.25rem' }}>{app.phone}</div>}
+                    {app.organisation && <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginBottom: '0.25rem' }}><span style={{ color: 'rgba(13,27,42,0.3)' }}>Organisation: </span>{app.organisation}</div>}
+                    {app.notes        && <div style={{ marginTop: '0.75rem', padding: '0.65rem 0.85rem', background: 'rgba(13,27,42,0.03)', borderRadius: 3, fontSize: '0.8rem', color: 'rgba(13,27,42,0.6)', fontStyle: 'italic', lineHeight: 1.65 }}>"{app.notes}"</div>}
+                    {isActive && (
+                      <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'rgba(13,27,42,0.4)', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+                        <span><span style={{ color: 'rgba(13,27,42,0.3)' }}>Nights: </span><strong>{app.qualifyingNights ?? 0}</strong></span>
+                        <span><span style={{ color: 'rgba(13,27,42,0.3)' }}>Stays: </span><strong>{app.separateStays ?? 0}</strong></span>
+                        <span><span style={{ color: 'rgba(13,27,42,0.3)' }}>Spend: </span><strong>₦{((app.spendForYear ?? 0) / 1_000_000).toFixed(2)}M</strong></span>
+                      </div>
+                    )}
+                    <div style={{ marginTop: '0.75rem', fontSize: '0.7rem', color: 'rgba(13,27,42,0.3)' }}>
+                      Submitted {new Date(app.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                      {app.approvedBy && <span> · {app.status === 'active' ? 'Approved' : 'Reviewed'} by <strong style={{ color: 'rgba(13,27,42,0.5)' }}>{app.approvedBy}</strong>{app.approvedAt ? ` on ${new Date(app.approvedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}` : ''}</span>}
+                    </div>
                   </div>
 
-                  <div style={{ fontSize: '0.82rem', color: 'rgba(13,27,42,0.55)', marginBottom: '0.25rem' }}>{app.email}</div>
-                  {app.phone && <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginBottom: '0.25rem' }}>{app.phone}</div>}
-                  {app.organisation && (
-                    <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginBottom: '0.25rem' }}>
-                      <span style={{ color: 'rgba(13,27,42,0.3)' }}>Organisation: </span>{app.organisation}
-                    </div>
-                  )}
-                  {app.notes && (
-                    <div style={{ marginTop: '0.75rem', padding: '0.65rem 0.85rem', background: 'rgba(13,27,42,0.03)', borderRadius: 3, fontSize: '0.8rem', color: 'rgba(13,27,42,0.6)', fontStyle: 'italic', lineHeight: 1.65 }}>
-                      "{app.notes}"
-                    </div>
-                  )}
-
-                  <div style={{ marginTop: '0.75rem', fontSize: '0.7rem', color: 'rgba(13,27,42,0.3)' }}>
-                    Submitted {new Date(app.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                    {app.approvedBy && (
-                      <span> · {app.status === 'active' ? 'Approved' : 'Reviewed'} by <strong style={{ color: 'rgba(13,27,42,0.5)' }}>{app.approvedBy}</strong>
-                        {app.approvedAt ? ` on ${new Date(app.approvedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}` : ''}
-                      </span>
+                  {/* Right: actions */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: 120 }}>
+                    {isPending && <>
+                      <button data-testid={`button-approve-${app._id}`} onClick={() => handleApprove(app)} disabled={isActing}
+                        style={{ padding: '0.65rem 1rem', background: isActing ? 'rgba(67,122,34,0.4)' : 'rgba(67,122,34,0.1)', color: '#437A22', border: '1px solid rgba(67,122,34,0.3)', borderRadius: 3, fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: isActing ? 'not-allowed' : 'pointer', textAlign: 'center' }}>
+                        {isActing ? '…' : '✓  Approve'}
+                      </button>
+                      <button data-testid={`button-decline-${app._id}`} onClick={() => setConfirmId(app._id)} disabled={isActing}
+                        style={{ padding: '0.65rem 1rem', background: 'transparent', color: '#A12C7B', border: '1px solid rgba(161,44,123,0.25)', borderRadius: 3, fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: isActing ? 'not-allowed' : 'pointer', textAlign: 'center' }}>
+                        ✕  Decline
+                      </button>
+                    </>}
+                    {isActive && !isEditing && (
+                      <button data-testid={`button-edit-${app._id}`} onClick={() => startEdit(app)}
+                        style={{ padding: '0.6rem 1rem', background: 'transparent', color: NAVY, border: '1px solid rgba(13,27,42,0.2)', borderRadius: 3, fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer', textAlign: 'center' }}>
+                        ✎  Edit Record
+                      </button>
                     )}
                   </div>
                 </div>
 
-                {/* Right: action buttons (only for pending) */}
-                {isPending && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: 130 }}>
-                    <button
-                      data-testid={`button-approve-${app._id}`}
-                      onClick={() => handleApprove(app)}
-                      disabled={isActing}
-                      style={{
-                        padding: '0.65rem 1rem',
-                        background: isActing ? 'rgba(67,122,34,0.4)' : 'rgba(67,122,34,0.1)',
-                        color: '#437A22',
-                        border: '1px solid rgba(67,122,34,0.3)',
-                        borderRadius: 3,
-                        fontSize: '0.6rem',
-                        letterSpacing: '0.15em',
-                        textTransform: 'uppercase',
-                        fontFamily: "'Jost',sans-serif",
-                        cursor: isActing ? 'not-allowed' : 'pointer',
-                        transition: 'all 0.2s',
-                        textAlign: 'center',
-                      }}
-                    >
-                      {isActing ? '…' : '✓  Approve'}
-                    </button>
-                    <button
-                      data-testid={`button-decline-${app._id}`}
-                      onClick={() => setConfirmId(app._id)}
-                      disabled={isActing}
-                      style={{
-                        padding: '0.65rem 1rem',
-                        background: 'transparent',
-                        color: '#A12C7B',
-                        border: '1px solid rgba(161,44,123,0.25)',
-                        borderRadius: 3,
-                        fontSize: '0.6rem',
-                        letterSpacing: '0.15em',
-                        textTransform: 'uppercase',
-                        fontFamily: "'Jost',sans-serif",
-                        cursor: isActing ? 'not-allowed' : 'pointer',
-                        transition: 'all 0.2s',
-                        textAlign: 'center',
-                      }}
-                    >
-                      ✕  Decline
-                    </button>
+                {/* Inline edit panel — full width below */}
+                {isActive && isEditing && (
+                  <div style={{ marginTop: '1.25rem', padding: '1.25rem 1.5rem', background: 'rgba(13,27,42,0.03)', border: '1px solid rgba(13,27,42,0.1)', borderRadius: 3 }}>
+                    <div style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', marginBottom: '1rem' }}>Edit Qualifying Record</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', marginBottom: '0.3rem' }}>Qualifying Nights</label>
+                        <input data-testid={`input-edit-nights-${app._id}`} type="number" min={0} value={editForm.nights} onChange={e => setEditForm({ ...editForm, nights: Number(e.target.value) })} style={inputStyle} />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', marginBottom: '0.3rem' }}>Separate Stays</label>
+                        <input data-testid={`input-edit-stays-${app._id}`} type="number" min={0} value={editForm.stays} onChange={e => setEditForm({ ...editForm, stays: Number(e.target.value) })} style={inputStyle} />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', marginBottom: '0.3rem' }}>Spend for This Year (₦)</label>
+                        <input data-testid={`input-edit-spend-${app._id}`} type="number" min={0} step={1000} value={editForm.spend} onChange={e => setEditForm({ ...editForm, spend: Number(e.target.value) })} style={inputStyle} />
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.65rem' }}>
+                      <button data-testid={`button-save-edit-${app._id}`} onClick={() => saveEdit(app)} disabled={savingEdit}
+                        style={{ padding: '0.6rem 1.25rem', background: NAVY, color: GOLD, border: 'none', borderRadius: 3, fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: savingEdit ? 'not-allowed' : 'pointer', opacity: savingEdit ? 0.6 : 1 }}>
+                        {savingEdit ? 'Saving…' : 'Save Changes'}
+                      </button>
+                      <button data-testid={`button-cancel-edit-${app._id}`} onClick={() => setEditingId(null)}
+                        style={{ padding: '0.6rem 1rem', background: 'transparent', color: 'rgba(13,27,42,0.5)', border: '1px solid rgba(13,27,42,0.15)', borderRadius: 3, fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 )}
+
               </div>
             );
           })}
@@ -432,6 +391,7 @@ function MembershipApplications() {
     </div>
   );
 }
+
 
 // ─── Main Staff View ──────────────────────────────────────────────────────────
 type TabId = 'guests' | 'membership';

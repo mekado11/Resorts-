@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -143,6 +143,32 @@ const SPEND_RULES = [
   },
 ];
 
+// ─── Live approved member count component ───────────────────────────────────────
+function MemberCount() {
+  const count = useQuery(api.memberships.getApprovedCount);
+  if (!count) return null; // hide when 0 or loading
+  return (
+    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+      <div style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        padding: '0.65rem 1.75rem',
+        border: '1px solid rgba(201,168,76,0.25)',
+        borderRadius: 3,
+        background: 'rgba(201,168,76,0.04)',
+      }}>
+        <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.5rem', fontWeight: 500, color: '#C9A84C', lineHeight: 1 }}>
+          {count}
+        </span>
+        <span style={{ fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.45)' }}>
+          founding member{count !== 1 ? 's' : ''} recognised
+        </span>
+      </div>
+    </div>
+  );
+}
+
 interface MembershipProps { onToast: (msg: string) => void; }
 
 export default function Membership({ onToast }: MembershipProps) {
@@ -197,6 +223,9 @@ export default function Membership({ onToast }: MembershipProps) {
             Eldorado membership is more than preferential access — it is permanent belonging. A select community of Nigeria's most discerning individuals, united by an uncompromising standard of living.
           </p>
         </div>
+
+        {/* ── Live member count ── */}
+        <MemberCount />
 
         {/* ── Tier cards ── */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '1.5rem', maxWidth: 1200, margin: '0 auto 1.5rem', alignItems: 'start' }}>

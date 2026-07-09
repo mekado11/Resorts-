@@ -42,17 +42,6 @@ const TIERS = [
   { name: 'Institutional',       min: 'Negotiated',   perks: ['Bespoke terms', 'Board advisory consideration', 'Full due diligence room access', 'Direct founder engagement'] },
 ];
 
-const MILESTONES_PROGRESS = [
-  { label: 'Land Acquired',         done: true },
-  { label: 'Architecture & Design', done: true },
-  { label: 'Survey',                active: true },
-  { label: 'Permitting & Approvals',active: true },
-  { label: 'Fencing',               done: false },
-  { label: 'Construction',          done: false },
-  { label: 'Interior Fit-Out',      done: false },
-  { label: 'Grand Opening',         done: false },
-];
-
 export default function Capital() {
   const submitEnquiry = useMutation(api.enquiries.submit);
   const [form, setForm] = useState({
@@ -150,40 +139,172 @@ export default function Capital() {
         </div>
       </section>
 
-      {/* ── PROGRESS ── */}
-      <section style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,6vw,6rem)', borderTop: '1px solid rgba(201,168,76,0.1)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
-        <div style={{ maxWidth: 760, margin: '0 auto' }}>
-          <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '0.85rem' }}>Eldorado Is Already in Motion</div>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.8rem,3.5vw,2.8rem)', fontWeight: 300, color: '#FAF8F2', marginBottom: '2.5rem' }}>
-            Investment capital is deployed against defined project milestones,<br />
-            <em>not abstract promises.</em>
+      {/* ── OUR INTENTION ── */}
+      <section style={{ borderTop: '1px solid rgba(201,168,76,0.1)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
+
+        {/* Opening statement */}
+        <div style={{ padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6rem)', maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '1.5rem' }}>Our Intention</div>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.2rem,4.5vw,3.8rem)', fontWeight: 300, color: '#FAF8F2', lineHeight: 1.15, marginBottom: '2.5rem' }}>
+            Built to leave more behind<br />than a building.
           </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
-            {MILESTONES_PROGRESS.map(m => (
-              <div key={m.label} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{
-                  width: 10, height: 10, borderRadius: '50%', flexShrink: 0,
-                  background: m.done ? 'var(--gold)' : 'done' in m && !m.done && 'active' in m && m.active ? 'transparent' : 'transparent',
-                  border: m.done ? '2px solid var(--gold)' : 'active' in m && m.active ? '2px solid rgba(250,248,242,0.6)' : '2px solid rgba(250,248,242,0.2)',
-                  boxShadow: m.done ? '0 0 8px rgba(201,168,76,0.5)' : 'none',
-                }} />
-                <span style={{
-                  fontSize: '0.88rem',
-                  color: m.done ? 'var(--gold)' : 'active' in m && m.active ? 'rgba(250,248,242,0.85)' : 'rgba(250,248,242,0.3)',
-                  fontFamily: m.done ? "'Cormorant Garamond', serif" : 'inherit',
-                  fontStyle: m.done ? 'normal' : 'normal',
+          <p style={{ fontSize: 'clamp(0.95rem,1.4vw,1.1rem)', color: 'rgba(250,248,242,0.55)', lineHeight: 2, maxWidth: 680, margin: '0 auto' }}>
+            Eldorado is not being conceived as another hotel placed upon the land. It is being imagined as something grown from it — from the sun above Akwa Ibom, the hands of its craftsmen, the imagination of Nigerian talent at home and abroad, and the belief that hospitality can be beautiful, ambitious, and responsible at once.
+          </p>
+          <p style={{ fontSize: 'clamp(0.88rem,1.2vw,1rem)', color: 'rgba(250,248,242,0.35)', lineHeight: 1.9, maxWidth: 580, margin: '1.5rem auto 0', fontStyle: 'italic' }}>
+            We are still at the beginning. This is not yet the story of what we have done. It is the promise of how we intend to build.
+          </p>
+        </div>
+
+        {/* ───── Chapter 1: The Sun ───── */}
+        <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
+
+            {/* Text column */}
+            <div>
+              <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '1rem' }}>The Sun</div>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.6rem,2.8vw,2.4rem)', fontWeight: 300, color: '#FAF8F2', marginBottom: '1.75rem', lineHeight: 1.2 }}>
+                Every morning, the sun rises over Akwa Ibom with enough power to begin again.
+              </h3>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                Eldorado is being designed to operate at near 100% clean energy, using a carefully engineered combination of solar power and battery storage. By day, the property draws energy from the sun. The real story begins when the sun disappears: energy gathered during daylight will be stored and released after dark, powering the halls, the guest rooms, the kitchen, the music — the quiet machinery of hospitality, run as far as possible on sunlight captured hours before.
+              </p>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                We do not want sustainability to mean asking guests to sacrifice comfort — we want to prove the opposite. Environmental responsibility should be almost invisible: the guest feels the cool room, sees the warm light, sleeps deeply, and never has to think about the engineering beneath it. Not less luxury. More intelligence.
+              </p>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                Nigeria knows the sound of generators — the interruption, the smoke, the dependence, the expectation that reliable power must come with noise. We want Eldorado to tell a quieter story: the sun works by day, the batteries stand watch through the night, and the property moves with a calm confidence of its own.
+              </p>
+              <p style={{ fontSize: '0.88rem', color: 'rgba(250,248,242,0.38)', lineHeight: 1.9, fontStyle: 'italic' }}>
+                This ambition demands serious engineering. So we will not make careless promises. We will measure, engineer, and improve. Our destination is clear — to build one of Nigeria&apos;s most energy-conscious hospitality properties. And when this page changes from what we intend to what we built, we want to show the numbers: how much sunlight captured, how much energy stored, how many hours run on clean power. Not slogans. Proof.
+              </p>
+            </div>
+
+            {/* Pull quote + image slot */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              {/* Pull quote */}
+              <div style={{
+                borderLeft: '3px solid rgba(201,168,76,0.5)',
+                paddingLeft: '2rem',
+                paddingTop: '1rem',
+                paddingBottom: '1rem',
+              }}>
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: 'clamp(1.5rem,2.5vw,2.2rem)',
+                  fontStyle: 'italic',
+                  fontWeight: 300,
+                  color: '#C9A84C',
+                  lineHeight: 1.35,
+                  margin: 0,
                 }}>
-                  {m.done ? '✓ ' : 'active' in m && m.active ? '● ' : '○ '}{m.label}
-                </span>
-                {'active' in m && m.active && (
-                  <span style={{ fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(250,248,242,0.4)', background: 'rgba(250,248,242,0.07)', padding: '0.2rem 0.5rem', borderRadius: 2 }}>
-                    In Progress
-                  </span>
-                )}
+                  We intend to store the Akwa Ibom sun and keep the hotel glowing long after sunset.
+                </p>
               </div>
-            ))}
+              {/* Image slot */}
+              <div style={{ aspectRatio: '4/3', background: 'rgba(201,168,76,0.04)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.3)' }}>Image Slot</div>
+                <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.2)', textAlign: 'center', padding: '0 1.5rem' }}>Sunrise · Solar array · Battery infrastructure</div>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* ───── Chapter 2: The Hands ───── */}
+        <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)', background: 'rgba(255,255,255,0.015)' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
+
+            {/* Image slot — left on this chapter */}
+            <div style={{ aspectRatio: '3/4', background: 'rgba(201,168,76,0.04)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.3)' }}>Image Slot</div>
+              <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.2)', textAlign: 'center', padding: '0 1.5rem' }}>Craftsmen · Artisans · Diaspora professionals · Kitchen</div>
+            </div>
+
+            {/* Text column */}
+            <div>
+              <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '1rem' }}>The Hands</div>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.6rem,2.8vw,2.4rem)', fontWeight: 300, color: '#FAF8F2', marginBottom: '1.75rem', lineHeight: 1.2 }}>
+                Eldorado will be built in Akwa Ibom, but the knowledge behind it has no borders.
+              </h3>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                We are bringing together Nigerian professionals from across the country, members of the diaspora, international specialists, and local experts who understand the land, the climate, and the realities of building here — architects, engineers, hospitality professionals, designers, chefs, artisans, technologists, builders.
+              </p>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                The goal is not to import excellence and leave. It is to bring expertise together, transfer knowledge, and build capability that remains long after construction ends. A young technician should leave more skilled than when they arrived. A local supplier should leave more capable of serving future clients. A craftsman should be able to point to the work and say: <em style={{ color: 'rgba(250,248,242,0.75)' }}>I built that.</em> The true value of a project is not only what stands when the scaffolding comes down. It is what the people who built it become.
+              </p>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                There are things a factory can produce perfectly, and things that should still carry the evidence of a human hand. Eldorado makes room for both: local carpenters shaping pieces that belong to this place, muralists turning walls into stories, Nigerian and international artists contributing work that makes guests stop and look again, chefs interpreting Akwa Ibom and Nigeria with confidence.
+              </p>
+              <p style={{ fontSize: '0.88rem', color: 'rgba(250,248,242,0.38)', lineHeight: 1.9, fontStyle: 'italic' }}>
+                We do not want Eldorado filled with objects that could sit in any hotel, anywhere. We want guests to encounter things they could only find here — some grand, some subtle, some imperfect in the most beautiful way — made by hands whose names may never appear on the building, but who will live inside it.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ───── Chapter 3: The Table ───── */}
+        <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
+
+            {/* Text column */}
+            <div>
+              <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '1rem' }}>The Table</div>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.6rem,2.8vw,2.4rem)', fontWeight: 300, color: '#FAF8F2', marginBottom: '1.75rem', lineHeight: 1.2 }}>
+                A hotel cannot call itself sustainable because it has solar panels.
+              </h3>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                Sustainability is also economic: who gets hired, trained, commissioned, given the contract, given the opportunity. Eldorado intends to spend locally wherever quality, capacity, and practicality allow. That does not mean choosing local for its own sake — excellence remains the standard. It means asking a better question before looking elsewhere: can this be made here, by a local carpenter, a Nigerian company, a Nigerian designer?
+              </p>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                Sometimes the answer will be no — for a project this ambitious, some expertise and materials will come from outside Nigeria, and we will not pretend otherwise. But every time the answer can honestly be yes, we want Eldorado to be part of that local economic story. A hotel should not simply occupy a community. It should participate in one.
+              </p>
+              <p style={{ fontSize: '0.92rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.25rem' }}>
+                Through Eldorado Cares, we intend to support boys&apos; and girls&apos; programmes that give young people access to opportunity, mentorship, skills, creativity, sport, and a wider view of what their lives can become. We are not interested in performative generosity — impact matters more than photographs.
+              </p>
+              <p style={{ fontSize: '0.88rem', color: 'rgba(250,248,242,0.38)', lineHeight: 1.9, fontStyle: 'italic' }}>
+                Sometimes the first thing a young person needs is not charity. It is evidence that something extraordinary can be built here.
+              </p>
+            </div>
+
+            {/* Image slot */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ aspectRatio: '4/3', background: 'rgba(201,168,76,0.04)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.3)' }}>Image Slot</div>
+                <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.2)', textAlign: 'center', padding: '0 1.5rem' }}>Local suppliers · Community · Eldorado Cares</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ───── Chapter 4: The Future ───── */}
+        <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)', background: 'rgba(201,168,76,0.02)' }}>
+          <div style={{ maxWidth: 860, margin: '0 auto', padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6rem)', textAlign: 'center' }}>
+            <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '1rem' }}>The Future</div>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.8rem,3.2vw,2.8rem)', fontWeight: 300, color: '#FAF8F2', marginBottom: '2rem', lineHeight: 1.2 }}>
+              Today, these are intentions.<br /><em style={{ color: 'rgba(250,248,242,0.65)' }}>Over time, this page will change.</em>
+            </h3>
+            <p style={{ fontSize: '0.95rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '1.5rem', maxWidth: 680, margin: '0 auto 1.5rem' }}>
+              We intend to will become <em>we did.</em> Plans will become photographs. Renderings will become rooms. Craftsmen will leave their marks, artists will finish their walls, chefs will serve their first plates. Solar panels will face the Akwa Ibom sky, and batteries will quietly hold the sun after dark.
+            </p>
+            <p style={{ fontSize: '0.95rem', color: 'rgba(250,248,242,0.55)', lineHeight: 2, marginBottom: '2.5rem', maxWidth: 680, margin: '0 auto 2.5rem' }}>
+              Guests will arrive. Young people will be given opportunities. And a building will begin to become something more than a building.
+            </p>
+
+            {/* Image slot — renderings to real photos */}
+            <div style={{ maxWidth: 680, margin: '0 auto 2.5rem', aspectRatio: '16/7', background: 'rgba(201,168,76,0.04)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.3)' }}>Image Slot — Updates Over Time</div>
+              <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.2)', textAlign: 'center', padding: '0 2rem' }}>Renderings transitioning to real construction photos as the project progresses</div>
+            </div>
+
+            <div style={{ borderTop: '1px solid rgba(201,168,76,0.15)', paddingTop: '2.5rem' }}>
+              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: 'clamp(1.1rem,1.8vw,1.4rem)', color: 'rgba(250,248,242,0.45)', lineHeight: 1.75, maxWidth: 640, margin: '0 auto' }}>
+                This is the journey of Eldorado.<br />
+                Built in Akwa Ibom. Informed by the world. Powered by possibility.
+              </p>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       {/* ── INVESTMENT STRUCTURE ── */}

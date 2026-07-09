@@ -194,3 +194,38 @@ export const listAll = query({
     return await ctx.db.query("memberships").order("desc").collect();
   },
 });
+
+// ─── Staff: update qualification progress fields only ─────────────────────────
+export const updateQualification = mutation({
+  args: {
+    staffPin:         v.string(),
+    membershipId:     v.id("memberships"),
+    qualifyingNights: v.number(),
+    separateStays:    v.number(),
+    spendForYear:     v.number(),
+    updatedBy:        v.string(),
+  },
+  handler: async (ctx, args) => {
+    if (args.staffPin !== "ELDORADO2026") throw new Error("Unauthorised");
+    await ctx.db.patch(args.membershipId, {
+      qualifyingNights: args.qualifyingNights,
+      separateStays:    args.separateStays,
+      spendForYear:     args.spendForYear,
+      approvedBy:       args.updatedBy,
+      approvedAt:       Date.now(),
+    });
+    return { ok: true };
+  },
+});
+
+// ─── Public: get count of active (approved) members ──────────────────────────
+export const getApprovedCount = query({
+  args: {},
+  handler: async (ctx) => {
+    const all = await ctx.db
+      .query("memberships")
+      .withIndex("by_status", q => q.eq("status", "active"))
+      .collect();
+    return all.length;
+  },
+});
