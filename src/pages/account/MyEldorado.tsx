@@ -91,11 +91,12 @@ function MembershipCard({ token, setPage, createdAt, memberId }: { token: string
           <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic', color: 'rgba(250,248,242,0.55)', marginBottom: '1.25rem', lineHeight: 1.65 }}>
             Discover the privileges reserved for Eldorado Circle members.
           </p>
-          {memberId && (
-            <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.4)', marginBottom: '1.25rem' }}>
-              Your Member ID: <span style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>{memberId}</span>
-            </div>
-          )}
+          <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.4)', marginBottom: '1.25rem' }}>
+            Your Member ID:{' '}
+            {memberId
+              ? <span style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>{memberId}</span>
+              : <span style={{ fontStyle: 'italic', color: 'rgba(250,248,242,0.3)' }}>Pending assignment</span>}
+          </div>
           <button className="btn-primary" onClick={() => setPage('membership')}>Explore The Eldorado Circle</button>
         </div>
       )}
@@ -115,8 +116,11 @@ function MembershipCard({ token, setPage, createdAt, memberId }: { token: string
               </div>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.4)', marginBottom: '1.25rem' }}>
-              {memberId && <>Member ID <span style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>{memberId}</span> · </>}
-              Member since {new Date(createdAt ?? Date.now()).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
+              Member ID{' '}
+              {memberId
+                ? <span style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>{memberId}</span>
+                : <span style={{ fontStyle: 'italic', color: 'rgba(250,248,242,0.3)' }}>Pending assignment</span>}
+              {' '}· Member since {new Date(createdAt ?? Date.now()).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
             </div>
             <button
               onClick={() => setPage('membership')}
