@@ -11,6 +11,7 @@ const card: React.CSSProperties = {
 export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
   const { token } = useAuth();
   const bookings = useQuery(api.account.getMyBookings, token ? { token } : 'skip') ?? [];
+  const diningReservations = useQuery(api.diningReservations.getMyReservations, token ? { token } : 'skip') ?? [];
   const linkBooking = useMutation(api.account.linkBooking);
 
   const now = Date.now();
@@ -97,6 +98,43 @@ export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
         <section style={{ marginBottom: '2.5rem' }}>
           <div style={{ fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Past Stays</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>{past.map(b => <BookingCard key={b._id} b={b} upcoming={false} />)}</div>
+        </section>
+      )}
+
+      {/* Dining reservations */}
+      {diningReservations.length > 0 && (
+        <section style={{ marginBottom: '2.5rem' }}>
+          <div style={{ fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Dining Reservations</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {diningReservations.map((r: any) => (
+              <div key={r._id} style={card}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <div>
+                    <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.3rem', fontWeight: 500, color: 'var(--navy)' }}>{r.venueName}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'rgba(13,27,42,0.45)', marginTop: '0.2rem' }}>
+                      {new Date(r.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · {r.time}
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginTop: '0.2rem' }}>
+                      {r.partySize} guest{r.partySize !== 1 ? 's' : ''}{r.occasion ? ` · ${r.occasion}` : ''}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    {r.spendNGN != null && (
+                      <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--navy)' }}>₦{r.spendNGN.toLocaleString('en-NG')}</span>
+                    )}
+                    <span style={{
+                      fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase',
+                      padding: '0.3rem 0.65rem', borderRadius: 2,
+                      background: r.status === 'completed' ? 'rgba(32,128,141,0.1)' : 'rgba(201,168,76,0.12)',
+                      color: r.status === 'completed' ? '#20808D' : '#6E522B',
+                    }}>
+                      {r.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       )}
 

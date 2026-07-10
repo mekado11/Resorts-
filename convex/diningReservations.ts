@@ -81,9 +81,9 @@ export const updateStatus = mutation({
   },
 });
 
-// Staff lookup for annual-spend reconciliation: every dining reservation
-// linked to a Member ID, newest first. Spend itself is still entered manually
-// into memberships.spendForYear via the Staff View — this is the source list.
+// Staff lookup: every dining reservation linked to a Member ID, newest first,
+// with the running total of recorded bills. Bills are recorded per reservation
+// via recordSpend below, which auto-credits the member's spendForYear.
 export const getByMemberId = query({
   args: { memberId: v.string(), staffPin: v.string() },
   handler: async (ctx, args) => {
@@ -106,6 +106,7 @@ export const getByMemberId = query({
       .withIndex("by_member_id", q => q.eq("memberId", canonical))
       .collect();
     reservations.sort((a, b) => b.createdAt - a.createdAt);
+    const totalDiningSpendNGN = reservations.reduce((sum, r) => sum + (r.spendNGN ?? 0), 0);
     return {
       member: {
         name: `${member.firstName} ${member.lastName}`,
@@ -113,6 +114,89 @@ export const getByMemberId = query({
         memberId: canonical,
       },
       reservations,
+      totalDiningSpendNGN,
     };
+  },
+});
+
+// ─── Member-facing: my dining reservations ────────────────────────────────────
+// Mirrors account.getMyBookings: match by linked userId OR by the account's
+// email, so reservations made with the member's email but no Member ID still
+// appear on their page.
+export const getMyReservations = query({
+  args: { token: v.string() },
+  handler: async (ctx, args) => {
+    const session = await ctx.db
+      .query("sessions")
+      .withIndex("by_token", q => q.eq("token", args.token))
+      .first();
+    if (!session || session.expiresAt < Date.now()) return [];
+    const user = await ctx.db.get(session.userId);
+    if (!user) return [];
+
+    const byUser = await ctx.db
+      .query("diningReservations")
+      .withIndex("by_user", q => q.eq("userId", session.userId))
+      .collect();
+    const byEmail = await ctx.db
+      .query("diningReservations")
+      .withIndex("by_email", q => q.eq("guestEmail", user.email))
+      .collect();
+
+    const all = [...byUser];
+    for (const r of byEmail) {
+      if (!all.find(x => x._id === r._id)) all.push(r);
+    }
+    return all.sort((a, b) => b.createdAt - a.createdAt);
+  },
+});
+
+// ─── Staff: record the final dinner bill ──────────────────────────────────────
+// Stores the bill on the reservation, marks it completed, and delta-credits
+// the member's ACTIVE membership spendForYear. Delta (subtract the previously
+// recorded amount first) makes re-recording a corrected bill safe — the
+// membership is never double-credited.
+export const recordSpend = mutation({
+  args: {
+    staffPin: v.string(),
+    id: v.id("diningReservations"),
+    spendNGN: v.number(),
+    recordedBy: v.string(),
+  },
+  handler: async (ctx, args) => {
+    if (args.staffPin !== "ELDORADO2026") throw new Error("Unauthorised");
+    if (args.spendNGN < 0) {
+      return { success: false as const, error: "Spend must be zero or more." };
+    }
+
+    const reservation = await ctx.db.get(args.id);
+    if (!reservation) {
+      return { success: false as const, error: "Reservation not found." };
+    }
+
+    const previousSpend = reservation.spendNGN ?? 0;
+    await ctx.db.patch(args.id, { spendNGN: args.spendNGN, status: "completed" });
+
+    let creditedToMembership = false;
+    let newSpendForYear: number | undefined;
+
+    if (reservation.userId) {
+      const membership = await ctx.db
+        .query("memberships")
+        .withIndex("by_user", q => q.eq("userId", reservation.userId))
+        .filter(q => q.eq(q.field("status"), "active"))
+        .first();
+      if (membership) {
+        newSpendForYear = (membership.spendForYear ?? 0) - previousSpend + args.spendNGN;
+        await ctx.db.patch(membership._id, {
+          spendForYear: newSpendForYear,
+          approvedBy: args.recordedBy,
+          approvedAt: Date.now(),
+        });
+        creditedToMembership = true;
+      }
+    }
+
+    return { success: true as const, creditedToMembership, newSpendForYear };
   },
 });

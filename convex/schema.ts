@@ -164,13 +164,18 @@ export default defineSchema({
     // from that lookup — never accepted from the client.
     memberId: v.optional(v.string()),
     userId: v.optional(v.id("eldoradoUsers")),
+    // Final bill (NGN) recorded by staff after the dinner; absent until then.
+    // Recording it also delta-credits the member's active membership
+    // spendForYear (see diningReservations.recordSpend).
+    spendNGN: v.optional(v.number()),
     status: v.string(),
     createdAt: v.number(),
   })
     .index("by_email", ["guestEmail"])
     .index("by_status", ["status"])
     .index("by_date", ["date"])
-    .index("by_member_id", ["memberId"]),
+    .index("by_member_id", ["memberId"])
+    .index("by_user", ["userId"]),
 
   // ─── Legacy tables (kept for backward compat) ─────────────────────────────
 

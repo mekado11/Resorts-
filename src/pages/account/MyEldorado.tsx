@@ -289,6 +289,57 @@ function ActivityStrip({ token }: { token: string | null }) {
   );
 }
 
+// ─── Dining reservations card ─────────────────────────────────────────────────
+function DiningCard({ token, setPage }: { token: string | null; setPage: (p: string) => void }) {
+  const reservations = useQuery(api.diningReservations.getMyReservations, token ? { token } : 'skip') ?? [];
+  const recent = reservations.slice(0, 4);
+
+  return (
+    <div style={{
+      background: '#fff',
+      border: '1px solid var(--linen)',
+      borderRadius: 8,
+      padding: '1.25rem 1.5rem',
+      gridColumn: '1 / -1',
+    }}>
+      <div style={{ fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.35)', marginBottom: '1rem' }}>
+        Your Dining
+      </div>
+
+      {recent.length === 0 ? (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+          <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1rem', fontStyle: 'italic', color: 'rgba(13,27,42,0.45)' }}>
+            No dining reservations yet. Your table awaits.
+          </p>
+          <button onClick={() => setPage('dining')}
+            style={{ padding: '0.55rem 1.2rem', border: '1px solid var(--navy)', borderRadius: 3, background: 'transparent', color: 'var(--navy)', fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
+            Reserve a Table
+          </button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          {recent.map((r: any) => (
+            <div key={r._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.85rem', padding: '0.75rem 1rem', background: 'var(--ivory)', borderRadius: 5, flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.05rem', fontWeight: 500, color: 'var(--navy)' }}>{r.venueName}</div>
+                <div style={{ fontSize: '0.7rem', color: 'rgba(13,27,42,0.5)', marginTop: '0.1rem' }}>
+                  {new Date(r.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} · {r.time} · {r.partySize} guest{r.partySize !== 1 ? 's' : ''}
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                {r.spendNGN != null && (
+                  <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1rem', fontWeight: 600, color: 'var(--navy)' }}>{formatNGNFull(r.spendNGN)}</span>
+                )}
+                <span style={{ fontSize: '0.56rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '0.25rem 0.6rem', borderRadius: 3, background: r.status === 'completed' ? 'rgba(32,128,141,0.1)' : 'rgba(201,168,76,0.15)', color: r.status === 'completed' ? '#20808D' : '#8a6d2f' }}>{r.status}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Quick actions panel ───────────────────────────────────────────────────────
 function QuickActions({ setPage }: { setPage: (p: string) => void }) {
   const actions = [
@@ -599,6 +650,9 @@ export default function MyEldorado({ setPage }: { setPage: (p: string) => void }
 
           {/* Activity strip */}
           <ActivityStrip token={token} />
+
+          {/* Dining reservations */}
+          <DiningCard token={token} setPage={setPage} />
 
           {/* Bottom row: We Remember + Saved Experiences */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
