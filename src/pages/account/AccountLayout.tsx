@@ -145,7 +145,7 @@ export default function AccountLayout({ children, current, setPage }: Props) {
                   background: isActive ? 'var(--navy)' : 'transparent',
                   color: isActive ? 'var(--ivory)' : 'rgba(13,27,42,0.55)',
                   border: 'none', borderRadius: 4, padding: '0.62rem 0.85rem',
-                  textAlign: 'left', fontFamily: "'Jost',sans-serif", fontSize: '0.8rem',
+                  textAlign: 'left', fontFamily: "'Jost',sans-serif", fontSize: '0.9rem',
                   cursor: 'pointer', letterSpacing: '0.03em', transition: 'all 0.15s',
                   display: 'flex', alignItems: 'center', gap: '0.65rem',
                 }}
@@ -164,9 +164,9 @@ export default function AccountLayout({ children, current, setPage }: Props) {
           <div style={{ margin: '1rem 0 0', padding: '1rem', background: 'rgba(13,27,42,0.03)', border: '1px solid rgba(13,27,42,0.07)', borderRadius: 6 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
               <span style={{ color: '#C9A84C', opacity: 0.8 }}><IconHeart /></span>
-              <span style={{ fontSize: '0.52rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', fontFamily: "'Jost',sans-serif" }}>Eldorado Cares</span>
+              <span style={{ fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)', fontFamily: "'Jost',sans-serif" }}>Eldorado Cares</span>
             </div>
-            <p style={{ fontSize: '0.73rem', color: 'rgba(13,27,42,0.55)', lineHeight: 1.6, marginBottom: '0.6rem' }}>
+            <p style={{ fontSize: '0.85rem', color: 'rgba(13,27,42,0.55)', lineHeight: 1.6, marginBottom: '0.6rem' }}>
               Every stay helps us create opportunity for our community.
             </p>
             <button onClick={() => setPage('eldorado-cares')} style={{
@@ -184,14 +184,14 @@ export default function AccountLayout({ children, current, setPage }: Props) {
             <button
               onClick={handleSignOut}
               style={{
-                background: 'transparent', color: 'rgba(13,27,42,0.38)', border: 'none',
+                background: 'transparent', color: 'rgba(13,27,42,0.55)', border: 'none',
                 borderRadius: 4, padding: '0.62rem 0.85rem', textAlign: 'left',
-                fontFamily: "'Jost',sans-serif", fontSize: '0.78rem', cursor: 'pointer',
+                fontFamily: "'Jost',sans-serif", fontSize: '0.85rem', cursor: 'pointer',
                 letterSpacing: '0.03em', width: '100%',
                 display: 'flex', alignItems: 'center', gap: '0.65rem', transition: 'color 0.15s',
               }}
               onMouseEnter={e => (e.currentTarget.style.color = 'rgba(13,27,42,0.65)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(13,27,42,0.38)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(13,27,42,0.55)')}
             >
               <span style={{ opacity: 0.45 }}><IconSignOut /></span>
               Sign Out
