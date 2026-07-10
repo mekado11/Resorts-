@@ -59,6 +59,12 @@ export default function MyProfile({ setPage, onToast }: { setPage: (p: string) =
         </div>
 
         <div style={{ marginBottom: '0.875rem' }}>
+          <label style={label}>Member ID</label>
+          <input style={{ ...field, background: 'rgba(13,27,42,0.04)', color: 'rgba(13,27,42,0.4)' }} value={user?.memberId || 'Pending assignment'} disabled />
+          <div style={{ fontSize: '0.7rem', color: 'rgba(13,27,42,0.35)', marginTop: '0.3rem' }}>Quote this when reserving dining to link it to your account.</div>
+        </div>
+
+        <div style={{ marginBottom: '0.875rem' }}>
           <label style={label}>Mobile Number</label>
           <input style={field} type="tel" value={form.mobile} onChange={e => set('mobile', e.target.value)} placeholder="+234 xxx xxxx xxx" />
         </div>

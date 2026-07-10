@@ -69,7 +69,7 @@ function TierBadge({ tier }: { tier: string }) {
 }
 
 // ─── Membership status card (dark, hero-style) ────────────────────────────────
-function MembershipCard({ token, setPage, createdAt }: { token: string | null; setPage: (p: string) => void; createdAt?: number }) {
+function MembershipCard({ token, setPage, createdAt, memberId }: { token: string | null; setPage: (p: string) => void; createdAt?: number; memberId?: string }) {
   const status = useQuery(api.memberships.getMyStatus, token ? { token } : 'skip');
   const accentColor = status ? (TIER_COLORS[status.tier] ?? '#C9A84C') : '#C9A84C';
   const thresholds = status && !status.isPinnacle ? NEXT_THRESHOLDS[status.tier] : null;
@@ -91,6 +91,11 @@ function MembershipCard({ token, setPage, createdAt }: { token: string | null; s
           <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic', color: 'rgba(250,248,242,0.55)', marginBottom: '1.25rem', lineHeight: 1.65 }}>
             Discover the privileges reserved for Eldorado Circle members.
           </p>
+          {memberId && (
+            <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.4)', marginBottom: '1.25rem' }}>
+              Your Member ID: <span style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>{memberId}</span>
+            </div>
+          )}
           <button className="btn-primary" onClick={() => setPage('membership')}>Explore The Eldorado Circle</button>
         </div>
       )}
@@ -110,6 +115,7 @@ function MembershipCard({ token, setPage, createdAt }: { token: string | null; s
               </div>
             </div>
             <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.4)', marginBottom: '1.25rem' }}>
+              {memberId && <>Member ID <span style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>{memberId}</span> · </>}
               Member since {new Date(createdAt ?? Date.now()).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
             </div>
             <button
@@ -585,7 +591,7 @@ export default function MyEldorado({ setPage }: { setPage: (p: string) => void }
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
           {/* Membership hero card — full width */}
-          <MembershipCard token={token} setPage={setPage} createdAt={user?.createdAt} />
+          <MembershipCard token={token} setPage={setPage} createdAt={user?.createdAt} memberId={user?.memberId} />
 
           {/* Activity strip */}
           <ActivityStrip token={token} />

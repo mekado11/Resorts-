@@ -1,4 +1,4 @@
-import { mutation, query, action } from "./_generated/server";
+import { mutation, query, action, MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -32,6 +32,38 @@ function hashPassword(password: string, email: string): string {
   return `$ed1$${len}${hex}${str.length}${password.length}`;
 }
 
+// Canonicalize a user-typed Member ID to "ELD-NNNNN", or null if unparseable.
+// Accepts bare digits ("142") or an ELD prefix with/without hyphen, any case,
+// with stray whitespace. A copy of this function lives client-side in
+// DiningReservationModal.tsx — keep the two in sync.
+export function normalizeMemberId(raw: string): string | null {
+  const cleaned = raw.replace(/\s+/g, '').toUpperCase();
+  if (cleaned === '') return null;
+  const match = cleaned.match(/^(?:ELD-?)?(\d{1,5})$/);
+  if (!match) return null;
+  const num = parseInt(match[1], 10);
+  if (num < 1 || num > 99999) return null;
+  return `ELD-${String(num).padStart(5, '0')}`;
+}
+
+// Issue the next sequential Member ID. value = last-issued number; an absent
+// counter row is treated as 99 so the first auto-issued ID is ELD-00100
+// (ELD-00001–00099 are reserved for manual VIP assignment). Safe under
+// concurrency: Convex mutations are OCC-serialized on the counter row.
+async function generateNextMemberId(ctx: MutationCtx): Promise<string> {
+  const row = await ctx.db
+    .query("counters")
+    .withIndex("by_name", q => q.eq("name", "memberId"))
+    .first();
+  const next = (row?.value ?? 99) + 1;
+  if (row) {
+    await ctx.db.patch(row._id, { value: next });
+  } else {
+    await ctx.db.insert("counters", { name: "memberId", value: next });
+  }
+  return `ELD-${String(next).padStart(5, '0')}`;
+}
+
 // ─── Sign Up ──────────────────────────────────────────────────────────────────
 
 export const signUp = mutation({
@@ -55,6 +87,7 @@ export const signUp = mutation({
     }
 
     const passwordHash = hashPassword(args.password, args.email.toLowerCase());
+    const memberId = await generateNextMemberId(ctx);
 
     const userId = await ctx.db.insert("eldoradoUsers", {
       firstName: args.firstName,
@@ -64,6 +97,7 @@ export const signUp = mutation({
       mobile: args.mobile,
       emailVerified: true, // simplified for v1 — email verification flow can be added
       marketingConsent: args.marketingConsent,
+      memberId,
       createdAt: Date.now(),
     });
 
@@ -94,7 +128,7 @@ export const signUp = mutation({
       expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    return { success: true, token, userId };
+    return { success: true, token, userId, memberId };
   },
 });
 
@@ -167,6 +201,7 @@ export const getMe = query({
       dateOfBirth: user.dateOfBirth,
       emailVerified: user.emailVerified,
       marketingConsent: user.marketingConsent,
+      memberId: user.memberId,
       createdAt: user.createdAt,
       lastLoginAt: user.lastLoginAt,
     };
@@ -302,5 +337,97 @@ export const resetPassword = mutation({
     await ctx.db.patch(user._id, { passwordHash: newHash });
     await ctx.db.patch(reset._id, { used: true });
     return { success: true };
+  },
+});
+
+// ─── Member ID Administration ─────────────────────────────────────────────────
+// Staff-only. PIN-gated to match memberships.adminGrant. Run from StaffView
+// (future) or the Convex dashboard Functions runner.
+
+// Assign a specific Member ID (e.g. the reserved ELD-00001) to an account.
+// Target by email OR userId — exactly one. Any unused number is assignable.
+export const adminAssignMemberId = mutation({
+  args: {
+    staffPin: v.string(),
+    desiredMemberId: v.string(),
+    email: v.optional(v.string()),
+    userId: v.optional(v.id("eldoradoUsers")),
+  },
+  handler: async (ctx, args) => {
+    if (args.staffPin !== "ELDORADO2026") throw new Error("Unauthorised");
+
+    if ((args.email ? 1 : 0) + (args.userId ? 1 : 0) !== 1) {
+      return { success: false, error: "Provide exactly one of email or userId." };
+    }
+
+    const canonical = normalizeMemberId(args.desiredMemberId);
+    if (!canonical) {
+      return { success: false, error: "Invalid member ID format. Use ELD-NNNNN, e.g. ELD-00001." };
+    }
+
+    const target = args.userId
+      ? await ctx.db.get(args.userId)
+      : await ctx.db
+          .query("eldoradoUsers")
+          .withIndex("by_email", q => q.eq("email", args.email!.toLowerCase()))
+          .first();
+    if (!target) {
+      return { success: false, error: "No account found for that email." };
+    }
+
+    const holder = await ctx.db
+      .query("eldoradoUsers")
+      .withIndex("by_member_id", q => q.eq("memberId", canonical))
+      .first();
+    if (holder && holder._id !== target._id) {
+      return { success: false, error: `${canonical} is already assigned to ${holder.email}.` };
+    }
+
+    const previousMemberId = target.memberId;
+    await ctx.db.patch(target._id, { memberId: canonical });
+
+    // Keep the auto-issue counter ahead of manually assigned high numbers so a
+    // future signup can never collide. Reserved numbers (≤ 99) never touch it.
+    const num = parseInt(canonical.slice(4), 10);
+    if (num >= 100) {
+      const counter = await ctx.db
+        .query("counters")
+        .withIndex("by_name", q => q.eq("name", "memberId"))
+        .first();
+      if (!counter) {
+        await ctx.db.insert("counters", { name: "memberId", value: num });
+      } else if (counter.value < num) {
+        await ctx.db.patch(counter._id, { value: num });
+      }
+    }
+
+    return { success: true, memberId: canonical, previousMemberId, userEmail: target.email };
+  },
+});
+
+// One-off backfill: assign Member IDs to every account that predates this
+// feature, oldest first. Idempotent — accounts that already have an ID are
+// skipped, so re-running assigns nothing.
+export const backfillMemberIds = mutation({
+  args: { staffPin: v.string() },
+  handler: async (ctx, args) => {
+    if (args.staffPin !== "ELDORADO2026") throw new Error("Unauthorised");
+
+    const users = await ctx.db.query("eldoradoUsers").collect();
+    users.sort((a, b) => a.createdAt - b.createdAt);
+
+    let assigned = 0;
+    let skipped = 0;
+    for (const user of users) {
+      if (user.memberId) {
+        skipped++;
+        continue;
+      }
+      const memberId = await generateNextMemberId(ctx);
+      await ctx.db.patch(user._id, { memberId });
+      assigned++;
+    }
+
+    return { success: true, assigned, skipped };
   },
 });

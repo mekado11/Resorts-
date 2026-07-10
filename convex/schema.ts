@@ -15,10 +15,15 @@ export default defineSchema({
     dateOfBirth: v.optional(v.string()),
     emailVerified: v.boolean(),
     marketingConsent: v.boolean(),
+    // Human-facing member number, "ELD-NNNNN". Optional: rows created before
+    // the backfill ran don't have one yet. ELD-00001–00099 are reserved for
+    // manual VIP assignment; auto-assignment starts at ELD-00100.
+    memberId: v.optional(v.string()),
     createdAt: v.number(),
     lastLoginAt: v.optional(v.number()),
   })
-    .index("by_email", ["email"]),
+    .index("by_email", ["email"])
+    .index("by_member_id", ["memberId"]),
 
   sessions: defineTable({
     userId: v.id("eldoradoUsers"),
@@ -154,12 +159,18 @@ export default defineSchema({
     partySize: v.number(),       // 1–10 (parties larger than 10 route through enquiries)
     occasion: v.optional(v.string()),
     specialRequests: v.optional(v.string()),
+    // Member linkage for annual spend tracking. memberId is the canonical
+    // "ELD-NNNNN" string validated at creation; userId is resolved server-side
+    // from that lookup — never accepted from the client.
+    memberId: v.optional(v.string()),
+    userId: v.optional(v.id("eldoradoUsers")),
     status: v.string(),
     createdAt: v.number(),
   })
     .index("by_email", ["guestEmail"])
     .index("by_status", ["status"])
-    .index("by_date", ["date"]),
+    .index("by_date", ["date"])
+    .index("by_member_id", ["memberId"]),
 
   // ─── Legacy tables (kept for backward compat) ─────────────────────────────
 
@@ -231,4 +242,15 @@ export default defineSchema({
     .index("by_status", ["status"])
     .index("by_email", ["email"])
     .index("by_user", ["userId"]),
+
+  // ─── Counters (sequential ID issuance) ─────────────────────────────────────
+  // Convex has no auto-increment; mutations are OCC-serialized, so a
+  // read-increment-write on a single row is race-safe. For "memberId":
+  // value = last-issued number; an absent row is treated as 99, so the
+  // first auto-issued Member ID is ELD-00100 (1–99 reserved for VIPs).
+
+  counters: defineTable({
+    name: v.string(),
+    value: v.number(),
+  }).index("by_name", ["name"]),
 });
