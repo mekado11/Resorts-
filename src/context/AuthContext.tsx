@@ -13,6 +13,7 @@ interface AuthUser {
   dateOfBirth?: string;
   emailVerified: boolean;
   marketingConsent: boolean;
+  memberId?: string;
   createdAt: number;
   lastLoginAt?: number;
 }

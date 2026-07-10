@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
+import { useAuth } from '../context/AuthContext';
 import DatePicker from './DatePicker';
 
 export type DiningType = 'casual' | 'fine' | 'tea';
@@ -108,6 +109,22 @@ const textareaStyle: React.CSSProperties = {
 
 const LARGE_PARTY_VALUE = '11+';
 
+const MEMBER_ID_NOT_FOUND =
+  "We couldn't find that Member ID. Please check it in your My Eldorado dashboard, or leave the field blank to continue as a guest.";
+
+// Client copy of the canonical normalizer in convex/auth.ts — keep in sync.
+// (Not imported from there: that would pull the Convex server runtime into
+// the browser bundle.)
+function normalizeMemberId(raw: string): string | null {
+  const cleaned = raw.replace(/\s+/g, '').toUpperCase();
+  if (cleaned === '') return null;
+  const match = cleaned.match(/^(?:ELD-?)?(\d{1,5})$/);
+  if (!match) return null;
+  const num = parseInt(match[1], 10);
+  if (num < 1 || num > 99999) return null;
+  return `ELD-${String(num).padStart(5, '0')}`;
+}
+
 interface DiningReservationModalProps {
   diningType: DiningType;
   onClose: () => void;
@@ -118,9 +135,11 @@ export default function DiningReservationModal({ diningType, onClose, onSuccess 
   const config = DINING_CONFIG[diningType];
   const createReservation = useMutation(api.diningReservations.create);
   const submitEnquiry = useMutation(api.enquiries.submit);
+  const { user } = useAuth();
 
   const [form, setForm] = useState({
     name: '', email: '', phone: '',
+    memberId: '',
     date: '', time: '',
     partySize: '',
     occasion: '',
@@ -129,11 +148,18 @@ export default function DiningReservationModal({ diningType, onClose, onSuccess 
     eventNotes: '',
   });
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const set = (key: string, val: string) => setForm(f => ({ ...f, [key]: val }));
 
   const today = new Date().toISOString().split('T')[0];
   const isLargeParty = form.partySize === LARGE_PARTY_VALUE;
+
+  // Signed-in members get their ID pre-filled and locked to their account.
+  const memberIdLocked = Boolean(user?.memberId);
+  useEffect(() => {
+    if (user?.memberId) set('memberId', user.memberId);
+  }, [user?.memberId]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -143,6 +169,7 @@ export default function DiningReservationModal({ diningType, onClose, onSuccess 
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg('');
     if (!form.date) return alert('Please select a date.');
 
     if (isLargeParty) {
@@ -151,6 +178,15 @@ export default function DiningReservationModal({ diningType, onClose, onSuccess 
     } else {
       if (!form.time) return alert('Please select a time.');
       if (!form.partySize) return alert('Please select a party size.');
+    }
+
+    // Instant format check before the round trip; the server re-validates and
+    // also confirms the ID belongs to a real account.
+    const memberIdEntered = form.memberId.trim() !== '';
+    const normalizedMemberId = memberIdEntered ? normalizeMemberId(form.memberId) : null;
+    if (memberIdEntered && !normalizedMemberId) {
+      setErrorMsg(MEMBER_ID_NOT_FOUND);
+      return;
     }
 
     setLoading(true);
@@ -166,12 +202,13 @@ export default function DiningReservationModal({ diningType, onClose, onSuccess 
             `Preferred Date: ${form.date || 'Not specified'}`,
             `Approximate Party Size: ${form.approxGuests}`,
             `Occasion: ${form.occasion || 'Not specified'}`,
+            `Member ID: ${normalizedMemberId || 'Not provided'}`,
             `Notes: ${form.eventNotes}`,
           ].join('\n'),
           type: 'dining-large-party',
         });
       } else {
-        await createReservation({
+        const res = await createReservation({
           guestName: form.name,
           guestEmail: form.email,
           guestPhone: form.phone,
@@ -182,12 +219,17 @@ export default function DiningReservationModal({ diningType, onClose, onSuccess 
           partySize: Number(form.partySize),
           occasion: form.occasion || undefined,
           specialRequests: form.specialRequests || undefined,
+          memberId: normalizedMemberId || undefined,
         });
+        if (!res.success) {
+          setErrorMsg(res.error);
+          return;
+        }
       }
       onSuccess();
       onClose();
     } catch {
-      alert('Something went wrong. Please try again.');
+      setErrorMsg('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -226,6 +268,22 @@ export default function DiningReservationModal({ diningType, onClose, onSuccess 
           <div style={{ marginBottom: '0.875rem' }}>
             <label style={labelStyle}>Phone Number</label>
             <input style={inputStyle} required value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+234 xxx xxxx xxx" />
+          </div>
+
+          <div style={{ marginBottom: '0.875rem' }}>
+            <label style={labelStyle}>Member ID <span style={{ textTransform: 'none', letterSpacing: 0 }}>(optional)</span></label>
+            <input
+              style={memberIdLocked
+                ? { ...inputStyle, background: 'rgba(13,27,42,0.04)', color: 'rgba(13,27,42,0.4)' }
+                : inputStyle}
+              value={form.memberId}
+              onChange={e => set('memberId', e.target.value)}
+              placeholder="e.g. ELD-00142"
+              disabled={memberIdLocked}
+            />
+            {memberIdLocked && (
+              <div style={{ fontSize: '0.7rem', color: 'rgba(13,27,42,0.35)', marginTop: '0.3rem' }}>Linked to your account</div>
+            )}
           </div>
 
           <div style={{ marginBottom: '0.875rem' }}>
@@ -312,6 +370,12 @@ export default function DiningReservationModal({ diningType, onClose, onSuccess 
                 />
               </div>
             </>
+          )}
+
+          {errorMsg && (
+            <div style={{ background: 'rgba(161,44,123,0.08)', border: '1px solid rgba(161,44,123,0.25)', borderRadius: 3, padding: '0.75rem 1rem', marginBottom: '1rem', fontSize: '0.83rem', color: '#A12C7B', lineHeight: 1.6 }}>
+              {errorMsg}
+            </div>
           )}
 
           <button
