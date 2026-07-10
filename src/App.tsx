@@ -35,7 +35,11 @@ const NO_FOOTER_PAGES = ['staff'];
 const NO_NAV_SPACER = ['home',...AUTH_PAGES,'staff'];
 
 function EldoradoApp() {
-  const [page, setPage] = useState('home');
+  // The staff portal has no public link; staff reach it via /?page=staff
+  // (still PIN-gated on arrival). Only 'staff' is honoured from the URL.
+  const [page, setPage] = useState(() =>
+    new URLSearchParams(window.location.search).get('page') === 'staff' ? 'staff' : 'home'
+  );
   const [toast, setToast] = useState<string|null>(null);
   const [showPopup, setShowPopup] = useState(false);
 

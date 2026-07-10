@@ -74,10 +74,20 @@ export const getByEmail = query({
   },
 });
 
+// Staff-only: move a reservation through its lifecycle. "pending" is set at
+// creation; staff Confirm/Decline from the reservations desk; recordSpend
+// below sets "completed" when the bill is recorded.
+const ALLOWED_STATUSES = ["pending", "confirmed", "declined", "completed"];
+
 export const updateStatus = mutation({
-  args: { id: v.id("diningReservations"), status: v.string() },
+  args: { staffPin: v.string(), id: v.id("diningReservations"), status: v.string() },
   handler: async (ctx, args) => {
+    if (args.staffPin !== "ELDORADO2026") throw new Error("Unauthorised");
+    if (!ALLOWED_STATUSES.includes(args.status)) {
+      return { success: false as const, error: `Invalid status "${args.status}".` };
+    }
     await ctx.db.patch(args.id, { status: args.status });
+    return { success: true as const };
   },
 });
 

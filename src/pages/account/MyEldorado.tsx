@@ -29,6 +29,14 @@ function formatNGN(n: number): string {
   return `\u20a6${n.toLocaleString()}`;
 }
 
+// Dining reservation status colourways (shared shape with MyStays/StaffView).
+const DINING_STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
+  pending:   { bg: 'rgba(201,168,76,0.15)', fg: '#8a6d2f' },
+  confirmed: { bg: 'rgba(67,122,34,0.1)',   fg: '#437A22' },
+  completed: { bg: 'rgba(32,128,141,0.1)',  fg: '#20808D' },
+  declined:  { bg: 'rgba(139,32,53,0.08)',  fg: '#8B2035' },
+};
+
 function formatNGNFull(n: number): string {
   return `\u20a6${n.toLocaleString('en-NG')}`;
 }
@@ -87,11 +95,11 @@ function MembershipCard({ token, setPage, createdAt, memberId }: { token: string
 
       {status === null && (
         <div>
-          <div style={{ fontSize: '0.55rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '0.5rem' }}>The Eldorado Circle</div>
+          <div style={{ fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.8)', marginBottom: '0.5rem' }}>The Eldorado Circle</div>
           <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic', color: 'rgba(250,248,242,0.55)', marginBottom: '1.25rem', lineHeight: 1.65 }}>
             Discover the privileges reserved for Eldorado Circle members.
           </p>
-          <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.4)', marginBottom: '1.25rem' }}>
+          <div style={{ fontSize: '0.82rem', color: 'rgba(250,248,242,0.6)', marginBottom: '1.25rem' }}>
             Your Member ID:{' '}
             {memberId
               ? <span style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>{memberId}</span>
@@ -106,7 +114,7 @@ function MembershipCard({ token, setPage, createdAt, memberId }: { token: string
 
           {/* Left: tier + member since + CTA */}
           <div>
-            <div style={{ fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '0.75rem' }}>Your Current Tier</div>
+            <div style={{ fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.8)', marginBottom: '0.75rem' }}>Your Current Tier</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '0.4rem' }}>
               <TierBadge tier={status.tier} />
               <div>
@@ -115,7 +123,7 @@ function MembershipCard({ token, setPage, createdAt, memberId }: { token: string
                 </div>
               </div>
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'rgba(250,248,242,0.4)', marginBottom: '1.25rem' }}>
+            <div style={{ fontSize: '0.82rem', color: 'rgba(250,248,242,0.6)', marginBottom: '1.25rem' }}>
               Member ID{' '}
               {memberId
                 ? <span style={{ color: 'var(--gold)', letterSpacing: '0.08em' }}>{memberId}</span>
@@ -143,7 +151,7 @@ function MembershipCard({ token, setPage, createdAt, memberId }: { token: string
 
           {/* Right: progress */}
           <div>
-            <div style={{ fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '0.75rem' }}>
+            <div style={{ fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.8)', marginBottom: '0.75rem' }}>
               Your Progress (Rolling 12 Months)
             </div>
 
@@ -232,7 +240,7 @@ function ActivityStrip({ token }: { token: string | null }) {
       padding: '1.25rem 1.5rem',
       gridColumn: '1 / -1',
     }}>
-      <div style={{ fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.35)', marginBottom: '1rem' }}>
+      <div style={{ fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)', marginBottom: '1rem' }}>
         Your Activity (Rolling 12 Months)
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '0.5rem' }}>
@@ -244,7 +252,7 @@ function ActivityStrip({ token }: { token: string | null }) {
           </svg>
           <div>
             <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.6rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1 }}>{nights}</div>
-            <div style={{ fontSize: '0.65rem', color: 'rgba(13,27,42,0.45)', marginTop: '0.15rem' }}>Total Nights</div>
+            <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.6)', marginTop: '0.15rem' }}>Total Nights</div>
           </div>
         </div>
         {/* Annual Spend */}
@@ -255,8 +263,8 @@ function ActivityStrip({ token }: { token: string | null }) {
           </svg>
           <div>
             <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.4rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1 }}>{formatNGNFull(spend)}</div>
-            <div style={{ fontSize: '0.65rem', color: 'rgba(13,27,42,0.45)', marginTop: '0.15rem' }}>Annual Spend</div>
-            <div style={{ fontSize: '0.6rem', color: 'rgba(13,27,42,0.3)', marginTop: '0.05rem' }}>Eligible Spend</div>
+            <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.6)', marginTop: '0.15rem' }}>Annual Spend</div>
+            <div style={{ fontSize: '0.7rem', color: 'rgba(13,27,42,0.45)', marginTop: '0.05rem' }}>Eligible Spend</div>
           </div>
         </div>
         {/* Days Remaining */}
@@ -268,15 +276,15 @@ function ActivityStrip({ token }: { token: string | null }) {
           </svg>
           <div>
             <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.6rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1 }}>{daysRemaining}</div>
-            <div style={{ fontSize: '0.65rem', color: 'rgba(13,27,42,0.45)', marginTop: '0.15rem' }}>Days Remaining</div>
-            <div style={{ fontSize: '0.6rem', color: 'rgba(13,27,42,0.3)', marginTop: '0.05rem' }}>Until period refresh</div>
+            <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.6)', marginTop: '0.15rem' }}>Days Remaining</div>
+            <div style={{ fontSize: '0.7rem', color: 'rgba(13,27,42,0.45)', marginTop: '0.05rem' }}>Until period refresh</div>
           </div>
         </div>
         {/* High-value tip */}
         <div style={{ padding: '0.9rem 1rem', background: 'rgba(201,168,76,0.06)', border: '1px solid rgba(201,168,76,0.2)', borderRadius: 5 }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.4rem' }}>
             <span style={{ color: '#C9A84C', fontSize: '0.9rem', lineHeight: 1, flexShrink: 0 }}>☆</span>
-            <div style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.65)', lineHeight: 1.6 }}>
+            <div style={{ fontSize: '0.82rem', color: 'rgba(13,27,42,0.75)', lineHeight: 1.6 }}>
               High-value activity like yours may qualify for future tier consideration.
             </div>
           </div>
@@ -302,7 +310,7 @@ function DiningCard({ token, setPage }: { token: string | null; setPage: (p: str
       padding: '1.25rem 1.5rem',
       gridColumn: '1 / -1',
     }}>
-      <div style={{ fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.35)', marginBottom: '1rem' }}>
+      <div style={{ fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)', marginBottom: '1rem' }}>
         Your Dining
       </div>
 
@@ -321,8 +329,8 @@ function DiningCard({ token, setPage }: { token: string | null; setPage: (p: str
           {recent.map((r: any) => (
             <div key={r._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.85rem', padding: '0.75rem 1rem', background: 'var(--ivory)', borderRadius: 5, flexWrap: 'wrap' }}>
               <div>
-                <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.05rem', fontWeight: 500, color: 'var(--navy)' }}>{r.venueName}</div>
-                <div style={{ fontSize: '0.7rem', color: 'rgba(13,27,42,0.5)', marginTop: '0.1rem' }}>
+                <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.15rem', fontWeight: 500, color: 'var(--navy)' }}>{r.venueName}</div>
+                <div style={{ fontSize: '0.82rem', color: 'rgba(13,27,42,0.65)', marginTop: '0.1rem' }}>
                   {new Date(r.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} · {r.time} · {r.partySize} guest{r.partySize !== 1 ? 's' : ''}
                 </div>
               </div>
@@ -330,7 +338,7 @@ function DiningCard({ token, setPage }: { token: string | null; setPage: (p: str
                 {r.spendNGN != null && (
                   <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1rem', fontWeight: 600, color: 'var(--navy)' }}>{formatNGNFull(r.spendNGN)}</span>
                 )}
-                <span style={{ fontSize: '0.56rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '0.25rem 0.6rem', borderRadius: 3, background: r.status === 'completed' ? 'rgba(32,128,141,0.1)' : 'rgba(201,168,76,0.15)', color: r.status === 'completed' ? '#20808D' : '#8a6d2f' }}>{r.status}</span>
+                <span style={{ fontSize: '0.66rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '0.25rem 0.6rem', borderRadius: 3, background: (DINING_STATUS_STYLES[r.status] ?? DINING_STATUS_STYLES.pending).bg, color: (DINING_STATUS_STYLES[r.status] ?? DINING_STATUS_STYLES.pending).fg }}>{r.status}</span>
               </div>
             </div>
           ))}
@@ -350,7 +358,7 @@ function QuickActions({ setPage }: { setPage: (p: string) => void }) {
   ];
   return (
     <div style={{ background: '#fff', border: '1px solid var(--linen)', borderRadius: 8, padding: '1.25rem 1.5rem' }}>
-      <div style={{ fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.35)', marginBottom: '1rem' }}>Quick Actions</div>
+      <div style={{ fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)', marginBottom: '1rem' }}>Quick Actions</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         {actions.map((a, i) => (
           <button key={a.label} onClick={() => setPage(a.page)} style={{
@@ -363,7 +371,7 @@ function QuickActions({ setPage }: { setPage: (p: string) => void }) {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
               <span style={{ fontSize: '0.95rem', width: 20, textAlign: 'center', flexShrink: 0 }}>{a.icon}</span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--navy)', fontFamily: "'Jost',sans-serif" }}>{a.label}</span>
+              <span style={{ fontSize: '0.9rem', color: 'var(--navy)', fontFamily: "'Jost',sans-serif" }}>{a.label}</span>
             </div>
             <span style={{ fontSize: '0.75rem', color: 'rgba(13,27,42,0.3)' }}>›</span>
           </button>
@@ -386,12 +394,12 @@ function CaresWidget({ setPage }: { setPage: (p: string) => void }) {
         </svg>
         <span style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.5)', fontFamily: "'Jost',sans-serif" }}>Eldorado Cares</span>
       </div>
-      <p style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.6)', lineHeight: 1.65, marginBottom: '0.85rem' }}>
+      <p style={{ fontSize: '0.88rem', color: 'rgba(13,27,42,0.7)', lineHeight: 1.65, marginBottom: '0.85rem' }}>
         Every stay helps us create opportunity for our community.
       </p>
       <button onClick={() => setPage('eldorado-cares')} style={{
         background: 'none', border: 'none', padding: 0,
-        fontSize: '0.72rem', color: '#C9A84C', cursor: 'pointer',
+        fontSize: '0.78rem', color: '#C9A84C', cursor: 'pointer',
         fontFamily: "'Jost',sans-serif", letterSpacing: '0.06em',
         display: 'flex', alignItems: 'center', gap: '0.3rem',
       }}>
@@ -421,7 +429,7 @@ function UpcomingStayCard({ setPage }: { setPage: (p: string) => void }) {
             position: 'relative',
           }}>
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(13,27,42,0.35)' }} />
-            <div style={{ position: 'relative', fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(250,248,242,0.8)', background: 'rgba(13,27,42,0.5)', padding: '0.3rem 0.6rem', borderRadius: 2 }}>
+            <div style={{ position: 'relative', fontSize: '0.66rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(250,248,242,0.95)', background: 'rgba(13,27,42,0.5)', padding: '0.3rem 0.6rem', borderRadius: 2 }}>
               Upcoming Stay
             </div>
           </div>
@@ -430,7 +438,7 @@ function UpcomingStayCard({ setPage }: { setPage: (p: string) => void }) {
               {new Date(next.checkIn).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })} – {new Date(next.checkOut).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
             </div>
             <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.25rem', fontWeight: 500, color: 'var(--navy)', marginBottom: '0.2rem' }}>{next.roomName}</div>
-            <div style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.45)', marginBottom: '0.25rem' }}>
+            <div style={{ fontSize: '0.82rem', color: 'rgba(13,27,42,0.6)', marginBottom: '0.25rem' }}>
               {next.nights} night{next.nights > 1 ? 's' : ''}
             </div>
             <button className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginBottom: '0.5rem' }} onClick={() => setPage('my-stays')}>
@@ -448,7 +456,7 @@ function UpcomingStayCard({ setPage }: { setPage: (p: string) => void }) {
         </>
       ) : (
         <div style={{ padding: '1.5rem 1.25rem' }}>
-          <div style={{ fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.35)', marginBottom: '0.75rem' }}>Upcoming Stay</div>
+          <div style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)', marginBottom: '0.75rem' }}>Upcoming Stay</div>
           <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.05rem', fontStyle: 'italic', color: 'rgba(13,27,42,0.55)', lineHeight: 1.65, marginBottom: '1.25rem' }}>
             Your next Eldorado story begins here.
           </p>
@@ -475,9 +483,9 @@ function WeRememberCard({ token, setPage }: { token: string | null; setPage: (p:
   return (
     <div style={{ background: '#fff', border: '1px solid var(--linen)', borderRadius: 8, padding: '1.25rem 1.5rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-        <div style={{ fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.35)' }}>We Remember</div>
+        <div style={{ fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)' }}>We Remember</div>
         <button onClick={() => setPage('my-preferences')} style={{
-          background: 'none', border: 'none', padding: 0, fontSize: '0.65rem',
+          background: 'none', border: 'none', padding: 0, fontSize: '0.78rem',
           color: '#C9A84C', cursor: 'pointer', fontFamily: "'Jost',sans-serif", letterSpacing: '0.06em',
         }}>
           Edit Preferences
@@ -490,13 +498,13 @@ function WeRememberCard({ token, setPage }: { token: string | null; setPage: (p:
               <span style={{ fontSize: '0.85rem', width: 20, textAlign: 'center', flexShrink: 0 }}>
                 {prefIcons[p.value] ?? '·'}
               </span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--navy)', fontFamily: "'Jost',sans-serif" }}>{p.value}</span>
+              <span style={{ fontSize: '0.9rem', color: 'var(--navy)', fontFamily: "'Jost',sans-serif" }}>{p.value}</span>
             </div>
           ))}
         </div>
       ) : (
         <>
-          <p style={{ fontSize: '0.8rem', color: 'rgba(13,27,42,0.5)', lineHeight: 1.65, marginBottom: '1rem' }}>
+          <p style={{ fontSize: '0.9rem', color: 'rgba(13,27,42,0.6)', lineHeight: 1.65, marginBottom: '1rem' }}>
             Tell us how you like to stay — we'll remember every detail.
           </p>
           <button className="btn-primary" onClick={() => setPage('my-preferences')}>Set My Preferences</button>
@@ -513,10 +521,10 @@ function SavedExperiencesCard({ token, setPage }: { token: string | null; setPag
   return (
     <div style={{ background: '#fff', border: '1px solid var(--linen)', borderRadius: 8, padding: '1.25rem 1.5rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-        <div style={{ fontSize: '0.52rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.35)' }}>Saved Experiences</div>
+        <div style={{ fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)' }}>Saved Experiences</div>
         {saved.length > 0 && (
           <button onClick={() => setPage('my-experiences')} style={{
-            background: 'none', border: 'none', padding: 0, fontSize: '0.65rem',
+            background: 'none', border: 'none', padding: 0, fontSize: '0.78rem',
             color: '#C9A84C', cursor: 'pointer', fontFamily: "'Jost',sans-serif", letterSpacing: '0.06em',
           }}>
             View All
@@ -544,7 +552,7 @@ function SavedExperiencesCard({ token, setPage }: { token: string | null; setPag
         </div>
       ) : (
         <>
-          <p style={{ fontSize: '0.8rem', color: 'rgba(13,27,42,0.5)', lineHeight: 1.65, marginBottom: '1rem' }}>
+          <p style={{ fontSize: '0.9rem', color: 'rgba(13,27,42,0.6)', lineHeight: 1.65, marginBottom: '1rem' }}>
             Save experiences that catch your eye and return whenever you're ready.
           </p>
           <button className="btn-primary" onClick={() => setPage('experiences')}>Explore Experiences</button>
@@ -561,15 +569,15 @@ function CaresImpactCard({ setPage }: { setPage: (p: string) => void }) {
       <div style={{ height: 130, backgroundImage: "url('/assets/cares-hero.jpg')", backgroundSize: 'cover', backgroundPosition: 'center 20%', position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.75) 100%)' }} />
         <div style={{ position: 'absolute', bottom: '0.75rem', left: '1rem', right: '1rem' }}>
-          <div style={{ fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.85)', marginBottom: '0.2rem' }}>Eldorado Cares Impact</div>
+          <div style={{ fontSize: '0.66rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.95)', marginBottom: '0.2rem' }}>Eldorado Cares Impact</div>
         </div>
       </div>
       <div style={{ padding: '1rem 1.25rem' }}>
-        <div style={{ fontSize: '0.8rem', color: 'rgba(13,27,42,0.6)', lineHeight: 1.6, marginBottom: '0.35rem' }}>Together, we've supported</div>
+        <div style={{ fontSize: '0.9rem', color: 'rgba(13,27,42,0.7)', lineHeight: 1.6, marginBottom: '0.35rem' }}>Together, we've supported</div>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem', marginBottom: '0.25rem' }}>
           <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '2rem', fontWeight: 600, color: 'var(--navy)', lineHeight: 1 }}>0</span>
         </div>
-        <div style={{ fontSize: '0.72rem', color: 'rgba(13,27,42,0.45)', marginBottom: '0.85rem' }}>Young lives this year</div>
+        <div style={{ fontSize: '0.82rem', color: 'rgba(13,27,42,0.6)', marginBottom: '0.85rem' }}>Young lives this year</div>
         <button onClick={() => setPage('eldorado-cares')} style={{
           background: 'none', border: 'none', padding: 0,
           fontSize: '0.68rem', color: '#C9A84C', cursor: 'pointer',

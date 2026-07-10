@@ -8,6 +8,14 @@ const card: React.CSSProperties = {
   background: '#fff', border: '1px solid var(--linen)', borderRadius: 4, padding: '1.5rem',
 };
 
+// Dining reservation status colourways (shared shape with MyEldorado/StaffView).
+const DINING_STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
+  pending:   { bg: 'rgba(201,168,76,0.15)', fg: '#8a6d2f' },
+  confirmed: { bg: 'rgba(67,122,34,0.1)',   fg: '#437A22' },
+  completed: { bg: 'rgba(32,128,141,0.1)',  fg: '#20808D' },
+  declined:  { bg: 'rgba(139,32,53,0.08)',  fg: '#8B2035' },
+};
+
 export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
   const { token } = useAuth();
   const bookings = useQuery(api.account.getMyBookings, token ? { token } : 'skip') ?? [];
@@ -40,13 +48,13 @@ export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
         <div>
           <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.3rem', fontWeight: 500, color: 'var(--navy)' }}>{b.roomName}</div>
-          <div style={{ fontSize: '0.8rem', color: 'rgba(13,27,42,0.45)', marginTop: '0.2rem' }}>
+          <div style={{ fontSize: '0.88rem', color: 'rgba(13,27,42,0.6)', marginTop: '0.2rem' }}>
             {new Date(b.checkIn).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} — {new Date(b.checkOut).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginTop: '0.2rem' }}>{b.nights} night{b.nights !== 1 ? 's' : ''}</div>
+          <div style={{ fontSize: '0.85rem', color: 'rgba(13,27,42,0.55)', marginTop: '0.2rem' }}>{b.nights} night{b.nights !== 1 ? 's' : ''}</div>
         </div>
         <span style={{
-          fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase',
+          fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase',
           padding: '0.3rem 0.65rem', borderRadius: 2,
           background: b.status === 'confirmed' ? 'rgba(67,122,34,0.1)' : 'rgba(201,168,76,0.12)',
           color: b.status === 'confirmed' ? '#437A22' : '#6E522B',
@@ -83,7 +91,7 @@ export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
 
       {/* Upcoming */}
       <section style={{ marginBottom: '2.5rem' }}>
-        <div style={{ fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Upcoming</div>
+        <div style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Upcoming</div>
         {upcoming.length > 0
           ? <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>{upcoming.map(b => <BookingCard key={b._id} b={b} upcoming={true} />)}</div>
           : <div style={card}>
@@ -96,7 +104,7 @@ export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
       {/* Past */}
       {past.length > 0 && (
         <section style={{ marginBottom: '2.5rem' }}>
-          <div style={{ fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Past Stays</div>
+          <div style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Past Stays</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>{past.map(b => <BookingCard key={b._id} b={b} upcoming={false} />)}</div>
         </section>
       )}
@@ -104,17 +112,17 @@ export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
       {/* Dining reservations */}
       {diningReservations.length > 0 && (
         <section style={{ marginBottom: '2.5rem' }}>
-          <div style={{ fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Dining Reservations</div>
+          <div style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Dining Reservations</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {diningReservations.map((r: any) => (
               <div key={r._id} style={card}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <div>
                     <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.3rem', fontWeight: 500, color: 'var(--navy)' }}>{r.venueName}</div>
-                    <div style={{ fontSize: '0.8rem', color: 'rgba(13,27,42,0.45)', marginTop: '0.2rem' }}>
+                    <div style={{ fontSize: '0.88rem', color: 'rgba(13,27,42,0.6)', marginTop: '0.2rem' }}>
                       {new Date(r.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · {r.time}
                     </div>
-                    <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.4)', marginTop: '0.2rem' }}>
+                    <div style={{ fontSize: '0.85rem', color: 'rgba(13,27,42,0.55)', marginTop: '0.2rem' }}>
                       {r.partySize} guest{r.partySize !== 1 ? 's' : ''}{r.occasion ? ` · ${r.occasion}` : ''}
                     </div>
                   </div>
@@ -123,10 +131,10 @@ export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
                       <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontWeight: 600, color: 'var(--navy)' }}>₦{r.spendNGN.toLocaleString('en-NG')}</span>
                     )}
                     <span style={{
-                      fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase',
+                      fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase',
                       padding: '0.3rem 0.65rem', borderRadius: 2,
-                      background: r.status === 'completed' ? 'rgba(32,128,141,0.1)' : 'rgba(201,168,76,0.12)',
-                      color: r.status === 'completed' ? '#20808D' : '#6E522B',
+                      background: (DINING_STATUS_STYLES[r.status] ?? DINING_STATUS_STYLES.pending).bg,
+                      color: (DINING_STATUS_STYLES[r.status] ?? DINING_STATUS_STYLES.pending).fg,
                     }}>
                       {r.status}
                     </span>
@@ -140,7 +148,7 @@ export default function MyStays({ setPage }: { setPage: (p: string) => void }) {
 
       {/* Link a reservation */}
       <section>
-        <div style={{ fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Add a Stay</div>
+        <div style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1rem' }}>Add a Stay</div>
         <div style={card}>
           <p style={{ fontSize: '0.85rem', color: 'rgba(13,27,42,0.55)', lineHeight: 1.7, marginBottom: '1.25rem' }}>
             If you made a booking before creating your account, connect it here.

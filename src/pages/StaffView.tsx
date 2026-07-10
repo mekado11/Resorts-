@@ -391,13 +391,26 @@ function MembershipApplications() {
 }
 
 
-// ─── Dining Spend Reconciliation ──────────────────────────────────────────────
-// Look up a member's dining reservations by Member ID and record the final
-// bill on each. Recording marks the reservation completed and auto-credits
-// the member's active membership spendForYear (delta-safe on re-record).
-function DiningReconciliation() {
-  const recordSpend = useMutation(api.diningReservations.recordSpend);
+// ─── Dining Reservations Desk ─────────────────────────────────────────────────
+// The reservations queue (confirm/decline pending requests, record bills) plus
+// a per-member lookup. Recording a bill marks the reservation completed and
+// auto-credits the member's active membership spendForYear (delta-safe).
 
+const DINING_STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
+  pending:   { bg: 'rgba(201,168,76,0.15)', fg: '#8a6d2f' },
+  confirmed: { bg: 'rgba(67,122,34,0.1)',   fg: '#437A22' },
+  completed: { bg: 'rgba(32,128,141,0.1)',  fg: '#20808D' },
+  declined:  { bg: 'rgba(139,32,53,0.08)',  fg: '#8B2035' },
+};
+
+type DiningFilter = 'pending' | 'confirmed' | 'completed' | 'declined' | 'all';
+
+function DiningReconciliation() {
+  const allReservations = useQuery(api.diningReservations.listAll) ?? [];
+  const recordSpend     = useMutation(api.diningReservations.recordSpend);
+  const updateStatus    = useMutation(api.diningReservations.updateStatus);
+
+  const [filter,    setFilter]    = useState<DiningFilter>('pending');
   const [searchId,  setSearchId]  = useState('');
   const [activeId,  setActiveId]  = useState('');
   const [staffName, setStaffName] = useState('');
@@ -405,6 +418,7 @@ function DiningReconciliation() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [billInput, setBillInput] = useState('');
   const [saving,    setSaving]    = useState(false);
+  const [actingId,  setActingId]  = useState<string | null>(null);
 
   const result = useQuery(
     api.diningReservations.getByMemberId,
@@ -418,6 +432,11 @@ function DiningReconciliation() {
 
   const fmtNGN = (n: number) => `₦${n.toLocaleString('en-NG')}`;
 
+  const filtered = filter === 'all'
+    ? (allReservations as any[])
+    : (allReservations as any[]).filter((r: any) => r.status === filter);
+  const pendingCount = (allReservations as any[]).filter((r: any) => r.status === 'pending').length;
+
   const submitSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setEditingId(null);
@@ -427,6 +446,19 @@ function DiningReconciliation() {
   const startRecord = (r: any) => {
     setEditingId(r._id);
     setBillInput(r.spendNGN != null ? String(r.spendNGN) : '');
+  };
+
+  const setStatus = async (r: any, status: 'confirmed' | 'declined') => {
+    if (!staffName.trim()) { showToast('Enter your name before updating a reservation.'); return; }
+    setActingId(r._id);
+    try {
+      const res = await updateStatus({ staffPin: 'ELDORADO2026', id: r._id as Id<'diningReservations'>, status });
+      if (!res.success) showToast('Error: ' + res.error);
+      else showToast(status === 'confirmed'
+        ? `${r.venueName} — table confirmed for ${r.guestName}.`
+        : `${r.venueName} — reservation declined.`);
+    } catch (err: any) { showToast('Error: ' + (err?.message ?? 'Unknown')); }
+    finally { setActingId(null); }
   };
 
   const saveBill = async (r: any) => {
@@ -453,6 +485,72 @@ function DiningReconciliation() {
     finally { setSaving(false); }
   };
 
+  // One card serves both the queue (showGuest) and the member lookup results.
+  const ReservationCard = ({ r, showGuest }: { r: any; showGuest: boolean }) => {
+    const isEditing = editingId === r._id;
+    const isBusy    = actingId === r._id;
+    const chip      = DINING_STATUS_STYLES[r.status] ?? DINING_STATUS_STYLES.pending;
+    return (
+      <div style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.25rem 1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.15rem', fontWeight: 500, color: NAVY }}>{r.venueName}</div>
+            <div style={{ fontSize: '0.82rem', color: 'rgba(13,27,42,0.6)', marginTop: '0.25rem' }}>
+              {new Date(r.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} · {r.time} · {r.partySize} guest{r.partySize !== 1 ? 's' : ''}
+            </div>
+            {showGuest && (
+              <div style={{ fontSize: '0.8rem', color: 'rgba(13,27,42,0.55)', marginTop: '0.2rem' }}>
+                {r.guestName} · {r.guestEmail}
+                {r.memberId && <> · <span style={{ color: '#8a6d2f', letterSpacing: '0.06em' }}>{r.memberId}</span></>}
+              </div>
+            )}
+            {r.specialRequests && (
+              <div style={{ fontSize: '0.8rem', fontStyle: 'italic', color: 'rgba(13,27,42,0.5)', marginTop: '0.3rem' }}>“{r.specialRequests}”</div>
+            )}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.66rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '0.3rem 0.7rem', borderRadius: 3, background: chip.bg, color: chip.fg }}>{r.status}</span>
+            <span data-testid={`text-spend-${r._id}`} style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontWeight: 600, color: r.spendNGN != null ? NAVY : 'rgba(13,27,42,0.3)' }}>
+              {r.spendNGN != null ? fmtNGN(r.spendNGN) : '—'}
+            </span>
+            {r.status === 'pending' && (
+              <>
+                <button data-testid={`button-confirm-${r._id}`} onClick={() => setStatus(r, 'confirmed')} disabled={isBusy}
+                  style={{ padding: '0.45rem 0.9rem', border: 'none', borderRadius: 3, background: '#437A22', color: '#fff', fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: isBusy ? 'not-allowed' : 'pointer', opacity: isBusy ? 0.6 : 1 }}>
+                  Confirm
+                </button>
+                <button data-testid={`button-decline-${r._id}`} onClick={() => setStatus(r, 'declined')} disabled={isBusy}
+                  style={{ padding: '0.45rem 0.9rem', border: '1px solid #8B2035', borderRadius: 3, background: 'transparent', color: '#8B2035', fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: isBusy ? 'not-allowed' : 'pointer', opacity: isBusy ? 0.6 : 1 }}>
+                  Decline
+                </button>
+              </>
+            )}
+            {r.status !== 'declined' && (
+              <button data-testid={`button-record-bill-${r._id}`} onClick={() => isEditing ? setEditingId(null) : startRecord(r)}
+                style={{ padding: '0.45rem 0.9rem', border: `1px solid ${NAVY}`, borderRadius: 3, background: isEditing ? 'transparent' : NAVY, color: isEditing ? NAVY : GOLD, fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
+                {isEditing ? 'Cancel' : r.spendNGN != null ? 'Edit Bill' : 'Record Bill'}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {isEditing && (
+          <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(13,27,42,0.08)', display: 'flex', alignItems: 'flex-end', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: 180 }}>
+              <label style={{ display: 'block', fontSize: '0.66rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)', marginBottom: '0.35rem' }}>Final Bill (NGN)</label>
+              <input data-testid={`input-bill-${r._id}`} type="number" min={0} value={billInput} onChange={e => setBillInput(e.target.value)} placeholder="e.g. 180000"
+                style={{ width: '100%', padding: '0.55rem 0.8rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.9rem', fontFamily: "'Jost',sans-serif", color: NAVY, boxSizing: 'border-box' }} />
+            </div>
+            <button data-testid={`button-save-bill-${r._id}`} onClick={() => saveBill(r)} disabled={saving}
+              style={{ padding: '0.65rem 1.4rem', background: NAVY, color: GOLD, border: 'none', borderRadius: 3, fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>
+              {saving ? 'Saving…' : 'Save Bill'}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const data = result as any;
 
   return (
@@ -467,103 +565,86 @@ function DiningReconciliation() {
 
       {/* Staff name field */}
       <div style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.25rem 1.5rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-        <div style={{ fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', flexShrink: 0 }}>Acting as</div>
-        <input data-testid="input-dining-staff-name" type="text" placeholder="Your name (required to record a bill)" value={staffName} onChange={e => setStaffName(e.target.value)}
+        <div style={{ fontSize: '0.66rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.5)', flexShrink: 0 }}>Acting as</div>
+        <input data-testid="input-dining-staff-name" type="text" placeholder="Your name (required to confirm, decline or record a bill)" value={staffName} onChange={e => setStaffName(e.target.value)}
           style={{ flex: 1, minWidth: 200, padding: '0.55rem 0.8rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.85rem', fontFamily: "'Jost',sans-serif", color: NAVY }} />
       </div>
 
-      {/* Member ID search */}
-      <form onSubmit={submitSearch} style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
-        <input
-          data-testid="input-dining-member-search"
-          type="text" value={searchId} onChange={e => setSearchId(e.target.value)} required
-          placeholder="Search by Member ID, e.g. ELD-00142…"
-          style={{ flex: 1, padding: '0.75rem 1rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.9rem', fontFamily: "'Jost',sans-serif", color: NAVY, background: '#fff' }}
-        />
-        <button data-testid="button-find-member-dining" type="submit"
-          style={{ padding: '0.75rem 1.5rem', background: NAVY, color: GOLD, border: 'none', borderRadius: 3, fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer', whiteSpace: 'nowrap' }}>
-          Find Member
-        </button>
-      </form>
+      {/* ── All reservations queue ── */}
+      <div style={{ fontSize: '0.66rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.5)', marginBottom: '0.85rem' }}>All Reservations</div>
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+        {(['pending', 'confirmed', 'completed', 'declined', 'all'] as const).map(f => (
+          <button key={f} data-testid={`tab-dining-filter-${f}`} onClick={() => setFilter(f)}
+            style={{ padding: '0.45rem 1rem', border: filter === f ? `1px solid ${NAVY}` : '1px solid rgba(13,27,42,0.15)', borderRadius: 3, background: filter === f ? NAVY : 'transparent', color: filter === f ? GOLD : 'rgba(13,27,42,0.55)', fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
+            {f === 'pending' && pendingCount > 0 && (
+              <span style={{ background: '#C9A84C', color: '#0D1B2A', borderRadius: 10, fontSize: '0.62rem', fontWeight: 700, padding: '0 0.4rem', lineHeight: '1.4' }}>{pendingCount}</span>
+            )}
+          </button>
+        ))}
+        <span style={{ fontSize: '0.75rem', color: 'rgba(13,27,42,0.4)', marginLeft: 'auto' }}>{filtered.length} reservation{filtered.length !== 1 ? 's' : ''}</span>
+      </div>
 
-      {!activeId && (
-        <div style={{ textAlign: 'center', padding: '3rem', color: 'rgba(13,27,42,0.35)', fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic' }}>
-          Search by Member ID to view dining reservations and record bills.
+      {filtered.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '2.5rem', color: 'rgba(13,27,42,0.35)', fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic', marginBottom: '2rem' }}>
+          {filter === 'pending' ? 'No pending reservations — all caught up.' : 'No reservations in this category.'}
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+          {filtered.map((r: any) => <ReservationCard key={r._id} r={r} showGuest={true} />)}
         </div>
       )}
 
-      {activeId && data === undefined && (
-        <div style={{ textAlign: 'center', color: 'rgba(13,27,42,0.4)', padding: '2rem' }}>Searching…</div>
-      )}
+      {/* ── Member lookup ── */}
+      <div style={{ borderTop: '1px solid rgba(13,27,42,0.1)', paddingTop: '1.5rem' }}>
+        <div style={{ fontSize: '0.66rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.5)', marginBottom: '0.85rem' }}>Member Lookup</div>
+        <form onSubmit={submitSearch} style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+          <input
+            data-testid="input-dining-member-search"
+            type="text" value={searchId} onChange={e => setSearchId(e.target.value)} required
+            placeholder="Search by Member ID, e.g. ELD-00142…"
+            style={{ flex: 1, padding: '0.75rem 1rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.9rem', fontFamily: "'Jost',sans-serif", color: NAVY, background: '#fff' }}
+          />
+          <button data-testid="button-find-member-dining" type="submit"
+            style={{ padding: '0.75rem 1.5rem', background: NAVY, color: GOLD, border: 'none', borderRadius: 3, fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer', whiteSpace: 'nowrap' }}>
+            Find Member
+          </button>
+        </form>
 
-      {activeId && data && data.error && (
-        <div style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.5rem', fontSize: '0.88rem', color: '#A12C7B' }}>{data.error}</div>
-      )}
+        {activeId && data === undefined && (
+          <div style={{ textAlign: 'center', color: 'rgba(13,27,42,0.4)', padding: '2rem' }}>Searching…</div>
+        )}
 
-      {activeId && data && !data.error && (
-        <>
-          {/* Member header */}
-          <div style={{ background: NAVY, borderRadius: 4, padding: '1.25rem 1.5rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
-            <div>
-              <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.3rem', color: IVORY }}>{data.member.name}</div>
-              <div style={{ fontSize: '0.75rem', color: 'rgba(250,248,242,0.5)', marginTop: '0.2rem' }}>{data.member.email} · <span style={{ color: GOLD, letterSpacing: '0.08em' }}>{data.member.memberId}</span></div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.4rem', fontWeight: 600, color: GOLD }}>{fmtNGN(data.totalDiningSpendNGN ?? 0)}</div>
-              <div style={{ fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(250,248,242,0.45)' }}>Total Dining Spend</div>
-            </div>
-          </div>
+        {activeId && data && data.error && (
+          <div style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.5rem', fontSize: '0.88rem', color: '#A12C7B' }}>{data.error}</div>
+        )}
 
-          {/* Reservation list */}
-          {data.reservations.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'rgba(13,27,42,0.35)', fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic' }}>
-              No dining reservations for this member yet.
+        {activeId && data && !data.error && (
+          <>
+            {/* Member header */}
+            <div style={{ background: NAVY, borderRadius: 4, padding: '1.25rem 1.5rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div>
+                <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.3rem', color: IVORY }}>{data.member.name}</div>
+                <div style={{ fontSize: '0.8rem', color: 'rgba(250,248,242,0.6)', marginTop: '0.2rem' }}>{data.member.email} · <span style={{ color: GOLD, letterSpacing: '0.08em' }}>{data.member.memberId}</span></div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.4rem', fontWeight: 600, color: GOLD }}>{fmtNGN(data.totalDiningSpendNGN ?? 0)}</div>
+                <div style={{ fontSize: '0.66rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(250,248,242,0.55)' }}>Total Dining Spend</div>
+              </div>
             </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {data.reservations.map((r: any) => {
-                const isEditing = editingId === r._id;
-                return (
-                  <div key={r._id} style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.25rem 1.5rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
-                      <div>
-                        <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.15rem', fontWeight: 500, color: NAVY }}>{r.venueName}</div>
-                        <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.55)', marginTop: '0.25rem' }}>
-                          {new Date(r.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} · {r.time} · {r.partySize} guest{r.partySize !== 1 ? 's' : ''}
-                        </div>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '0.3rem 0.7rem', borderRadius: 3, background: r.status === 'completed' ? 'rgba(32,128,141,0.1)' : 'rgba(201,168,76,0.15)', color: r.status === 'completed' ? '#20808D' : '#8a6d2f' }}>{r.status}</span>
-                        <span data-testid={`text-spend-${r._id}`} style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontWeight: 600, color: r.spendNGN != null ? NAVY : 'rgba(13,27,42,0.3)' }}>
-                          {r.spendNGN != null ? fmtNGN(r.spendNGN) : '—'}
-                        </span>
-                        <button data-testid={`button-record-bill-${r._id}`} onClick={() => isEditing ? setEditingId(null) : startRecord(r)}
-                          style={{ padding: '0.45rem 0.9rem', border: `1px solid ${NAVY}`, borderRadius: 3, background: isEditing ? 'transparent' : NAVY, color: isEditing ? NAVY : GOLD, fontSize: '0.58rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
-                          {isEditing ? 'Cancel' : r.spendNGN != null ? 'Edit Bill' : 'Record Bill'}
-                        </button>
-                      </div>
-                    </div>
 
-                    {isEditing && (
-                      <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(13,27,42,0.08)', display: 'flex', alignItems: 'flex-end', gap: '0.75rem', flexWrap: 'wrap' }}>
-                        <div style={{ flex: 1, minWidth: 180 }}>
-                          <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.45)', marginBottom: '0.35rem' }}>Final Bill (NGN)</label>
-                          <input data-testid={`input-bill-${r._id}`} type="number" min={0} value={billInput} onChange={e => setBillInput(e.target.value)} placeholder="e.g. 180000"
-                            style={{ width: '100%', padding: '0.55rem 0.8rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.9rem', fontFamily: "'Jost',sans-serif", color: NAVY, boxSizing: 'border-box' }} />
-                        </div>
-                        <button data-testid={`button-save-bill-${r._id}`} onClick={() => saveBill(r)} disabled={saving}
-                          style={{ padding: '0.65rem 1.4rem', background: NAVY, color: GOLD, border: 'none', borderRadius: 3, fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>
-                          {saving ? 'Saving…' : 'Save Bill'}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </>
-      )}
+            {data.reservations.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '3rem', color: 'rgba(13,27,42,0.35)', fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic' }}>
+                No dining reservations for this member yet.
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {data.reservations.map((r: any) => <ReservationCard key={r._id} r={r} showGuest={false} />)}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -583,6 +664,12 @@ export default function StaffView() {
     unlocked ? {} : 'skip'
   ) ?? [];
   const pendingCount = (pendingApps as any[]).filter((a: any) => a.status === 'pending').length;
+
+  const allDining = useQuery(
+    api.diningReservations.listAll,
+    unlocked ? {} : 'skip'
+  ) ?? [];
+  const pendingDiningCount = (allDining as any[]).filter((r: any) => r.status === 'pending').length;
 
   const result = useQuery(
     api.account.getGuestForStaff,
@@ -613,7 +700,7 @@ export default function StaffView() {
           {([
             { id: 'guests',     label: 'Guest Search' },
             { id: 'membership', label: 'Membership Applications', badge: pendingCount },
-            { id: 'dining',     label: 'Dining' },
+            { id: 'dining',     label: 'Dining', badge: pendingDiningCount },
           ] as { id: TabId; label: string; badge?: number }[]).map(tab => (
             <button
               key={tab.id}
