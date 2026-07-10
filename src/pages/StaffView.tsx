@@ -391,8 +391,186 @@ function MembershipApplications() {
 }
 
 
+// ─── Dining Spend Reconciliation ──────────────────────────────────────────────
+// Look up a member's dining reservations by Member ID and record the final
+// bill on each. Recording marks the reservation completed and auto-credits
+// the member's active membership spendForYear (delta-safe on re-record).
+function DiningReconciliation() {
+  const recordSpend = useMutation(api.diningReservations.recordSpend);
+
+  const [searchId,  setSearchId]  = useState('');
+  const [activeId,  setActiveId]  = useState('');
+  const [staffName, setStaffName] = useState('');
+  const [toast,     setToast]     = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [billInput, setBillInput] = useState('');
+  const [saving,    setSaving]    = useState(false);
+
+  const result = useQuery(
+    api.diningReservations.getByMemberId,
+    activeId ? { memberId: activeId, staffPin: 'ELDORADO2026' } : 'skip'
+  );
+
+  const showToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(''), 3500);
+  };
+
+  const fmtNGN = (n: number) => `₦${n.toLocaleString('en-NG')}`;
+
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setEditingId(null);
+    setActiveId(searchId.trim());
+  };
+
+  const startRecord = (r: any) => {
+    setEditingId(r._id);
+    setBillInput(r.spendNGN != null ? String(r.spendNGN) : '');
+  };
+
+  const saveBill = async (r: any) => {
+    if (!staffName.trim()) { showToast('Enter your name before recording a bill.'); return; }
+    const amount = Number(billInput);
+    if (!billInput.trim() || isNaN(amount) || amount < 0) { showToast('Enter a valid bill amount.'); return; }
+    setSaving(true);
+    try {
+      const res = await recordSpend({
+        staffPin: 'ELDORADO2026',
+        id: r._id as Id<'diningReservations'>,
+        spendNGN: amount,
+        recordedBy: staffName.trim(),
+      });
+      if (!res.success) {
+        showToast('Error: ' + res.error);
+      } else if (res.creditedToMembership) {
+        showToast(`Recorded ${fmtNGN(amount)} — credited to annual spend (now ${fmtNGN(res.newSpendForYear ?? 0)}).`);
+      } else {
+        showToast(`Recorded ${fmtNGN(amount)} — guest has no active membership, nothing credited.`);
+      }
+      setEditingId(null);
+    } catch (err: any) { showToast('Error: ' + (err?.message ?? 'Unknown')); }
+    finally { setSaving(false); }
+  };
+
+  const data = result as any;
+
+  return (
+    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+
+      {/* Toast */}
+      {toast && (
+        <div style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', background: NAVY, color: IVORY, padding: '0.85rem 1.5rem', borderRadius: 4, fontSize: '0.82rem', zIndex: 100, boxShadow: '0 8px 32px rgba(0,0,0,0.25)', maxWidth: '90vw', textAlign: 'center' }}>
+          {toast}
+        </div>
+      )}
+
+      {/* Staff name field */}
+      <div style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.25rem 1.5rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+        <div style={{ fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.4)', flexShrink: 0 }}>Acting as</div>
+        <input data-testid="input-dining-staff-name" type="text" placeholder="Your name (required to record a bill)" value={staffName} onChange={e => setStaffName(e.target.value)}
+          style={{ flex: 1, minWidth: 200, padding: '0.55rem 0.8rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.85rem', fontFamily: "'Jost',sans-serif", color: NAVY }} />
+      </div>
+
+      {/* Member ID search */}
+      <form onSubmit={submitSearch} style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+        <input
+          data-testid="input-dining-member-search"
+          type="text" value={searchId} onChange={e => setSearchId(e.target.value)} required
+          placeholder="Search by Member ID, e.g. ELD-00142…"
+          style={{ flex: 1, padding: '0.75rem 1rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.9rem', fontFamily: "'Jost',sans-serif", color: NAVY, background: '#fff' }}
+        />
+        <button data-testid="button-find-member-dining" type="submit"
+          style={{ padding: '0.75rem 1.5rem', background: NAVY, color: GOLD, border: 'none', borderRadius: 3, fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer', whiteSpace: 'nowrap' }}>
+          Find Member
+        </button>
+      </form>
+
+      {!activeId && (
+        <div style={{ textAlign: 'center', padding: '3rem', color: 'rgba(13,27,42,0.35)', fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic' }}>
+          Search by Member ID to view dining reservations and record bills.
+        </div>
+      )}
+
+      {activeId && data === undefined && (
+        <div style={{ textAlign: 'center', color: 'rgba(13,27,42,0.4)', padding: '2rem' }}>Searching…</div>
+      )}
+
+      {activeId && data && data.error && (
+        <div style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.5rem', fontSize: '0.88rem', color: '#A12C7B' }}>{data.error}</div>
+      )}
+
+      {activeId && data && !data.error && (
+        <>
+          {/* Member header */}
+          <div style={{ background: NAVY, borderRadius: 4, padding: '1.25rem 1.5rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <div>
+              <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.3rem', color: IVORY }}>{data.member.name}</div>
+              <div style={{ fontSize: '0.75rem', color: 'rgba(250,248,242,0.5)', marginTop: '0.2rem' }}>{data.member.email} · <span style={{ color: GOLD, letterSpacing: '0.08em' }}>{data.member.memberId}</span></div>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.4rem', fontWeight: 600, color: GOLD }}>{fmtNGN(data.totalDiningSpendNGN ?? 0)}</div>
+              <div style={{ fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(250,248,242,0.45)' }}>Total Dining Spend</div>
+            </div>
+          </div>
+
+          {/* Reservation list */}
+          {data.reservations.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'rgba(13,27,42,0.35)', fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontStyle: 'italic' }}>
+              No dining reservations for this member yet.
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {data.reservations.map((r: any) => {
+                const isEditing = editingId === r._id;
+                return (
+                  <div key={r._id} style={{ background: '#fff', border: `1px solid ${LINEN}`, borderRadius: 4, padding: '1.25rem 1.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
+                      <div>
+                        <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.15rem', fontWeight: 500, color: NAVY }}>{r.venueName}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'rgba(13,27,42,0.55)', marginTop: '0.25rem' }}>
+                          {new Date(r.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} · {r.time} · {r.partySize} guest{r.partySize !== 1 ? 's' : ''}
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '0.3rem 0.7rem', borderRadius: 3, background: r.status === 'completed' ? 'rgba(32,128,141,0.1)' : 'rgba(201,168,76,0.15)', color: r.status === 'completed' ? '#20808D' : '#8a6d2f' }}>{r.status}</span>
+                        <span data-testid={`text-spend-${r._id}`} style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.1rem', fontWeight: 600, color: r.spendNGN != null ? NAVY : 'rgba(13,27,42,0.3)' }}>
+                          {r.spendNGN != null ? fmtNGN(r.spendNGN) : '—'}
+                        </span>
+                        <button data-testid={`button-record-bill-${r._id}`} onClick={() => isEditing ? setEditingId(null) : startRecord(r)}
+                          style={{ padding: '0.45rem 0.9rem', border: `1px solid ${NAVY}`, borderRadius: 3, background: isEditing ? 'transparent' : NAVY, color: isEditing ? NAVY : GOLD, fontSize: '0.58rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: 'pointer' }}>
+                          {isEditing ? 'Cancel' : r.spendNGN != null ? 'Edit Bill' : 'Record Bill'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {isEditing && (
+                      <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(13,27,42,0.08)', display: 'flex', alignItems: 'flex-end', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <div style={{ flex: 1, minWidth: 180 }}>
+                          <label style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.45)', marginBottom: '0.35rem' }}>Final Bill (NGN)</label>
+                          <input data-testid={`input-bill-${r._id}`} type="number" min={0} value={billInput} onChange={e => setBillInput(e.target.value)} placeholder="e.g. 180000"
+                            style={{ width: '100%', padding: '0.55rem 0.8rem', border: '1px solid rgba(13,27,42,0.18)', borderRadius: 3, fontSize: '0.9rem', fontFamily: "'Jost',sans-serif", color: NAVY, boxSizing: 'border-box' }} />
+                        </div>
+                        <button data-testid={`button-save-bill-${r._id}`} onClick={() => saveBill(r)} disabled={saving}
+                          style={{ padding: '0.65rem 1.4rem', background: NAVY, color: GOLD, border: 'none', borderRadius: 3, fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Jost',sans-serif", cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.6 : 1 }}>
+                          {saving ? 'Saving…' : 'Save Bill'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+
 // ─── Main Staff View ──────────────────────────────────────────────────────────
-type TabId = 'guests' | 'membership';
+type TabId = 'guests' | 'membership' | 'dining';
 
 export default function StaffView() {
   const [unlocked,    setUnlocked]    = useState(false);
@@ -435,6 +613,7 @@ export default function StaffView() {
           {([
             { id: 'guests',     label: 'Guest Search' },
             { id: 'membership', label: 'Membership Applications', badge: pendingCount },
+            { id: 'dining',     label: 'Dining' },
           ] as { id: TabId; label: string; badge?: number }[]).map(tab => (
             <button
               key={tab.id}
@@ -505,6 +684,8 @@ export default function StaffView() {
       )}
 
       {activeTab === 'membership' && <MembershipApplications />}
+
+      {activeTab === 'dining' && <DiningReconciliation />}
     </div>
   );
 }
