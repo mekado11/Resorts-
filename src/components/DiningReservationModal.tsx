@@ -46,6 +46,10 @@ const DINING_CONFIG: Record<DiningType, DiningTypeConfig> = {
     eyebrow: 'Afternoon Tea — Reservation Enquiry',
     venueName: 'Tea at Eldorado',
     timeOptions: [
+      { label: '12:00 PM', value: '12:00' },
+      { label: '12:30 PM', value: '12:30' },
+      { label: '1:00 PM',  value: '13:00' },
+      { label: '1:30 PM',  value: '13:30' },
       { label: '2:00 PM',  value: '14:00' },
       { label: '2:30 PM',  value: '14:30' },
       { label: '3:00 PM',  value: '15:00' },

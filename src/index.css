@@ -51,7 +51,7 @@ body {
 /* ── Gold ornament ── */
 .ornament {
   display: flex; align-items: center; gap: 1rem;
-  justify-content: center; margin: 1.5rem 0;
+  justify-content: center; margin: 1rem 0;
 }
 .ornament-line   { flex: 1; max-width: 80px; height: 1px; background: var(--gold); opacity: 0.4; }
 .ornament-diamond {
@@ -129,7 +129,7 @@ body {
 .room-card-img { width: 100%; height: 240px; object-fit: cover; display: block; }
 
 /* ── Section spacing ── */
-.section { padding: clamp(3rem, 6vw, 6rem) clamp(1.5rem, 5vw, 5rem); }
+.section { padding: clamp(2.25rem, 4.5vw, 4.5rem) clamp(1.5rem, 5vw, 5rem); }
 .section-ivory { background: var(--ivory); }
 .section-linen { background: var(--linen); }
 .section-navy  { background: var(--navy); }
@@ -155,7 +155,7 @@ body {
 /* ── Mobile responsive overrides ── */
 @media (max-width: 767px) {
   /* Section spacing — tighter on mobile */
-  .section { padding: 2rem 1.25rem; }
+  .section { padding: 1.5rem 1.25rem; }
 
   /* Pull quote — smaller on mobile */
   .pull-quote { font-size: clamp(1.15rem, 4.5vw, 1.6rem); }

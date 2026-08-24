@@ -170,7 +170,7 @@ export default function Membership({ onToast }: MembershipProps) {
       <div style={{ position: 'relative', height: '60vh', minHeight: 400, display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/assets/entrance-hero.jpg')", backgroundSize: 'cover', backgroundPosition: 'center 60%' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(13,27,42,0.95) 0%,rgba(13,27,42,0.3) 100%)' }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: '4rem clamp(1.5rem,5vw,5rem)' }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: '3rem clamp(1.5rem,5vw,5rem)' }}>
           <div style={{ fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.75rem' }}>Exclusive Membership</div>
           <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(2.5rem,5vw,4.5rem)', fontWeight: 300, color: 'var(--ivory)' }}>The Eldorado Circle</h1>
         </div>
@@ -178,7 +178,7 @@ export default function Membership({ onToast }: MembershipProps) {
 
       {/* ── Intro ── */}
       <section className="section section-ivory">
-        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
           <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.15rem', fontStyle: 'italic', color: 'rgba(13,27,42,0.65)', maxWidth: 620, margin: '0 auto' }}>
             Eldorado membership is more than preferential access — it is permanent belonging. A select community of Nigeria's most discerning individuals, united by an uncompromising standard of living.

@@ -1,16 +1,16 @@
-interface FooterProps { setPage: (p: string) => void; }
+interface FooterProps { setPage: (p: string) => void; showOpeningBanner?: boolean; }
 
-export default function Footer({ setPage }: FooterProps) {
+export default function Footer({ setPage, showOpeningBanner = true }: FooterProps) {
   const nav = (p: string) => { setPage(p); window.scrollTo(0,0); };
   return (
-    <footer style={{ background:'var(--navy)', color:'rgba(250,248,242,0.7)', padding:'4rem clamp(1.5rem,5vw,5rem) 2rem' }}>
+    <footer style={{ background:'var(--navy)', color:'rgba(250,248,242,0.7)', padding:'3rem clamp(1.5rem,5vw,5rem) 2rem' }}>
 
-      {/* Opening banner */}
-      <div style={{
+      {/* Opening banner — hidden on pages where sales messaging is off-tone (Eldorado Cares) */}
+      {showOpeningBanner && <div style={{
         borderTop: '1px solid rgba(201,168,76,0.3)',
         borderBottom: '1px solid rgba(201,168,76,0.3)',
         padding: '1.75rem 0',
-        marginBottom: '3rem',
+        marginBottom: '2rem',
         textAlign: 'center',
       }}>
         <div style={{ fontSize:'0.6rem', letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(201,168,76,0.6)', marginBottom:'0.6rem' }}>
@@ -36,9 +36,9 @@ export default function Footer({ setPage }: FooterProps) {
         >
           Submit an Enquiry
         </button>
-      </div>
+      </div>}
 
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:'2.5rem', marginBottom:'3rem' }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:'2.5rem', marginBottom:'2rem' }}>
         <div>
           <img src="/assets/logo-gold.png" alt="Heights of Eldorado" style={{ height:52, marginBottom:'1rem' }} />
           <p style={{ fontSize:'0.82rem', lineHeight:1.8 }}>

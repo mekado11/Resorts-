@@ -569,7 +569,7 @@ export default function Journey() {
 
       {/* ── Hero ── */}
       <div style={{
-        padding: 'clamp(4rem,9vw,8rem) clamp(1.5rem,5vw,5rem) clamp(1.5rem,3vw,2.5rem)',
+        padding: 'clamp(3rem,7vw,6rem) clamp(1.5rem,5vw,5rem) clamp(1.5rem,3vw,2.5rem)',
         borderBottom: '1px solid rgba(201,168,76,0.1)',
         maxWidth: 1200, margin: '0 auto',
       }}>

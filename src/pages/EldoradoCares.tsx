@@ -54,7 +54,7 @@ export default function EldoradoCares({ setPage }: CaresProps) {
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(13,27,42,0.88) 45%, rgba(13,27,42,0.35) 100%)' }} />
 
         {/* Content */}
-        <div style={{ position: 'relative', zIndex: 2, padding: 'clamp(3rem,8vw,6rem) clamp(2rem,8vw,7rem)', maxWidth: 680 }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: 'clamp(2.5rem,6vw,4.5rem) clamp(2rem,8vw,7rem)', maxWidth: 680 }}>
           <div style={{ fontSize: '0.6rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.75)', marginBottom: '1.5rem' }}>
             Eldorado Cares
           </div>
@@ -106,7 +106,7 @@ export default function EldoradoCares({ setPage }: CaresProps) {
       </div>
 
       {/* ── Why We Care ── */}
-      <section style={{ padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,5rem)' }}>
+      <section style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,5rem)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 4rem' }}>
             <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
@@ -147,7 +147,7 @@ export default function EldoradoCares({ setPage }: CaresProps) {
       {/* ── Where Every Stay Can Reach Further ── */}
       <section id="cares-impact" style={{
         background: 'var(--navy)',
-        padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,5rem)',
+        padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,5rem)',
       }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto 3.5rem' }}>
@@ -203,7 +203,7 @@ export default function EldoradoCares({ setPage }: CaresProps) {
       </section>
 
       {/* ── What We Intend to Support ── */}
-      <section style={{ padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,5rem)', background: '#fff' }}>
+      <section style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,5rem)', background: '#fff' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 3.5rem' }}>
             <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
@@ -262,16 +262,16 @@ export default function EldoradoCares({ setPage }: CaresProps) {
 
       {/* ── Our Promise ── */}
       <section style={{
-        padding: 'clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,5rem)',
+        padding: 'clamp(2.5rem,5vw,4rem) clamp(1.5rem,5vw,5rem)',
         background: 'var(--ivory)',
         borderTop: '1px solid rgba(13,27,42,0.08)',
       }}>
         <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
           <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
-          <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(1.8rem,3.5vw,2.5rem)', fontWeight: 300, color: 'var(--navy)', marginBottom: '1.5rem' }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(1.8rem,3.5vw,2.5rem)', fontWeight: 300, color: 'var(--navy)', marginBottom: '1rem' }}>
             Our Promise
           </h2>
-          <p style={{ fontSize: '1.05rem', color: 'rgba(13,27,42,0.65)', lineHeight: 2, fontFamily: "'Cormorant Garamond',serif", fontStyle: 'italic' }}>
+          <p style={{ fontSize: '1.05rem', color: 'rgba(13,27,42,0.65)', lineHeight: 1.7, fontFamily: "'Cormorant Garamond',serif", fontStyle: 'italic' }}>
             We do not want Eldorado Cares to become a page of promises and photographs.
             As our work begins, we will return here with names, numbers, stories,
             partnerships, and proof.
@@ -280,7 +280,7 @@ export default function EldoradoCares({ setPage }: CaresProps) {
       </section>
 
       {/* ── Closing ── */}
-      <section style={{ background: 'var(--navy)', padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,5rem)' }}>
+      <section style={{ background: 'var(--navy)', padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,5rem)' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
           <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '1.25rem' }}>
             The Bigger Picture

@@ -511,7 +511,7 @@ export default function Rooms({ onToast }: RoomsProps) {
       <div style={{ position: 'relative', height: '60vh', minHeight: 400, display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/assets/eldorado-flagship-suite.jpg')", backgroundSize: 'cover', backgroundPosition: 'center 40%' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(13,27,42,0.92) 0%,rgba(13,27,42,0.3) 100%)' }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: '4rem clamp(1.5rem,5vw,5rem)' }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: '3rem clamp(1.5rem,5vw,5rem)' }}>
           <div style={{ fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.75rem' }}>Accommodations</div>
           <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(2.5rem,5vw,4.5rem)', fontWeight: 300, color: 'var(--ivory)' }}>Rooms &amp; Suites</h1>
         </div>
@@ -519,7 +519,7 @@ export default function Rooms({ onToast }: RoomsProps) {
 
       {/* Rooms grid */}
       <section className="section section-ivory">
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
           <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '1.15rem', fontStyle: 'italic', color: 'rgba(13,27,42,0.65)', maxWidth: 640, margin: '0 auto' }}>
             From The Manor to the Eldorado Flagship Suite — six distinct accommodations, each representing a different philosophy of living well. Every tier begins where other hotels end.
