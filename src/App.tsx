@@ -100,7 +100,7 @@ function EldoradoApp() {
         {page === 'eldorado-cares' && <EldoradoCares setPage={setPage_} />}
       </main>
 
-      {showFooter && <Footer setPage={setPage_} />}
+      {showFooter && <Footer setPage={setPage_} showOpeningBanner={page !== 'eldorado-cares'} />}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
       {showPopup && page === 'home' && <SubscribePopup onClose={() => setShowPopup(false)} />}
     </div>

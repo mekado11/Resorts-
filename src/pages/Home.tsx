@@ -229,7 +229,7 @@ export default function Home({ setPage }: HomeProps) {
       {/* ── Experiences grid ── */}
       <section className="section section-cream">
         <Reveal>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
             <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(2.5rem,5vw,3.7rem)', fontWeight: 300 }}>Signature Experiences</h2>
           </div>
@@ -265,7 +265,7 @@ export default function Home({ setPage }: HomeProps) {
       {/* ── What Surrounds You — Proximity ── */}
       <section className="section section-ivory">
         <Reveal>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
             <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(2.2rem,4.5vw,3.5rem)', fontWeight: 300, marginBottom: '1rem' }}>What Surrounds You</h2>
             <p style={{ fontFamily: "'Jost',sans-serif", fontSize: '1rem', fontWeight: 300, color: 'rgba(13,27,42,0.58)', maxWidth: 580, margin: '0 auto', lineHeight: 1.85 }}>

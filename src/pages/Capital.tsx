@@ -78,7 +78,7 @@ export default function Capital() {
       <section style={{ position: 'relative', minHeight: '92vh', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/assets/eldorado-flagship-suite.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,26,46,0.97) 0%, rgba(10,26,46,0.55) 55%, rgba(10,26,46,0.2) 100%)' }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: 'clamp(3rem,8vw,7rem) clamp(1.5rem,6vw,6rem)', maxWidth: 760 }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: 'clamp(2.5rem,6vw,5rem) clamp(1.5rem,6vw,6rem)', maxWidth: 760 }}>
           <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.7)', marginBottom: '1.25rem' }}>
             Private Capital
           </div>
@@ -110,9 +110,9 @@ export default function Capital() {
       </section>
 
       {/* ── WHY ELDORADO ── */}
-      <section style={{ padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6rem)' }}>
+      <section style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,6vw,6rem)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '0.85rem' }}>The Opportunity</div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.2rem,4.5vw,3.5rem)', fontWeight: 300, color: '#FAF8F2' }}>
               Why Eldorado
@@ -143,7 +143,7 @@ export default function Capital() {
       <section style={{ borderTop: '1px solid rgba(201,168,76,0.1)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
 
         {/* Opening statement */}
-        <div style={{ padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6rem)', maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,6vw,6rem)', maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
           <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: '1.5rem' }}>Our Intention</div>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.2rem,4.5vw,3.8rem)', fontWeight: 300, color: '#FAF8F2', lineHeight: 1.15, marginBottom: '2.5rem' }}>
             Built to leave more behind<br />than a building.
@@ -158,7 +158,7 @@ export default function Capital() {
 
         {/* ───── Chapter 1: The Sun ───── */}
         <div id="sustainability" style={{ borderTop: '1px solid rgba(201,168,76,0.08)', scrollMarginTop: 140 }}>
-          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,5vw,4.5rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
 
             {/* Text column */}
             <div>
@@ -211,7 +211,7 @@ export default function Capital() {
 
         {/* ───── Chapter 2: The Hands ───── */}
         <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)', background: 'rgba(255,255,255,0.015)' }}>
-          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,5vw,4.5rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
 
             {/* Hands building Eldorado — left on this chapter */}
             <div style={{ aspectRatio: '3/4', border: '1px solid rgba(201,168,76,0.15)', borderRadius: 3, overflow: 'hidden' }}>
@@ -242,7 +242,7 @@ export default function Capital() {
 
         {/* ───── Chapter 3: The Table ───── */}
         <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)' }}>
-          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(4rem,7vw,6rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(3rem,5vw,4.5rem) clamp(1.5rem,6vw,6rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(3rem,6vw,5rem)', alignItems: 'start' }}>
 
             {/* Text column */}
             <div>
@@ -275,7 +275,7 @@ export default function Capital() {
 
         {/* ───── Chapter 4: The Future ───── */}
         <div style={{ borderTop: '1px solid rgba(201,168,76,0.08)', background: 'rgba(201,168,76,0.02)' }}>
-          <div style={{ maxWidth: 860, margin: '0 auto', padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6rem)', textAlign: 'center' }}>
+          <div style={{ maxWidth: 860, margin: '0 auto', padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,6vw,6rem)', textAlign: 'center' }}>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '1rem' }}>The Future</div>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.8rem,3.2vw,2.8rem)', fontWeight: 300, color: '#FAF8F2', marginBottom: '2rem', lineHeight: 1.2 }}>
               Today, these are intentions.<br /><em style={{ color: 'rgba(250,248,242,0.65)' }}>Over time, this page will change.</em>
@@ -305,7 +305,7 @@ export default function Capital() {
       </section>
 
       {/* ── INVESTMENT STRUCTURE ── */}
-      <section style={{ padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6rem)' }}>
+      <section style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,6vw,6rem)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: '4rem', alignItems: 'start' }}>
           <div>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '0.85rem' }}>The Structure</div>
@@ -336,9 +336,9 @@ export default function Capital() {
       </section>
 
       {/* ── INVESTOR TIERS ── */}
-      <section style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,6vw,6rem)', background: 'rgba(201,168,76,0.03)', borderTop: '1px solid rgba(201,168,76,0.1)' }}>
+      <section style={{ padding: 'clamp(2.5rem,5vw,4rem) clamp(1.5rem,6vw,6rem)', background: 'rgba(201,168,76,0.03)', borderTop: '1px solid rgba(201,168,76,0.1)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '0.85rem' }}>Participation Levels</div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 300, color: '#FAF8F2', marginBottom: '0.75rem' }}>The Founders' Circle</h2>
             <p style={{ fontSize: '0.95rem', color: 'rgba(250,248,242,0.45)', maxWidth: 500, margin: '0 auto', lineHeight: 1.8 }}>
@@ -381,9 +381,9 @@ export default function Capital() {
       </section>
 
       {/* ── ENQUIRY FORM ── */}
-      <section id="memorandum" style={{ padding: 'clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6rem)' }}>
+      <section id="memorandum" style={{ padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,6vw,6rem)' }}>
         <div style={{ maxWidth: 640, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{ fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.65)', marginBottom: '0.85rem' }}>Next Step</div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 300, color: '#FAF8F2', marginBottom: '0.85rem' }}>
               Request the Investment Memorandum

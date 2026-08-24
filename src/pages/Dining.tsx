@@ -20,7 +20,7 @@ export default function Dining({ onToast }: DiningProps) {
       <div style={{ position:'relative', height:'70vh', minHeight:500, display:'flex', alignItems:'flex-end', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, backgroundImage:"url('/assets/afang-fine-dining.jpg')", backgroundSize:'cover', backgroundPosition:'center 40%' }} />
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(13,27,42,0.92) 0%,rgba(13,27,42,0.2) 100%)' }} />
-        <div style={{ position:'relative', zIndex:2, padding:'4rem clamp(1.5rem,5vw,5rem)' }}>
+        <div style={{ position:'relative', zIndex:2, padding:'3rem clamp(1.5rem,5vw,5rem)' }}>
           <div style={{ fontSize:'0.65rem', letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'0.75rem' }}>Culinary Arts</div>
           <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(2.5rem,5vw,4.5rem)', fontWeight:300, color:'var(--ivory)' }}>Dining at Eldorado</h1>
         </div>
@@ -62,7 +62,7 @@ export default function Dining({ onToast }: DiningProps) {
             <div className="gold-divider"><div className="gold-divider-line" /><span className="gold-divider-label">Afternoon Tradition</span></div>
             <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(1.8rem,3.5vw,2.8rem)', fontWeight:300, marginBottom:'1.25rem' }}>Tea at Eldorado</h2>
             <p style={{ lineHeight:1.9, color:'rgba(13,27,42,0.75)', marginBottom:'1rem' }}>An afternoon ritual reimagined — native pastries, seasonal Nigerian fruit, and a rotating selection of rare teas, served alongside classical tiered stands in the quiet hours between lunch and dinner. A pause, structured with the same precision as The Table's evening service.</p>
-            <p style={{ lineHeight:1.9, color:'rgba(13,27,42,0.75)' }}>Served daily, 2:00pm – 5:00pm. Reservations recommended.</p>
+            <p style={{ lineHeight:1.9, color:'rgba(13,27,42,0.75)' }}>Served daily, 12:00pm – 5:00pm. Reservations recommended.</p>
             <button className="btn-primary" onClick={() => setReserveType('tea')} style={{ marginTop:'1.5rem' }}>Reserve a Table</button>
           </div>
         </div>
@@ -93,7 +93,7 @@ export default function Dining({ onToast }: DiningProps) {
 
       {/* Venues */}
       <section className="section section-cream">
-        <div style={{ textAlign:'center', marginBottom:'3rem' }}>
+        <div style={{ textAlign:'center', marginBottom:'2rem' }}>
           <div className="ornament"><div className="ornament-line" /><div className="ornament-diamond" /><div className="ornament-line" /></div>
           <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(2rem,4vw,3rem)', fontWeight:300 }}>Five Dining Destinations</h2>
         </div>

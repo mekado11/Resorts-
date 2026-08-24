@@ -37,7 +37,7 @@ export default function Contact({ onToast }: ContactProps) {
       <div style={{ position:'relative', height:'50vh', minHeight:350, display:'flex', alignItems:'flex-end', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, backgroundImage:"url('/assets/entrance-hero.jpg')", backgroundSize:'cover', backgroundPosition:'center 50%' }} />
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(13,27,42,0.92) 0%,rgba(13,27,42,0.3) 100%)' }} />
-        <div style={{ position:'relative', zIndex:2, padding:'4rem clamp(1.5rem,5vw,5rem)' }}>
+        <div style={{ position:'relative', zIndex:2, padding:'3rem clamp(1.5rem,5vw,5rem)' }}>
           <div style={{ fontSize:'0.65rem', letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'0.75rem' }}>Get in Touch</div>
           <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(2.5rem,5vw,4rem)', fontWeight:300, color:'var(--ivory)' }}>Contact Eldorado</h1>
         </div>
