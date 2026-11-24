@@ -17,7 +17,7 @@ const WORLDS: World[] = [
     id: 'weddings',
     name: 'Weddings',
     tagline: 'Where ceremonies become legacy.',
-    img: 'hero-wedding.jpg',
+    img: 'wedding-staircase.webp',
     teasers: [
       { title: 'The Pavilion', detail: 'Designed for the traditional Ibibio ceremony. The architecture, the ceremony flow, and the gathering are held within a space built for exactly this moment.' },
       { title: 'The Grand Ballroom', detail: 'For the reception that follows. Eight hundred guests, crystal chandeliers, and a service team that anticipates before it is asked.' },
@@ -96,7 +96,7 @@ const WORLDS: World[] = [
     id: 'calendar',
     name: 'The Eldorado Calendar',
     tagline: 'A changing programme of performances, gatherings, culture, and celebration.',
-    img: 'aerial-night.jpg',
+    img: 'promenade-christmas.webp',
     teasers: [
       { title: 'Eldorado Fashion Week', detail: 'Nigeria’s designers on Nigeria’s newest stage — a December runway programme of couture, textiles, and the artisans behind them. See Signature Events for dates and RSVP.' },
       { title: 'Eldorado Christmas Street', detail: 'Throughout December, the promenade becomes a festive street — lights, local craft stalls, choirs, and family evenings. See Signature Events to RSVP.' },

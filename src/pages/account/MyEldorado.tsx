@@ -425,7 +425,7 @@ function UpcomingStayCard({ setPage }: { setPage: (p: string) => void }) {
           <div style={{
             height: 140, background: 'linear-gradient(135deg, rgba(13,27,42,0.85) 0%, rgba(13,27,42,0.5) 100%)',
             display: 'flex', alignItems: 'flex-start', padding: '0.75rem',
-            backgroundImage: "url('/assets/lobby.jpg')", backgroundSize: 'cover', backgroundPosition: 'center',
+            backgroundImage: "url('/assets/lobby-grand.webp')", backgroundSize: 'cover', backgroundPosition: 'center',
             position: 'relative',
           }}>
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(13,27,42,0.35)' }} />
