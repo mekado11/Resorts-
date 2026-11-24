@@ -82,6 +82,7 @@ export default function Home({ setPage }: HomeProps) {
     { tag: 'Wellness',         title: 'The Still Room',                 desc: 'Return to yourself. Limestone walls, ancient healing, and the particular silence that only arrives when every detail is attended to.', img: 'hero-spa.jpg', page: 'experiences' },
     { tag: 'Dining',           title: 'Some Tables Are Remembered',     desc: 'Nigerian cuisine reimagined. Every plate a conversation between heritage and precision.', img: 'afang-fine-dining.jpg', page: 'dining' },
     { tag: 'After Dark',       title: 'The Night, Properly Considered', desc: 'What the evening becomes when it is curated rather than left to chance.', img: 'hero-theater.jpg', page: 'experiences' },
+    { tag: 'This Season',      title: 'The Eldorado Season',            desc: 'Fashion Week, Christmas Street, and the NYE countdown gala — three signature celebrations to close the year. RSVPs open now.', img: 'aerial-night.jpg', page: 'events' },
   ];
 
   const ease = 'cubic-bezier(0.16,1,0.3,1)';

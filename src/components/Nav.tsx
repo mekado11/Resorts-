@@ -59,7 +59,7 @@ const MENUS = {
           { label: 'Spa — The Still Room', page: 'experiences' },
           { label: 'Culture & Heritage',   page: 'experiences' },
           { label: 'Private Experiences',  page: 'experiences' },
-          { label: 'Events',               page: 'experiences' },
+          { label: 'Signature Events',     page: 'events' },
           { label: 'Explore Uyo',          page: 'experiences' },
         ],
       },

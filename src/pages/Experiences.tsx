@@ -98,9 +98,9 @@ const WORLDS: World[] = [
     tagline: 'A changing programme of performances, gatherings, culture, and celebration.',
     img: 'aerial-night.jpg',
     teasers: [
-      { title: 'Cultural Residencies', detail: 'Artists, musicians, and storytellers in residence at Eldorado. The work they create here belongs to this place.' },
-      { title: 'Signature Gatherings', detail: 'Curated seasonal events — dining evenings, cultural celebrations, and gatherings drawn from the Eldorado Circle membership community.' },
-      { title: 'The Opening Season', detail: 'Our inaugural programme of events will be announced in the months before we open. Join the waitlist to be among the first to receive it.' },
+      { title: 'Eldorado Fashion Week', detail: 'Nigeria’s designers on Nigeria’s newest stage — a December runway programme of couture, textiles, and the artisans behind them. See Signature Events for dates and RSVP.' },
+      { title: 'Eldorado Christmas Street', detail: 'Throughout December, the promenade becomes a festive street — lights, local craft stalls, choirs, and family evenings. See Signature Events to RSVP.' },
+      { title: 'Eldorado NYE', detail: 'A black-tie countdown gala on 31 December — dinner by The Table, live performance, and fireworks at midnight. See Signature Events to RSVP.' },
     ],
   },
 ];
