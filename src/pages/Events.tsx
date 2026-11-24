@@ -21,7 +21,7 @@ const EVENTS: SeasonEvent[] = [
     name: 'Eldorado Fashion Week',
     dateLine: 'December 2026 · Dates to be announced',
     tag: 'Runway & Culture',
-    img: 'hero-theater.jpg',
+    img: 'events-fashion-week.webp',
     desc: 'Nigeria’s designers, on Nigeria’s newest stage. A runway programme celebrating the craft of the South-South and beyond — couture, textiles, and the artisans behind them — staged against the glamour of the Lagos–Calabar coast. Evenings close with champagne on the terrace and conversations that run long past the final look.',
     details: [
       { label: 'Format', val: 'Runway shows · designer showcases · closing soirée' },
@@ -33,7 +33,7 @@ const EVENTS: SeasonEvent[] = [
     name: 'Eldorado Christmas Street',
     dateLine: 'Throughout December 2026',
     tag: 'Festive Promenade',
-    img: 'entrance-hero.jpg',
+    img: 'events-christmas-street.webp',
     desc: 'For one month, the Eldorado promenade becomes a Christmas street — lights strung overhead, local craft and food stalls, choirs in the evening air, and family nights under the stars. Akwa Ibom’s warmest season, celebrated the Eldorado way: generous, glowing, and open to all.',
     details: [
       { label: 'Format', val: 'Evening promenade · craft & food stalls · choir nights · family evenings' },
@@ -45,7 +45,7 @@ const EVENTS: SeasonEvent[] = [
     name: 'Eldorado NYE',
     dateLine: '31 December 2026',
     tag: 'The Countdown Gala',
-    img: 'aerial-night.jpg',
+    img: 'events-nye.webp',
     desc: 'One night, properly considered. A black-tie countdown gala — dinner composed by the team behind The Table, live performance through the evening, and at midnight, fireworks over the coastal highway. The first new year toasted at Heights of Eldorado; the ones after will be measured against it.',
     details: [
       { label: 'Format', val: 'Black-tie gala dinner · live performances · midnight fireworks' },
@@ -151,7 +151,7 @@ export default function Events({ onToast }: EventsProps) {
       {EVENTS.map((ev, i) => (
         <section key={ev.id} id={ev.id} className={`section ${i % 2 === 0 ? 'section-ivory' : 'section-cream'}`} style={{ scrollMarginTop: 140 }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: 'clamp(2rem,5vw,4rem)', alignItems: 'center', direction: i % 2 === 1 ? 'rtl' : 'ltr' }}>
-            <img src={`/assets/${ev.img}`} alt={ev.name} style={{ width: '100%', height: 420, objectFit: 'cover', borderRadius: 4, direction: 'ltr' }} />
+            <img src={`/assets/${ev.img}`} alt={ev.name} style={{ width: '100%', height: 'auto', aspectRatio: '3/4', objectFit: 'cover', objectPosition: 'top', borderRadius: 4, direction: 'ltr' }} />
             <div style={{ direction: 'ltr' }}>
               <div className="gold-divider"><div className="gold-divider-line" /><span className="gold-divider-label">{ev.tag}</span></div>
               <div style={{ fontSize: '0.68rem', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(13,27,42,0.55)', marginBottom: '0.6rem' }}>{ev.dateLine}</div>
