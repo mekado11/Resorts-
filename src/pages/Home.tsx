@@ -78,10 +78,11 @@ export default function Home({ setPage }: HomeProps) {
   };
 
   const experiences = [
-    { tag: 'Weddings',         title: 'Where Ceremonies Become Legacy', desc: 'The day you have imagined, held in a space built to hold it.', img: 'hero-wedding.jpg', page: 'experiences' },
+    { tag: 'Weddings',         title: 'Where Ceremonies Become Legacy', desc: 'The day you have imagined, held in a space built to hold it.', img: 'wedding-staircase.webp', page: 'experiences' },
     { tag: 'Wellness',         title: 'The Still Room',                 desc: 'Return to yourself. Limestone walls, ancient healing, and the particular silence that only arrives when every detail is attended to.', img: 'hero-spa.jpg', page: 'experiences' },
     { tag: 'Dining',           title: 'Some Tables Are Remembered',     desc: 'Nigerian cuisine reimagined. Every plate a conversation between heritage and precision.', img: 'afang-fine-dining.jpg', page: 'dining' },
     { tag: 'After Dark',       title: 'The Night, Properly Considered', desc: 'What the evening becomes when it is curated rather than left to chance.', img: 'hero-theater.jpg', page: 'experiences' },
+    { tag: 'This Season',      title: 'The Eldorado Season',            desc: 'Fashion Week, Christmas Street, and the NYE countdown gala — three signature celebrations to close the year. RSVPs open now.', img: 'events-nye.webp', page: 'events' },
   ];
 
   const ease = 'cubic-bezier(0.16,1,0.3,1)';
@@ -102,7 +103,7 @@ export default function Home({ setPage }: HomeProps) {
         {/* Background — Ken Burns zoom */}
         <div className="hero-zoom" style={{
           position: 'absolute', inset: 0,
-          backgroundImage: "url('/assets/entrance-hero.jpg')",
+          backgroundImage: "url('/assets/hero-arrival-festive.webp')",
           backgroundSize: 'cover',
           backgroundPosition: 'center 20%',
         }} />
@@ -214,7 +215,7 @@ export default function Home({ setPage }: HomeProps) {
       <section className="section section-ivory">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 'clamp(1.5rem, 4vw, 4rem)', alignItems: 'center', maxWidth: 1200, margin: '0 auto' }}>
           <Reveal>
-            <img src="/assets/room-comfort.jpg" alt="The Grand Lobby" style={{ width: '100%', borderRadius: 4, objectFit: 'cover', height: 'clamp(280px, 40vw, 480px)' }} />
+            <img src="/assets/lobby-grand.webp" alt="The Grand Lobby" style={{ width: '100%', borderRadius: 4, objectFit: 'cover', height: 'clamp(280px, 40vw, 480px)' }} />
           </Reveal>
           <Reveal delay={150}>
             <div className="gold-divider"><div className="gold-divider-line" /><span className="gold-divider-label">The Heart of the Hotel</span></div>
@@ -298,7 +299,7 @@ export default function Home({ setPage }: HomeProps) {
 
       {/* ── Aerial night ── */}
       <section style={{ position: 'relative', height: '55vh', minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/assets/aerial-night.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/assets/aerial-masterplan.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(13,27,42,0.58)' }} />
         <Reveal style={{ position: 'relative', zIndex: 2, textAlign: 'center', padding: '0 2rem' }}>
           <div style={{ fontSize: '0.8rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.75rem' }}>Rising on the Coastal Road</div>

@@ -12,6 +12,7 @@ import Membership from './pages/Membership';
 import Contact from './pages/Contact';
 import Journey from './pages/Journey';
 import Capital from './pages/Capital';
+import Events from './pages/Events';
 import SubscribePopup from './components/SubscribePopup';
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
@@ -80,6 +81,7 @@ function EldoradoApp() {
         {page === 'contact'       && <Contact onToast={showToast} />}
         {page === 'journey'       && <Journey />}
         {page === 'capital'       && <Capital />}
+        {page === 'events'        && <Events onToast={showToast} />}
 
         {/* Auth pages */}
         {page === 'signin'        && <SignIn setPage={setPage_} onToast={showToast} />}

@@ -49,7 +49,7 @@ export default function Footer({ setPage, showOpeningBanner = true }: FooterProp
         </div>
         <div>
           <div style={{ fontSize:'0.6rem', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'1rem' }}>Navigate</div>
-          {['home','rooms','dining','experiences','membership','journey','eldorado-cares','capital','contact'].map(p => (
+          {['home','rooms','dining','experiences','events','membership','journey','eldorado-cares','capital','contact'].map(p => (
             <div key={p} onClick={() => nav(p)} style={{ fontSize:'0.82rem', marginBottom:'0.5rem', cursor:'pointer', textTransform:'capitalize' }}
               onMouseEnter={e => (e.currentTarget.style.color='var(--gold)')}
               onMouseLeave={e => (e.currentTarget.style.color='rgba(250,248,242,0.7)')}>
