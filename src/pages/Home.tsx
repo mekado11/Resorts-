@@ -103,7 +103,7 @@ export default function Home({ setPage }: HomeProps) {
         {/* Background — Ken Burns zoom */}
         <div className="hero-zoom" style={{
           position: 'absolute', inset: 0,
-          backgroundImage: "url('/assets/entrance-hero.jpg')",
+          backgroundImage: "url('/assets/hero-arrival-festive.webp')",
           backgroundSize: 'cover',
           backgroundPosition: 'center 20%',
         }} />
